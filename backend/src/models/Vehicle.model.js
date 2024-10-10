@@ -7,8 +7,8 @@ const vehicleSchema=new mongoose.Schema({
         unique:true
     },
     owner:{
-        type:mongoose.Schema.ObjectId,
-        ref:Auth,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
         required:true
     },
     brand:{
@@ -55,7 +55,13 @@ const vehicleSchema=new mongoose.Schema({
         type:Boolean,
         default:true,
         required:true,
-    }
+    },
+    reviews:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Review"
+        }
+    ]
 },{timestamps:true});
 
 export const Vehicle= mongoose.model('Vehcile',vehicleSchema);
