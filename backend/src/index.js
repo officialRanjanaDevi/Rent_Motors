@@ -1,41 +1,22 @@
-import express from 'express';
-const app=express();
-const port=process.env.PORT || 3000;
+import dotenv from "dotenv";
+dotenv.configDotenv({
+  path: "./env",
+});
 
-const vehicle = [
-  {
-    id: 101,
-    name: "Honda",
-    price: 500
-  },
-  {
-    id: 102,
-    name: "Yamaha",
-    price: 600
-  },
-  {
-    id: 103,
-    name: "Suzuki",
-    price: 550
-  },
-  {
-    id: 104,
-    name: "Kawasaki",
-    price: 700
-  },
-  {
-    id: 105,
-    name: "Ducati",
-    price: 1200
-  }
-];
 
-app.get('/api',(req,res)=>{
-    res.send("hello");
-})
-app.get('/api/vehicle',(req,res)=>{
-  res.send(vehicle);
-})
-app.listen(port,()=>{
-  console.log(port);
-})
+import connectDB from "./db/index.js";
+const port = process.env.PORT || 3000;
+
+connectDB()
+  .then(() => {
+    app.on("error", (error) => {
+      console.log("error ", error);
+      throw error;
+    });
+    app.listen(port, () => {
+      console.log("Server is running at ", port);
+    });
+  })
+  .catch((err) => {
+    console.log("Mongo DB conncetion failed ", err);
+  });
