@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser"
 const app=express();
 
 app.use(cors({
-    origin:ProcessingInstruction.env.CORS_ORIGIN,
+    origin:process.env.CORS_ORIGIN,
     credentials:true
 }))
 
@@ -14,6 +14,13 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
+//routes
+import sharedRouter from './routes/shared.routes.js'
+
+
+
+//routes declaration
+app.use("/api/register",sharedRouter)
 
 
 export {app}
