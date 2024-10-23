@@ -3,9 +3,10 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
 const userSchema=new mongoose.Schema({
-    name:{
+    username:{
         type:String,
         required:true,
+        lowercase:true
     },
     email:{
         type:String,
@@ -16,7 +17,7 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        minlength: [6, 'Password length must be at least 6 characters'],
+        minlength: [4, 'Password length must be at least 4 characters'],
     },
     type:{
         type:String,
@@ -53,7 +54,7 @@ userSchema.pre("save",async function(next) {
     if(!this.isModified("password")){
         return next();
     }
-    this.password=bcrypt.hash(this.password,10)
+    this.password=await bcrypt.hash(this.password,10)
     next()
 })
 

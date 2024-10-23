@@ -15,12 +15,12 @@ app.use(cookieParser())
 
 
 //routes
-import sharedRouter from './routes/shared.routes.js'
+import authRouter from './routes/auth.routes.js'
 
 
 
 //routes declaration
-app.use("/api/register",sharedRouter)
+app.use("/api/auth",authRouter)
 
 
 export {app}
