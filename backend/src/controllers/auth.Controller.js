@@ -181,5 +181,28 @@ const getCurrentUser =asyncHandler(async(req,res)=>{
   return res.status(200).json(new ApiResponse(200,req.user,"Current user fetched successfully"))
 })
 
+const updateProfile = asyncHandler(async (req, res) => {
+  const user = req.user;
+  const data = req.body;
+  console.log(req.body);
+  console.log(req.files);
+  const imagePath = req.files;
+  
+  if (imagePath) {
+    const imageUrl = await uploadOnCloudinary(imagePath);
+    if (!imageUrl) {
+      throw new ApiError(500, "Something went wrong while uploading image on Cloudinary");
+    }
+    data.profile = imageUrl; 
+  }
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken,changePassword,getCurrentUser  }
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { ...data },
+    { new: true }
+  ).select("-password -refreshToken");
+
+  return res.status(200).json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
+});
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken,changePassword,getCurrentUser  ,updateProfile}
