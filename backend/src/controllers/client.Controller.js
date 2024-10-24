@@ -54,4 +54,63 @@ const createVehicle = asyncHandler( async(req,res)=>{
     )
 })
 
-export {createVehicle}
+
+const deleteVehicle =asyncHandler(async(req,res)=>{
+
+})
+
+const updateVehicle=asyncHandler(async(req,res)=>{
+      // get vehicle details from req.body
+      // check if user is authorized to update or not 
+      // check if vehicle exists or not 
+      // upload images on cloudinary if exists
+      // update data on db
+      // return res
+
+      const data=req.body;
+      console.log(data);
+      const existedUser =await  User.findById(data.owner)
+      if(!existedUser){
+          throw new ApiError(409,"Renter not found")
+      }
+  
+      if(existedUser.type!=="Renter"){
+          throw new ApiError(409,"You are not a renter,unauthorized to update listing")
+      }
+
+      const existedVehicle =await Vehicle.findById(data.id)
+      if(!existedVehicle){
+        throw new ApiError(409,"Vehicle doesnot exist")
+      }
+
+      if(existedVehicle.owner.toString()!==existedUser._id){
+        throw new ApiError(409,"You are not authorized to update this vehicle")
+      }
+
+      const duplicateTitle= await Vehicle.findOne({title:data.title})
+      if(!duplicateTitle){
+        throw new ApiError(400,"Title already exists")
+      }
+      
+      let imagesUrl = [];
+      const imagePath = req.files ? req.files.map(file => file.path) : [];
+      if (imagePath.length > 0) {
+        const images = await Promise.all(imagePath.map(image => uploadOnCloudinary(image)));
+        imagesUrl = images.map(image => image.url);
+    
+        if (imagesUrl.length <= 0) {
+          throw new ApiError(500, "Some error occurred, please try again");
+        }
+        data.images = imagesUrl;
+      }
+    
+    const vehicle =await Vehicle.findByIdAndUpdate(data.id,{...data},{new:true})
+
+    
+
+      return res.status(201).json(
+        new ApiResponse(200,vehicle,"Vehicle updated successfully")
+    )
+})
+
+export {createVehicle,deleteVehicle,updateVehicle}
