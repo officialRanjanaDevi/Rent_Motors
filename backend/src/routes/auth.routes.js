@@ -1,5 +1,5 @@
 import {Router } from "express";
-import { registerUser ,loginUser, logoutUser, refreshAccessToken} from "../controllers/authController.js";
+import { registerUser ,loginUser, logoutUser, refreshAccessToken} from "../controllers/auth.Controller.js";
 import { validateRegistration ,validateLogin ,verifyJWT} from "../middlewares/auth.middleware.js";
 
 
