@@ -146,19 +146,39 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 })
 
-const changePassword=asyncHandler(async(req,res)=>{
-    const {oldPassword,newPassword} =req.body
-    const user =await User.findById(req.user?.id)
-    if(!isPasswordCorrect){
-       throw new ApiError(400,"Invalid old password")
-    }
-    user.password=newPassword
-    await user.save({validateBeforeSave:false})
-    return res.status(200).json( new ApiResponse(200,"Password changed successfully"))
-})
+const changePassword = asyncHandler(async (req, res) => {
+  // fetch user password from req.body
+  // check if user exists or not
+  // check if oldpassword is valid or not
+  // update password
+  // return response
+
+  const { oldPassword, newPassword } = req.body;
+  
+  
+  const user = await User.findById(req.user?.id);
+  
+  if (!user) {
+      throw new ApiError(404, "User not found");
+  }
+
+
+  const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+  if (!isPasswordCorrect) {
+      throw new ApiError(400, "Invalid old password");
+  }
+
+
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res.status(200).json(new ApiResponse(200, "Password changed successfully"));
+});
+
 
 const getCurrentUser =asyncHandler(async(req,res)=>{
-  return res.status(200).json(200,req.user,"Current user fetched successfully")
+  console.log("success")
+  return res.status(200).json(new ApiResponse(200,req.user,"Current user fetched successfully"))
 })
 
 
