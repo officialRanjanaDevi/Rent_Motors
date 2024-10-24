@@ -2,7 +2,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js"
 import {Vehicle} from "../models/Vehicle.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
-import {User} from "../models/User.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 
 const createVehicle = asyncHandler( async(req,res)=>{
@@ -14,13 +13,13 @@ const createVehicle = asyncHandler( async(req,res)=>{
     // create new vehicle listing 
     // return response if success 
 
-    const {owner,title,brand,price,description,fuel,type,seater,mileage,speed} =req.body
-    const existedUser =await  User.findById(owner)
-    if(!existedUser){
+    const {title,brand,price,description,fuel,type,seater,mileage,speed} =req.body
+    const user =req.user
+    if(!user){
         throw new ApiError(409,"Renter not found")
     }
 
-    if(existedUser.type!=="Renter"){
+    if(user.type!=="Renter"){
         throw new ApiError(409,"You are not a renter,unauthorized to create listing")
     }
 
@@ -43,20 +42,43 @@ const createVehicle = asyncHandler( async(req,res)=>{
     }
     
 
-    const vehicle = await Vehicle.create({title:title.toLowerCase(),owner,images:imagesUrl,brand,price,description,fuel,type,seater,mileage,speed})
+    const vehicle = await Vehicle.create({title:title.toLowerCase(),owner:user._id,images:imagesUrl,brand,price,description,fuel,type,seater,mileage,speed})
     const newVehcile=await Vehicle.findById(vehicle._id)
     if(!newVehcile){
         throw new ApiError(500,"Failed to create new Vehicle listing ,Please try again")
     }
 
     return res.status(201).json(
-        new ApiResponse(200,existedUser,"Vehicle created successfully")
+        new ApiResponse(200,newVehcile,"Vehicle created successfully")
     )
 })
 
-
 const deleteVehicle =asyncHandler(async(req,res)=>{
-
+       // get vehicle id from req.body
+       // check if user is authorized to delete the vehicle or not
+       // check if vehicle exists or not
+       // if exists delete it 
+       //return success
+        const {id}=req.body
+        const user=req.user
+      
+       if(!user){
+        throw new ApiError(409,"User not found")
+       }
+       if(user.type!=="Renter"){
+        throw new ApiError(409,"You are not a renter,unauthorized to delete listing")
+       }
+      const vehicle = await Vehicle.findById(id)
+      if(!vehicle){
+        throw new ApiError(409,"Vehicle not found")
+      } 
+      if(vehicle.owner.toString()!==user._id.toString()){
+        return new ApiError(409,"You are not authorized to delete this listing")
+      }
+      const deletedVehicle = await Vehicle.findByIdAndDelete(id)
+      return res.status(201).json(
+        new ApiResponse(200,deletedVehicle,"Vehicle deleted successfully")
+    )
 })
 
 const updateVehicle=asyncHandler(async(req,res)=>{
@@ -68,13 +90,12 @@ const updateVehicle=asyncHandler(async(req,res)=>{
       // return res
 
       const data=req.body;
-      console.log(data);
-      const existedUser =await  User.findById(data.owner)
-      if(!existedUser){
+      const user =req.user
+      if(!user){
           throw new ApiError(409,"Renter not found")
       }
   
-      if(existedUser.type!=="Renter"){
+      if(user.type!=="Renter"){
           throw new ApiError(409,"You are not a renter,unauthorized to update listing")
       }
 
@@ -82,13 +103,12 @@ const updateVehicle=asyncHandler(async(req,res)=>{
       if(!existedVehicle){
         throw new ApiError(409,"Vehicle doesnot exist")
       }
-
-      if(existedVehicle.owner.toString()!==existedUser._id){
+      if(existedVehicle.owner.toString()!==user._id.toString()){
         throw new ApiError(409,"You are not authorized to update this vehicle")
       }
 
       const duplicateTitle= await Vehicle.findOne({title:data.title})
-      if(!duplicateTitle){
+      if(duplicateTitle){
         throw new ApiError(400,"Title already exists")
       }
       
