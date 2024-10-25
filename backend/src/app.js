@@ -17,11 +17,12 @@ app.use(cookieParser())
 //routes
 import authRouter from './routes/auth.routes.js'
 import renterRouter from './routes/renter.routes.js'
-
+import clientRouter from './routes/client.routes.js'
 
 //routes declaration
 app.use("/api/auth",authRouter)
 app.use("/api/renter",renterRouter)
+app.use("/api/client",clientRouter)
 
 
 export {app}
