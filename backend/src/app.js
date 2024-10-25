@@ -8,20 +8,20 @@ app.use(cors({
     credentials:true
 }))
 
-app.use(express.json({limit:"16kb"}))
-app.use(express.urlencoded({extended:true,limit:"16kb"}))
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
 
 //routes
 import authRouter from './routes/auth.routes.js'
-import clientRouter from './routes/client.routes.js'
+import renterRouter from './routes/renter.routes.js'
 
 
 //routes declaration
 app.use("/api/auth",authRouter)
-app.use("/api/client",clientRouter)
+app.use("/api/renter",renterRouter)
 
 
 export {app}

@@ -182,6 +182,7 @@ const getCurrentUser =asyncHandler(async(req,res)=>{
 })
 
 const updateProfile = asyncHandler(async (req, res) => {
+
   const user = req.user;
   const data = req.body;
   console.log(req.body);
