@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { viewListing, viewVehicle ,addReview,deleteReview, addToWishlist,removeFromWishlist ,viewWishlist, addToCart} from "../controllers/client.Controller.js";
+import { viewListing, viewVehicle ,addReview,deleteReview, addToWishlist,removeFromWishlist ,viewWishlist, addToCart, removeFromCart} from "../controllers/client.Controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
@@ -19,5 +19,6 @@ router.route("/wishlist").get(verifyJWT,viewWishlist);
 
 router.route("/cart").post(verifyJWT,addToCart);
 
+router.route("/cart").delete(verifyJWT,removeFromCart);
 
 export default router;

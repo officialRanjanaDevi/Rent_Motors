@@ -61,22 +61,22 @@ const addReview =asyncHandler(async(req,res)=>{
 
     const user=req.user
     if(user.type!=="Client"){
-        throw new ApiError(409,"You are not a client")
+        throw new ApiError(401,"You are not a client")
     }
     const {id,comment,rating}=req.body
     console.log(req.body)
     const vehicle =await Vehicle.findById(id)
     if(!vehicle){
-        throw new ApiError(409,"No such vehicle exists")
+        throw new ApiError(401,"No such vehicle exists")
     }
     if(!rating){
-        throw new ApiError(409,"Please add rating")
+        throw new ApiError(401,"Please add rating")
     }
     const review=await Review.create({client:user._id, vehicle:vehicle._id,comment,rating})
      if(!review){
         throw new ApiError(500,"Some error occurred while adding review, please try again")
      }
-    return res.status(200).json(new ApiResponse(200,review,"Review created"))
+    return res.status(201).json(new ApiResponse(201,review,"Review created"))
 })
 
 
@@ -89,15 +89,15 @@ const deleteReview=asyncHandler(async(req,res)=>{
     const user=req.user
      const {id}=req.body
      if(user.type!=="Client"){
-        throw new ApiError(409,"You are not authorized to delete the review")
+        throw new ApiError(401,"You are not authorized to delete the review")
      }
      const review=await Review.findById(id)
      if(!review){
-        throw new ApiError(409,"No such review exists")
+        throw new ApiError(401,"No such review exists")
      }
 
      if(review.client.toString()!==user._id.toString()){
-        throw new ApiError(409,"You are not authorized to delete this review")
+        throw new ApiError(401,"You are not authorized to delete this review")
      }
 
      const deletedReview = await Review.findByIdAndDelete(id)
@@ -120,12 +120,12 @@ const addToWishlist =asyncHandler(async(req,res)=>{
     const {id}=req.body
   
     if(user.type!=="Client"){
-      throw new ApiError(409,"You are unauthorized to add in wishlist.")
+      throw new ApiError(401,"You are unauthorized to add in wishlist.")
     }
 
     const vehicle = await Vehicle.findById(id)
     if(!vehicle){
-        throw new ApiError(409,"No such vehicle exists")
+        throw new ApiError(401,"No such vehicle exists")
     }
 
     const existedWish =await Wishlist.findOne({client:user._id, vehicle:vehicle._id})
@@ -137,7 +137,7 @@ const addToWishlist =asyncHandler(async(req,res)=>{
     if(!wish){
         throw new ApiError(500,"Failed to add in Wishlist, please try again")
     }
-    return res.status(200).json(new ApiResponse(200,wish,"Vehicle added in your wishlist"))
+    return res.status(201).json(new ApiResponse(201,wish,"Vehicle added in your wishlist"))
 })
 
 
@@ -152,17 +152,17 @@ const removeFromWishlist=asyncHandler(async(req,res)=>{
     
     const user=req.user
     if(user.type!=="Client"){
-       throw new ApiError(409,"You are not a client ")
+       throw new ApiError(401,"You are not a client ")
     }
     const {id}= req.body
     const vehicle=await Vehicle.findById(id)
     if(!vehicle){
-        throw new ApiError(409,"No such vehicle exists")
+        throw new ApiError(401,"No such vehicle exists")
     }
  
     const wish=await Wishlist.findOne({client:user._id, vehicle:vehicle._id})
     if(!wish){
-        throw new ApiError(409,"Vehicle doesnot exists in your wishlist")
+        throw new ApiError(401,"Vehicle doesnot exists in your wishlist")
     }
    
     const deletedWish=await Wishlist.findByIdAndDelete(wish._id)
@@ -181,13 +181,13 @@ const viewWishlist=asyncHandler(async(req,res)=>{
     const user=req.user
    
     if(user.type!=="Client"){
-       throw new ApiError(409,"You are not a client ")
+       throw new ApiError(401,"You are not a client ")
     }
 
     const wishlist=await Wishlist.find({client:user._id})
 
     if(!wishlist){
-        throw new ApiError(409,"Vehicle doesnot exists in your wishlist")
+        throw new ApiError(401,"Vehicle doesnot exists in your wishlist")
     }
     return res.status(200).json(new ApiResponse(200,wishlist,"Your wishlist found"))
 })
@@ -222,8 +222,35 @@ const addToCart=asyncHandler(async(req,res)=>{
     if(!cart){
         throw new ApiError(500,"Failed to update cart, Please try again")
     }
-    return res.status(200).json(new ApiResponse(200,cart,"Vehicle added in cart"))
+    return res.status(201).json(new ApiResponse(201,cart,"Vehicle added in cart"))
 })
 
+const removeFromCart=asyncHandler(async(req,res)=>{
+    // get user details from req.user
+    // check if user is client or not
+    // get vehicle id from req.body
+    // check if vehicle exists or not
+    // remove it from cart
+    // return res
 
-export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist, viewWishlist, addToCart};
+    const user=req.user
+    const {id}=req.body
+    if(user.type!=="Client"){
+       throw new ApiError(401,"You are not authorized to add vehicle in cart")
+    }
+    const vehicle=await Vehicle.findById(id);
+    if(!vehicle){
+        throw new ApiError(401,"No such vehicle exists")
+    }
+
+
+    let cart=await Cart.findOneAndDelete({client:user._id,vehicle:id})
+
+    if(!cart){
+      throw new ApiError(401,"Vehicle doesnot exist in cart")
+    }
+    
+     return res.status(200).json(new ApiResponse(200,cart,"Vehicle removed from cart"))
+})
+
+export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist, viewWishlist, addToCart,removeFromCart};
