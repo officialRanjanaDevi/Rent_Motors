@@ -127,7 +127,7 @@ const addToWishlist =asyncHandler(async(req,res)=>{
         throw new ApiError(409,"No such vehicle exists")
     }
 
-    const existedWish =await Wishlist.find({client:user._id, vehicle:vehicle._id})
+    const existedWish =await Wishlist.findOne({client:user._id, vehicle:vehicle._id})
     if(existedWish){
       return res.status(200).json(new ApiResponse(200,existedWish,"Vehicle already exists in your wishlist"))
     }
@@ -172,7 +172,23 @@ const removeFromWishlist=asyncHandler(async(req,res)=>{
 })
 
 const viewWishlist=asyncHandler(async(req,res)=>{
+    // get user details from req.user
+    //check if user is client or not
+    // get all wishlists where client is user
+    // return res
+    
+    const user=req.user
+   
+    if(user.type!=="Client"){
+       throw new ApiError(409,"You are not a client ")
+    }
 
+    const wishlist=await Wishlist.find({client:user._id})
+
+    if(!wishlist){
+        throw new ApiError(409,"Vehicle doesnot exists in your wishlist")
+    }
+    return res.status(200).json(new ApiResponse(200,wishlist,"Your wishlist found"))
 })
 
 
