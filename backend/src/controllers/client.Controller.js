@@ -133,4 +133,34 @@ const addToWishlist =asyncHandler(async(req,res)=>{
 })
 
 
-export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist};
+const removeFromWishlist=asyncHandler(async(req,res)=>{
+    // get user details from req.user
+    //check if user is client or not
+    // get vehicle id from req.body
+    // check if vehicle exists or not
+    // check if vehicle is present in users wishlist or not
+    // delete wishlist
+    // return res
+    
+    const user=req.user
+    if(user.type!=="Client"){
+       throw new ApiError(409,"You are not a client ")
+    }
+    const id= req.body
+    const vehicle=await Vehicle.findById(id)
+    if(!vehicle){
+        throw new ApiError(409,"No such vehicle exists")
+    }
+    const wish=await Wishlist.find({client:user._id, vehicle:vehicle._id})
+    if(!wish){
+        throw new ApiError(409,"Vehicle doesnot exists in your wishlist")
+    }
+
+    const deletedWish=await Wishlist.findByIdAndDelete(wish._id)
+    if(!deletedWish){
+        throw new ApiError(500,"Failed to remove vehicle from wishlist")
+    }
+    return res.status(200).json(new ApiResponse(200,"Vehicle removed successfully"))
+})
+
+export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist};
