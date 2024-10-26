@@ -2,9 +2,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Vehicle } from "../models/Vehicle.model.js";
 import {Wishlist} from "../models/Wishlist.model.js"
+import {Cart} from "../models/Cart.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Review } from "../models/Review.model.js";
-import { MongoCryptInvalidArgumentError, ObjectId } from "mongodb";
+import {ObjectId } from "mongodb";
 
 const viewListing = asyncHandler(async (req, res) => {
     const vehicles = await Vehicle.find({});
@@ -192,4 +193,37 @@ const viewWishlist=asyncHandler(async(req,res)=>{
 })
 
 
-export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist, viewWishlist};
+const addToCart=asyncHandler(async(req,res)=>{
+    // get user details from req.user
+    // check if user is client or not
+    // get vehicle id from req.body
+    // check if vehicle exists or not
+    // create new document in cart
+    // return res
+
+    const user=req.user
+    const {id,quantity}=req.body
+    if(user.type!=="Client"){
+       throw new ApiError(400,"You are not authorized to add vehicle in cart")
+    }
+    const vehicle=await Vehicle.findById(id);
+    if(!vehicle){
+        throw new ApiError(400,"No such vehicle exists")
+    }
+
+    const price=quantity*vehicle.price;
+    let cart=await Cart.findOne({client:user._id,vehicle:id})
+
+    if(!cart){
+      cart= await Cart.create({client:user._id,vehicle:id,quantity,price})
+    }else{
+        cart=await Cart.findByIdAndUpdate(cart._id,{quantity:quantity,price:price},{new:true})
+    }
+    if(!cart){
+        throw new ApiError(500,"Failed to update cart, Please try again")
+    }
+    return res.status(200).json(new ApiResponse(200,cart,"Vehicle added in cart"))
+})
+
+
+export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist, viewWishlist, addToCart};
