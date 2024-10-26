@@ -33,7 +33,13 @@ const viewVehicle = asyncHandler(async (req, res) => {
                 from:"reviews",
                 localField:"_id",
                 foreignField:"vehicle",
-                as:"review"
+                as:"review",
+                pipeline:[{
+                    $project:{
+                        comment:1,
+                        rating:1
+                    }
+                }]
             }
         }
     ]);
@@ -56,7 +62,7 @@ const addReview =asyncHandler(async(req,res)=>{
     if(user.type!=="Client"){
         throw new ApiError(409,"You are not a client")
     }
-    const {id,content,rating}=req.body
+    const {id,comment,rating}=req.body
     console.log(req.body)
     const vehicle =await Vehicle.findById(id)
     if(!vehicle){
@@ -65,7 +71,7 @@ const addReview =asyncHandler(async(req,res)=>{
     if(!rating){
         throw new ApiError(409,"Please add rating")
     }
-    const review=await Review.create({client:user._id, vehicle:vehicle._id,content,rating})
+    const review=await Review.create({client:user._id, vehicle:vehicle._id,comment,rating})
      if(!review){
         throw new ApiError(500,"Some error occurred while adding review, please try again")
      }
@@ -99,6 +105,7 @@ const deleteReview=asyncHandler(async(req,res)=>{
      }
      res.status(200).json( new ApiResponse(200,deletedReview,"Review deleted successfully"))
 })
+
 
 const addToWishlist =asyncHandler(async(req,res)=>{
     // extract user id from req.user
@@ -146,21 +153,27 @@ const removeFromWishlist=asyncHandler(async(req,res)=>{
     if(user.type!=="Client"){
        throw new ApiError(409,"You are not a client ")
     }
-    const id= req.body
+    const {id}= req.body
     const vehicle=await Vehicle.findById(id)
     if(!vehicle){
         throw new ApiError(409,"No such vehicle exists")
     }
-    const wish=await Wishlist.find({client:user._id, vehicle:vehicle._id})
+ 
+    const wish=await Wishlist.findOne({client:user._id, vehicle:vehicle._id})
     if(!wish){
         throw new ApiError(409,"Vehicle doesnot exists in your wishlist")
     }
-
+   
     const deletedWish=await Wishlist.findByIdAndDelete(wish._id)
     if(!deletedWish){
         throw new ApiError(500,"Failed to remove vehicle from wishlist")
     }
-    return res.status(200).json(new ApiResponse(200,"Vehicle removed successfully"))
+    return res.status(200).json(new ApiResponse(200,deletedWish,"Vehicle removed successfully"))
 })
 
-export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist};
+const viewWishlist=asyncHandler(async(req,res)=>{
+
+})
+
+
+export { viewListing, viewVehicle, addReview ,deleteReview, addToWishlist, removeFromWishlist, viewWishlist};
