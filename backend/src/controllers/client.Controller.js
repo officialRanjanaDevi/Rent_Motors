@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { Vehicle } from "../models/Vehicle.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Review } from "../models/Review.model.js";
-
+import { ObjectId } from "mongodb";
 
 const viewListing = asyncHandler(async (req, res) => {
     const vehicles = await Vehicle.find({});
@@ -25,11 +25,24 @@ const viewVehicle = asyncHandler(async (req, res) => {
         throw new ApiError(400,"please provide vehicle id")
     }
  
-    const vehicle = await Vehicle.findById(id);
+    const vehicle = await Vehicle.aggregate([
+        {
+            $match: { _id: new ObjectId(id) }  
+        },
+        {
+            $lookup:{
+                from:"reviews",
+                localField:"_id",
+                foreignField:"vehicle",
+                as:"review"
+            }
+        }
+    ]);
+    
     if (!vehicle) {
         throw new ApiError(400, "No such vehicle exists");
     }
-    return res.status(200).json(new ApiResponse(200, vehicle, "Vehicle found")); 
+    return res.status(200).json(new ApiResponse(200, vehicle[0], "Vehicle found")); 
 });
 
 
@@ -57,6 +70,8 @@ const addReview =asyncHandler(async(req,res)=>{
      
     return res.status(200).json(new ApiResponse(200,review,"Review created"))
 })
+
+
 
 
 export { viewListing, viewVehicle, addReview };

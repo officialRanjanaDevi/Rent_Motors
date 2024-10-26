@@ -55,13 +55,7 @@ const vehicleSchema=new mongoose.Schema({
         type:Boolean,
         default:true,
         required:true,
-    },
-    reviews:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Review"
-        }
-    ]
+    }
 },{timestamps:true});
 
 export const Vehicle= mongoose.model('Vehcile',vehicleSchema);
