@@ -8,6 +8,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { Review } from "../models/Review.model.js";
 import { ObjectId } from "mongodb";
 
+  // Vehicle controllers from client side 
+
 const viewListing = asyncHandler(async (req, res) => {
   const vehicles = await Vehicle.find({});
   if (!vehicles) {
@@ -57,6 +59,8 @@ const viewVehicle = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, vehicle[0], "Vehicle found"));
 });
+
+  // review controllers from client side 
 
 const addReview = asyncHandler(async (req, res) => {
   //check if user is client or not
@@ -124,6 +128,8 @@ const deleteReview = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, deletedReview, "Review deleted successfully"));
 });
+
+  // wishlist controllers from client side 
 
 const addToWishlist = asyncHandler(async (req, res) => {
   // extract user id from req.user
@@ -231,6 +237,8 @@ const viewWishlist = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, wishlist, "Your wishlist found"));
 });
 
+  // cart controllers from client side 
+
 const addToCart = asyncHandler(async (req, res) => {
   // get user details from req.user
   // check if user is client or not
@@ -303,6 +311,9 @@ const removeFromCart = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, cart, "Vehicle removed from cart"));
 });
 
+
+  // order controllers from client side 
+
 const placeOrder = asyncHandler(async (req, res) => {
   // get user details from req.user
   // check if user is client or not
@@ -343,6 +354,14 @@ const placeOrder = asyncHandler(async (req, res) => {
     .json(new ApiResponse(201, orders, "Order placed successfully"));
 });
 
+const viewOrder =asyncHandler(async(req,res)=>{
+     const user=req.user
+     if(user.type!=="Client"){
+      throw new ApiError(409,"Unauthorized to access orders")
+     }
+      const orderListing=await Order.find({client:user._id})
+    return  res.status(200).json(new ApiResponse(200,orderListing,"Your orders are here"))
+})
 
 const cancelOrder = asyncHandler(async (req, res) => {
     // get user details from req.user
@@ -356,11 +375,34 @@ const cancelOrder = asyncHandler(async (req, res) => {
     if (user.type !== "Client") {
       throw new ApiError(400, "You are not authorized to cancel order");
     }
-   
+    const {id}=req.body;
+    const order=await Order.findById(id);
+    if(!order){
+      throw new ApiError(409,"No such order exists")
+    }
+    console.log(order.client.toString())
+    console.log(user._id)
+    if(order.client.toString()!==user._id.toString()){
+      throw new ApiError(409,"Unauthorized to cancel this order")
+    }
+
+    if(order.status==="Delivered"||order.status==="Rejected"){
+      throw new ApiError(409,"Order can't be cancelled now")
+    }
+
+    if(order.status==="Cancelled"){
+      throw new ApiError(400,"Order is already cancelled ")
+    }
+    
+    const cancelledOrder= await Order. findByIdAndUpdate(order._id,{status:"Cancelled"},{new:true})
+
+    if(!cancelledOrder){
+       throw new ApiError(500,"Failed to cancel Order, Please try again")
+    }
    
     return res
       .status(201)
-      .json(new ApiResponse(201, orders, "Order placed successfully"));
+      .json(new ApiResponse(200, cancelledOrder, "Order cancelled successfully"));
   });
   
 export {
@@ -374,4 +416,6 @@ export {
   addToCart,
   removeFromCart,
   placeOrder,
+  viewOrder,
+  cancelOrder
 };

@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/User.model.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -74,7 +75,24 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(user._id)
 
-  const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+  const loggedInUser =await User.aggregate([
+    {$match:{_id:new ObjectId(user._id)}},
+    {
+      $lookup:{
+        from:"carts",
+        localField:"_id",
+        foreignField:"client",
+        as:"cart",
+      }
+    }
+    ,{
+      $addFields: {
+        cart: { $size: "$cart" } 
+      }
+    },
+    
+  ]) 
+
 
   const options = {
     httpOnly: true,
