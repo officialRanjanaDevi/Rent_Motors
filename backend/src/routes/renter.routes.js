@@ -8,19 +8,24 @@ import {
   deleteVehicle,
   updateImages,
   viewVehicleListing,
+  viewOrders,
+  manageOrders
 } from "../controllers/renter.Controller.js";
 
 const router = Router();
 
-router
-  .route("/vehicle")
-  .post(validateVehicle, verifyJWT, upload.array("images", 3), createVehicle);
-router.route("/vehicle").patch(verifyJWT, updateVehicle);
-router.route("/vehicle").delete(verifyJWT, deleteVehicle);
-router.route("/vehicle").get(verifyJWT, viewVehicleListing);
+router.route("/vehicle")
+  .post(validateVehicle, verifyJWT, upload.array("images", 3), createVehicle)
+  .patch(verifyJWT, updateVehicle)
+  .delete(verifyJWT, deleteVehicle)
+  .get(verifyJWT, viewVehicleListing);
 
-router
-  .route("/updateImages")
+router.route("/updateImages")
   .patch(verifyJWT, upload.array("images", 3), updateImages);
+
+router.route("/order")
+  .get(verifyJWT,viewOrders)  
+  .patch(verifyJWT,manageOrders)
+
 
 export default router;

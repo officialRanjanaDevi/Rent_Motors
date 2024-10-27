@@ -4,6 +4,9 @@ import { Vehicle } from "../models/Vehicle.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
+
+// vehicle routes for renter
+
 const createVehicle = asyncHandler(async (req, res) => {
   // get vehicle details from req.body
   // check if renter is registered or not
@@ -223,10 +226,71 @@ const viewVehicleListing = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, vehicles, "vehicles are present"));
 });
 
+// order routes for renter
+
+const viewOrders=asyncHandler(async(req,res)=>{
+  // get user info from req.user
+  // check if user is renter or not
+  // get status from req.body
+  // get orders where renter is user and status of order is ${status}
+  // return res
+
+  const user=req.user;
+  const {status}=req.body;
+  if(user.type==="Renter"){
+    throw new ApiError(409,"Unauthorized to access new orders")
+  }
+  const authorizedStatus = ["Placed", "Delivered", "Accepted", "Cancelled", "Rejected"];
+  if (!authorizedStatus.includes(status)) {
+    throw new ApiError(409, "Status is not authorized");
+  }
+  
+  const orders=await Orders.find({renter:user._id , status})
+  return res.status(200).json(new ApiResponse(200,orders,"Orders are here"))
+
+})
+
+const manageOrders=asyncHandler(async(req,res)=>{
+   // get user info from req.user
+  // check if user is renter or not
+  // get status from req.body and id of order
+  // check idf order exists or not
+  // check if order is already delivered or rejected or not
+  // if not then update orders where renter is user and status of order is ${status}
+  // return res
+
+  const user=req.user;
+  const {id,status}=req.body;
+  if(user.type==="Renter"){
+    throw new ApiError(409,"Unauthorized to access orders")
+  }
+
+  const order=await Orders.findById(id);
+  if(!order){
+    throw new ApiError(400,"No such order exists")
+  }
+  if(order.status==="Delivered"){
+    throw new ApiError(400,"Order is already delivered")
+  }
+  if(order.status==="Rejected"){
+    throw new ApiError(400,"Order is already rejected")
+  }
+  const authorizedStatus = [ "Delivered", "Accepted", "Rejected"];
+  if (!authorizedStatus.includes(status)) {
+    throw new ApiError(409, "Status is not authorized");
+  }
+  
+  const updatedorder=await Orders.findByIdAndUpdate(id,{status},{new:true})
+  return res.status(200).json(new ApiResponse(200,updatedorder,"Orders are updated"))
+
+})
+
 export {
   createVehicle,
   deleteVehicle,
   updateVehicle,
   updateImages,
   viewVehicleListing,
+  viewOrders,
+  manageOrders
 };
