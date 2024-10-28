@@ -1,0 +1,3 @@
+.usefull-link{
+   @apply hover:text-slate-400 hover:font-bold
+}

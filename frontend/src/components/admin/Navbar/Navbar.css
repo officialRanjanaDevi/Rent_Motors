@@ -1,0 +1,10 @@
+.mobile-app-bar-transition{
+    @apply p-2 m-0 hover:bg-neutral-300 w-full h-full hover:text-black
+}
+.mobile-app-bar-transition>div{
+    @apply  hover:font-bold hover:transition-transform hover:translate-x-2 ease-in-out duration-200 hover:text-black hover:bg-neutral-300 w-full h-full 
+
+}
+.desktop-app-bar{
+    @apply opacity-60 mr-1 hover:opacity-100 mx-6 hover:text-white 
+}
