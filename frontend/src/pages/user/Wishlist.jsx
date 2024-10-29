@@ -8,9 +8,6 @@ const Wishlist = () => {
 
   const loadData = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      const decoded = jwtDecode(token);
-      const userId = decoded.user.id.toString();
 
       const res = await fetch(`http://localhost:3000/wishlist/${userId}`, {
         method: "GET",

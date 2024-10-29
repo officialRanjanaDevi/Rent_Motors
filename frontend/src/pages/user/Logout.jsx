@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Logout = () => {
   const navigate = useNavigate(); 
   const handleLogout = async () => {
-    await localStorage.removeItem("authToken");
+    await localStorage.clear();
 
     navigate("/");
   };

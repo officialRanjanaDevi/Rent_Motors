@@ -3,13 +3,13 @@ import CartItem from "../../components/user/CartItem/CartItem";
 import { jwtDecode } from "jwt-decode";
 
 const Cart = () => {
+  console.log("cart")
+
+
   const [productData, setProductData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [user, setUser] = useState({ address: "", contact: "" });
-  const token = localStorage.getItem("authToken");
-  const decoded = jwtDecode(token);
-  const userId = decoded.user.id.toString();
-
+  
   const loadData = async () => {
     try {
       const res = await fetch(`http://localhost:3000/cart/${userId}`, {

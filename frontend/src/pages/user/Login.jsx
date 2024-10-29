@@ -1,42 +1,49 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const [status, setStatus] = useState(""); 
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("Pending");
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: 'POST',
+      const response = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
+        body: JSON.stringify(credentials),
       });
 
-      const json = await response.json();
+      const res = await response.json();
+
+      if (res.success) {
+        const accessToken = res?.data?.accessToken;
+        const refreshToken = res?.data?.refreshToken;
+           
+        if (accessToken) {
+          Cookies.set("accessToken", accessToken, { expires: 1, secure: true });
+        }
+        if (refreshToken) {
+          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
+        }
+        
+        localStorage.setItem("username",res.data.user[0].username);
+        localStorage.setItem("usertype",res.data.user[0].type);
       
-      if (json.success) {
-        // Handle the user type if it exists in the response
-        const userType = json.userData.type;
-        localStorage.setItem("userType",userType);
-        localStorage.setItem("isLoggedIn",true);
-        localStorage.setItem("authToken",json.authToken);
         setStatus("Success");
         setTimeout(() => setStatus(null), 1000);
-        if(userType==="admin"){
-          setTimeout(() => navigate('/admin'), 1200);
-        }else{
-          setTimeout(() => navigate('/'), 1200);
+
+        
+        const userType = res.data.user[0]?.type;
+        if (userType === "Client") {
+          setTimeout(() => navigate("/"), 1200);
+        } else {
+          setTimeout(() => navigate("/renter"), 1200);
         }
-      
       } else {
         alert("Invalid credentials");
         setStatus("Failed");
@@ -47,21 +54,26 @@ const Login = () => {
       setStatus("Failed");
       setTimeout(() => setStatus(null), 3000);
       setCredentials({ email: "", password: "" });
-    } 
+    }
   };
-  
+
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
+
+  
   return (
     <div className="mt-20">
       {/* Loader for Pending Status */}
-      <div className="mx-auto flex flex-col items-center" style={{ display: status === "Pending" ? "" : "none" }}>
+      <div 
+        className="mx-auto flex flex-col items-center"
+        style={{ display: status === "Pending" ? "" : "none" }}
+      >
         <div className="loader"></div>
         <p>Please wait..</p>
       </div>
-      
+
       {/* Success Alert */}
       <div
         className="text-center alert bg-rose-300 w-1/2 mx-auto text-white rounded-md"
@@ -129,7 +141,12 @@ const Login = () => {
           >
             Submit
           </button>
-          <p>Create an account: <Link to={'/signup'} className="text-blue-500">Signup here</Link></p>
+          <p>
+            Create an account:{" "}
+            <Link to={"/signup"} className="text-blue-500">
+              Signup here
+            </Link>
+          </p>
         </div>
       </form>
     </div>

@@ -121,7 +121,7 @@ function Navbar() {
                 to="/wishlist"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: localStorage.getItem("authToken") ? "block" : "none",
+                  display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
                 }}
               >
                 <div>
@@ -135,7 +135,7 @@ function Navbar() {
                 to="/cart"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: localStorage.getItem("authToken") ? "block" : "none",
+                  display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
                 }}
               >
                 <div>
@@ -243,7 +243,7 @@ function Navbar() {
             style={{
                 opacity: menu === "wishlist" ? 1 : 0.7,
                 fontWeight: menu === "wishlist" ? "bold" : "normal",
-              display: localStorage.getItem("authToken") ? "block" : "none",
+              display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
             }}
           >
             Wishlist
@@ -257,7 +257,7 @@ function Navbar() {
             style={{
                 opacity: menu === "cart" ? 1 : 0.7,
                 fontWeight: menu === "cart" ? "bold" : "normal",
-              display: localStorage.getItem("authToken") ? "block" : "none",
+              display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
             }}
           >
             cart
@@ -294,7 +294,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("authToken") ? "none" : "block",
+                display: localStorage.getItem("usertype")==="Client" ? "none" : "block",
               }}
             >
               <Link to="/login" className="hover:text-black">
@@ -304,7 +304,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("authToken") ? "none" : "block",
+                display: localStorage.getItem("usertype")==="Client" ? "none" : "block",
               }}
             >
               <Link to="/signup" className="hover:text-black">
@@ -314,7 +314,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("authToken") ? "block" : "none",
+                display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
               }}
             >
               <Link to="/order" className="hover:text-black">
@@ -324,7 +324,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("authToken") ? "block" : "none",
+                display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
               }}
             >
               <Link to="/logout" className="hover:text-black">

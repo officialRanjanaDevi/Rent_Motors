@@ -1,3 +1,4 @@
+// App.js
 import './App.css'
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './components/user/Navbar/Navbar'
@@ -13,8 +14,7 @@ import Login from './pages/user/Login'
 import Logout from './pages/user/Logout'
 import Signup from './pages/user/Signup'
 import Dashboard from './pages/admin/Dashboard'
-// import ProtectedRoute from './components/ProtectedRoute'
-
+import ProtectedRoute from './components/Protected'
 function App() {
   return (
     <div>
@@ -28,45 +28,39 @@ function App() {
 function AppContent() {
   const location = useLocation();
   const adminPaths = ['/admin', '/addProduct', '/newOrder', '/updateProduct', '/cancelReq','/acceptedOrder'];
-  const isLoggedIn=localStorage.getItem("isLoggedIn");
-  const userType=localStorage.getItem("userType");
+  const showNavbarFooter = !adminPaths.includes(location.pathname);
+
   return (
     <>
-     
-      {!adminPaths.includes(location.pathname) && <Navbar />}
+      {showNavbarFooter && <Navbar />}
       
       <Routes>
         {/* User Routes */}
         <Route path='/' element={<Home/>}/>
         <Route path='/vehicle' element={<Vehicle/>}/>
-         <Route path='/contact' element={<Contact/>}/>
+        <Route path='/contact' element={<Contact/>}/>
         <Route path='/view' element={<View/>}/>
-        
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/logout' element={<Logout/>}/>
 
-          {/* Protected Routes */}
-        {/* <Route element={<ProtectedRoute/>}> */}
-        <Route path='/cart' element={<Cart/>}/>
-        <Route path='/wishlist' element={<Wishlist/>}/>
-        <Route path='/order' element={<Order/>}/>
-         {/* Admin Routes */}
-         <Route path='/admin' element={<Dashboard panel="analysis"/>}/>
-          <Route path='/addProduct' element={<Dashboard panel="addProduct"/>}/>
-          <Route path='/newOrder' element={<Dashboard panel="newOrder"/>}/>
-          <Route path='/acceptedOrder' element={<Dashboard panel="acceptedOrder"/>}/>
-          <Route path='/updateProduct' element={<Dashboard panel="updateProduct"/>}/>
-          <Route path='/cancelReq' element={<Dashboard panel="cancelReq"/>}/>
-        
-        {/* </Route> */}
-
-
+        {/* Protected Routes */}
+      
+          <Route path='/cart' element={<ProtectedRoute Component={Cart}/>}/>
+          <Route path='/wishlist' element={<Wishlist/>}/>
+          <Route path='/order' element={<Order/>}/>
        
+
+        {/* Client Routes */}
+        <Route path='/renter' element={<Dashboard panel="analysis"/>}/>
+        <Route path='/addProduct' element={<Dashboard panel="addProduct"/>}/>
+        <Route path='/newOrder' element={<Dashboard panel="newOrder"/>}/>
+        <Route path='/acceptedOrder' element={<Dashboard panel="acceptedOrder"/>}/>
+        <Route path='/updateProduct' element={<Dashboard panel="updateProduct"/>}/>
+        <Route path='/cancelReq' element={<Dashboard panel="cancelReq"/>}/>
       </Routes>
 
-      
-      {!adminPaths.includes(location.pathname) && <Footer />}
+      {showNavbarFooter && <Footer />}
     </>
   )
 }
