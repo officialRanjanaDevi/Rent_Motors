@@ -23,7 +23,6 @@ const Login = () => {
       if (res.success) {
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
-           
         if (accessToken) {
           Cookies.set("accessToken", accessToken, { expires: 1, secure: true });
         }

@@ -1,7 +1,7 @@
 import React from 'react'
-import Navbar from '../../components/admin/Navbar/Navbar'
-import SideBar from '../../components/admin/SideBar/SideBar'
-import Pannel from '../../components/admin/Pannel/Pannel'
+import Navbar from '../../components/renter/Navbar/Navbar'
+import SideBar from '../../components/renter/SideBar/SideBar'
+import Pannel from '../../components/renter/Pannel/Pannel'
 const Dashboard = (panel) => {
   return (
     <div className='h-screen flex flex-col justify-end'>

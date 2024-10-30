@@ -1,42 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import MailBox from "./MailBox";
 import CopyrightOutlinedIcon from "@mui/icons-material/CopyrightOutlined";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import LocalPhoneRoundedIcon from "@mui/icons-material/LocalPhoneRounded";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 import './Footer.css'
+
 const Footer = () => {
   return (
     <div className="bg-black text-white mt-4 text-sm md:text-md">
       {/* Social media bar */}
-      <div className="flex md:justify-between px-6 py-4 bg-rose-300 flex-wrap items-center justify-center">
+      <div className="social-media-bar">
         <p className="">Get connected with us on Social Media Networks: </p>
         <ul className="flex justify-evenly ">
           <li>
             <a href="">
-              <i className="mx-2 text-2xl text-white  fa-brands fa-square-instagram"></i>
+              <i className=" fa-brands fa-square-instagram"></i>
             </a>
           </li>
           <li>
             <a href="">
-              <i className="mx-2 text-2xl text-white  fa-brands fa-linkedin"></i>
+              <i className=" fa-brands fa-linkedin"></i>
             </a>
           </li>
           <li>
             <a href="">
-              <i className="mx-2 text-2xl text-white  fa-brands fa-youtube"></i>
+              <i className=" fa-brands fa-youtube"></i>
             </a>
           </li>
           <li>
             <a href="">
-              <i className="mx-2 text-2xl text-white  fa-brands fa-square-github"></i>
+              <i className=" fa-brands fa-square-github"></i>
             </a>
           </li>
           <li>
             <a href="">
-              <i className="mx-2 text-2xl text-white  fa-brands fa-square-facebook"></i>
+              <i className=" fa-brands fa-square-facebook"></i>
             </a>
           </li>
         </ul>
@@ -49,14 +49,14 @@ const Footer = () => {
       >
         {/* footer text */}
         <div className="mt-4 md:w-1/3 w-full text-justify md:pr-4">
-          <p className="font-bold text-md md:text-lg">BeBold</p>
+          <p className="font-bold text-md md:text-lg">Rent Motors</p>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Et maiores
             non nulla repellendus debitis velit modi
           </p>
         </div>
 
-        <div className=" mt-4 flex justify-between sm:justify-around md:justify-evenly basis-2/5 ">
+        <div className="usefull-link-bar">
           {/* useful links */}
           <div>
             <p className="font-bold text-md md:text-lg">Useful Links</p>
@@ -103,7 +103,7 @@ const Footer = () => {
       <div>
         <p className="text-center py-4">
           <CopyrightOutlinedIcon></CopyrightOutlinedIcon>2024 Copyright:
-          Be Bold
+          Rent Motors
         </p>
       </div>
     </div>

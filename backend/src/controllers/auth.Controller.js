@@ -10,10 +10,10 @@ const generateAccessAndRefreshTokens = async (userId) => {
     const user = await User.findById(userId);
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
-
+  
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
-
+   
     return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(
@@ -149,8 +149,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   // if user found then match the incoming refersh token with db refersh token
   // if matched then regenerate access token and refersh token and send it in cookies
 
-  const incomingRefreshToken =
-    req.cookies.refreshToken || req.body.refreshToken;
+  const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
   if (!incomingRefreshToken) {
     throw new ApiError(401, "unauthorized request");
   }
@@ -167,21 +166,22 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     if (incomingRefreshToken !== user?.refreshToken) {
       throw new ApiError(401, "Refresh token is expired or used");
     }
-
+    const usertype=user.type;
+    const username=user.username;
     const options = {
       httpOnly: true,
       secure: true,
     };
-    const { accessToken, newRefreshToken } =
-      await generateAccessAndRefreshTokens(user._id);
+    const { accessToken, refreshToken } =await generateAccessAndRefreshTokens(user._id);
+  
     return res
       .status(200)
       .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", newRefreshToken, options)
+      .cookie("refreshToken", refreshToken, options)
       .json(
         new ApiResponse(
           200,
-          { accessToken, newRefreshToken },
+          { accessToken,usertype,username,refreshToken },
           "Access token refreshed"
         )
       );

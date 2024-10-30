@@ -55,7 +55,7 @@ function Navbar() {
             textDecoration: "none",
           }}
         >
-          BeBold
+          Rent Motors
         </Typography>
 
         {/* For mobile menu */}
