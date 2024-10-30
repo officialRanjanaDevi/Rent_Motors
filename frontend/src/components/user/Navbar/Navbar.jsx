@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-
+import Cookies from "js-cookie";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Navbar.css";
 const style = {
@@ -29,6 +29,10 @@ const style = {
 
 function Navbar() {
   const [menu, setMenu] = useState("");
+  const [accessToken,setAccessToken]=useState(Cookies.get('accessToken'));
+  useEffect(() => {
+    setAccessToken(Cookies.get('accessToken'));
+  })
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const handleOpenNavMenu = (event) => {
@@ -121,7 +125,7 @@ function Navbar() {
                 to="/wishlist"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+                  display: accessToken ? "block" : "none",
                 }}
               >
                 <div>
@@ -135,7 +139,7 @@ function Navbar() {
                 to="/cart"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+                  display: accessToken ? "block" : "none",
                 }}
               >
                 <div>
@@ -243,7 +247,7 @@ function Navbar() {
             style={{
                 opacity: menu === "wishlist" ? 1 : 0.7,
                 fontWeight: menu === "wishlist" ? "bold" : "normal",
-              display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+              display: accessToken ? "block" : "none",
             }}
           >
             Wishlist
@@ -257,7 +261,7 @@ function Navbar() {
             style={{
                 opacity: menu === "cart" ? 1 : 0.7,
                 fontWeight: menu === "cart" ? "bold" : "normal",
-              display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+              display: accessToken ? "block" : "none",
             }}
           >
             cart
@@ -271,7 +275,7 @@ function Navbar() {
               <Avatar
                 alt="User Avatar"
                 src="/static/images/avatar/2.jpg"
-                sx={{ backgroundColor: " rgb(245 158 11)" }}
+                sx={{ backgroundColor: " rgb(101 163 13)" }}
               />
             </IconButton>
           </Tooltip>
@@ -294,7 +298,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("usertype")==="Client" ? "none" : "block",
+                display: accessToken ? "none" : "block",
               }}
             >
               <Link to="/login" className="hover:text-black">
@@ -304,7 +308,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("usertype")==="Client" ? "none" : "block",
+                display: accessToken ? "none" : "block",
               }}
             >
               <Link to="/signup" className="hover:text-black">
@@ -314,7 +318,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+                display: accessToken ? "block" : "none",
               }}
             >
               <Link to="/order" className="hover:text-black">
@@ -324,7 +328,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: localStorage.getItem("usertype")==="Client" ? "block" : "none",
+                display: accessToken ? "block" : "none",
               }}
             >
               <Link to="/logout" className="hover:text-black">

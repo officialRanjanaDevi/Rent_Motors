@@ -15,14 +15,7 @@ export default function VehicleCard(props) {
   const [userId, setUserId] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      const decoded = jwtDecode(token);
-      setUserId(decoded.user.id);
-    }
-  }, []);
-
+  
   const makePostRequest = async (url, body) => {
     try {
       const response = await fetch(url, {
@@ -94,7 +87,7 @@ export default function VehicleCard(props) {
           <FavoriteIcon sx={{ color: liked ? red[600] : "white" }} />
         </div>
       </div>
-      <Link to="/view" state={{ data }} className="hover:text-black">
+      <Link to="/view"  state={ data._id } className="hover:text-black">
         <div className="overflow-hidden h-3/4 p-1">
           <CardMedia
             component="img"

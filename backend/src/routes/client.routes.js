@@ -18,7 +18,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/viewListing").get(viewListing);
-router.route("/viewVehicle").get(viewVehicle);
+router.route("/viewVehicle/:id").get(viewVehicle);
 
 router.route("/review").post(verifyJWT, addReview);
 router.route("/review").delete(verifyJWT, deleteReview);

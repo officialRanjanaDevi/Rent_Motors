@@ -24,8 +24,8 @@ const viewVehicle = asyncHandler(async (req, res) => {
   // get id from req.body
   // find vehicle through id
   //return res
-  console.log(req.body);
-  const { id } = req.body;
+  
+  const { id } = req.params;
   if (!id) {
     throw new ApiError(400, "please provide vehicle id");
   }
