@@ -17,7 +17,7 @@ const Wishlist = () => {
       
       const response = await res.json();
       
-       setProductData(response.data);
+      setProductData(response.data);
     
     } catch (error) {
       console.error("Error loading data:", error);

@@ -238,6 +238,28 @@ const viewWishlist = asyncHandler(async (req, res) => {
 });
 
 // cart controllers from client side
+const viewCart = asyncHandler(async (req, res) => {
+  // get user details from req.user
+  //check if user is client or not
+  // get all carts where client is user
+  // return res
+
+  const user = req.user;
+
+  if (user.type !== "Client") {
+    throw new ApiError(401, "You are not a client ");
+  }
+
+  const cart = await Cart.find({ client: user._id });
+
+  if (!cart) {
+    throw new ApiError(401, "Vehicle doesnot exists in your cart");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, cart, "Your cart found"));
+});
 
 const addToCart = asyncHandler(async (req, res) => {
   // get user details from req.user
@@ -417,6 +439,7 @@ export {
   addToWishlist,
   removeFromWishlist,
   viewWishlist,
+  viewCart,
   addToCart,
   removeFromCart,
   placeOrder,

@@ -8,6 +8,7 @@ import {
   removeFromWishlist,
   viewWishlist,
   addToCart,
+  viewCart,
   removeFromCart,
   placeOrder,
   viewOrder,
@@ -28,6 +29,7 @@ router.route("/wishlist").delete(verifyJWT, removeFromWishlist);
 router.route("/wishlist").get(verifyJWT, viewWishlist);
 
 router.route("/cart").post(verifyJWT, addToCart);
+router.route("/cart").get(verifyJWT, viewCart);
 router.route("/cart").delete(verifyJWT, removeFromCart);
 
 router.route("/order").post(verifyJWT, placeOrder);

@@ -1,55 +1,61 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "../../components/user/CartItem/CartItem";
-import { jwtDecode } from "jwt-decode";
 
 const Cart = () => {
-  console.log("cart")
-
-
   const [productData, setProductData] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [user, setUser] = useState({ address: "", contact: "" });
-  
+  const [bikes, setBikes] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+
   const loadData = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/cart/${userId}`, {
+      const res = await fetch(`http://localhost:4000/api/client/cart`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
       });
-      if(!res){
+      if (res.ok) {
+        const response = await res.json();
+        setProductData(response.data || []);
+      } else {
         setTotalPrice(0);
         setProductData([]);
       }
-      const response = await res.json();
-      setTotalPrice(response[0].totalPrice);
-      setProductData(response[0].items);
     } catch (error) {
       console.error("Error loading data:", error);
     }
   };
 
+ 
   useEffect(() => {
     loadData();
   }, []);
 
+ 
+  useEffect(() => {
+    updateBikesAndPrice();
+  }, [productData]);
+
+  const updateBikesAndPrice = () => {
+    loadData();
+    const totalBikes = productData.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const totalAmount = productData.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+    setBikes(totalBikes);
+    setTotalPrice(totalAmount);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:3000/updateUser", {
+      const response = await fetch("http://localhost:4000/api/auth/updateProfile", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: userId,
           address: user.address,
           contact: user.contact,
         }),
       });
-
       const json = await response.json();
       if (response.ok) {
         console.log("User updated successfully:", json);
@@ -66,23 +72,20 @@ const Cart = () => {
   };
 
   const placeOrder = async () => {
-   
     try {
-      const response = await fetch("http://localhost:3000/order", {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          userId: userId,
-          items: productData,  
-        })
+      const response = await fetch("http://localhost:4000/api/client/order", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
       });
-
       const json = await response.json();
       if (response.ok) {
-        console.log("Order placed successfully:", json);
-      
+        // const res = await fetch("http://localhost:4000/api/client/cart", {
+        //   method: "DELETE",
+        //   credentials: "include",
+        //   headers: { "Content-Type": "application/json" },
+        // });
+        // const result = await res.json();
       } else {
         console.error("Failed to place order:", json);
       }
@@ -90,18 +93,18 @@ const Cart = () => {
       console.error("Error placing order:", error);
     }
   };
-  
+
   return (
     <div className="mt-16 p-4 flex justify-between xl:justify-around flex-wrap">
       <div className="w-full lg:w-[73%]">
         <div className="flex justify-between">
           <h1 className="font-bold text-2xl">My Cart</h1>
-          <b>total amount : {totalPrice} rs</b>
+          <b>Total Amount: {totalPrice} rs</b>
         </div>
         <div>
           {productData.length > 0 ? (
             productData.map((data, index) => (
-              <CartItem key={index} data={data} />
+              <CartItem key={index} data={data} updateBikesAndPrice={updateBikesAndPrice} />
             ))
           ) : (
             <h1 className="font-bold text-xl text-center">
@@ -121,11 +124,11 @@ const Cart = () => {
               </label>
               <input
                 type="text"
-                name="address" 
+                name="address"
                 className="py-2 px-2 rounded-md border-2 border-neutral-200"
                 required
                 onChange={onChange}
-                value={user.address}  
+                value={user.address}
                 placeholder="h-20 sector-10 delhi"
               />
               <label htmlFor="contact" className="text-black font-bold">
@@ -133,17 +136,14 @@ const Cart = () => {
               </label>
               <input
                 type="number"
-                name="contact"  
+                name="contact"
                 className="py-2 px-2 rounded-md border-2 border-neutral-200"
                 required
                 onChange={onChange}
-                value={user.contact} 
+                value={user.contact}
                 placeholder="9800000001"
               />
-              <button
-                type="submit"  
-                className="w-full bg-black text-white px-3 py-1 rounded-md mt-2"
-              >
+              <button type="submit" className="w-full bg-black text-white px-3 py-1 rounded-md mt-2">
                 Update
               </button>
             </form>
@@ -154,13 +154,12 @@ const Cart = () => {
           <h1 className="text-lg font-bold">Payment Summary</h1>
           <ul className="my-4">
             <li className="flex justify-between my-2">
-              <p>Total</p>
-              <p>{totalPrice}</p>
+              <p>Bikes</p>
+              <p>{bikes}</p>
             </li>
-            <hr />
             <li className="flex justify-between my-2">
-              <p>Discount</p>
-              <p>10%</p>
+              <p>Total Price</p>
+              <p>{totalPrice}</p>
             </li>
             <hr />
             <li className="flex justify-between my-2">
@@ -170,12 +169,12 @@ const Cart = () => {
             <hr />
             <li className="flex justify-between my-2">
               <p className="font-bold">Total</p>
-              <p>{totalPrice - totalPrice / 10}</p>
+              <p>{totalPrice}</p>
             </li>
           </ul>
 
           <button onClick={placeOrder} className="w-full bg-black text-white py-2 rounded-md">
-            Proceed to pay
+            Proceed to Pay
           </button>
         </div>
       </div>

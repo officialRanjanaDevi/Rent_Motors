@@ -4,7 +4,6 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Cookies from "js-cookie";
 import { red } from "@mui/material/colors";
 
 export default function Wishlist(props) {
@@ -13,7 +12,6 @@ export default function Wishlist(props) {
   const [add, setAdd] = useState("Add to cart");
   const [productData, setProductData] = useState({});
   const [loading, setLoading] = useState(false);
-  const accessToken = Cookies.get("accessToken");
   const navigate = useNavigate();
 
   const loadData = async () => {
@@ -61,10 +59,6 @@ export default function Wishlist(props) {
 
   const handleAddBtn = async () => {
     setLoading(true);
-    if (!accessToken) {
-      navigate("/login");
-      return;
-    }
     try {
       const res = await fetch(`http://localhost:4000/api/client/cart`, {
         method: "POST",
@@ -84,7 +78,7 @@ export default function Wishlist(props) {
   };
 
   return (
-    
+
     <Card
       sx={{
         display: liked ? "" : "none",
