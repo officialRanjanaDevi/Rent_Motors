@@ -1,21 +1,21 @@
-import * as React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { jwtDecode } from "jwt-decode"; 
+import Cookies from "js-cookie";
 import "./VehicleCard.css";
 
 export default function VehicleCard(props) {
   const { data } = props;
-  const [liked, setLiked] = React.useState(false);
-  const [add, setAdd] = React.useState("Add to cart");
-  const [userId, setUserId] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [liked, setLiked] = useState(false);
+  const [add, setAdd] = useState("Add to cart");
+  const [loading, setLoading] = useState(false);
+  const accessToken = Cookies.get("accessToken");
+  const navigate = useNavigate();
 
-  
   const makePostRequest = async (url, body) => {
     try {
       const response = await fetch(url, {
@@ -34,40 +34,43 @@ export default function VehicleCard(props) {
   };
 
   const handleLikeClick = async () => {
-    if (!userId) return;
-    setLiked(!liked);
-
+    setLiked((prevLiked) => !prevLiked);
     const response = await makePostRequest("http://localhost:4000/api/client/wishlist", {
-      userId,
+      userId: accessToken,
       productId: data._id,
     });
-
     if (response?.message) {
       console.log(response.message);
     } else {
-      setLiked(!liked); 
+      setLiked((prevLiked) => !prevLiked); // Revert on error
     }
   };
 
   const handleAddBtn = async () => {
-    if (!userId) return;
     setLoading(true);
-
-    const response = await makePostRequest("http://localhost:4000/api/client/cart", {
-      userId,
-      productId: data._id,
-      quantity: 2,
-    });
-
-    setLoading(false);
-
-    if (response?.message) {
+    if (!accessToken) {
+      navigate("/login");
+      return;
+    }
+    try {
+      const res = await fetch(`http://localhost:4000/api/client/cart`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: data._id, quantity: 1 }),
+      });
+      await res.json();
       setAdd("Added");
-      setTimeout(() => setAdd("Add to cart"), 3500);
+      setTimeout(() => setAdd("Add to cart"), 3000);
+    } catch (error) {
+      console.error("Error loading vehicle data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
+
     <Card
       sx={{
         maxWidth: "400px",
@@ -116,13 +119,13 @@ export default function VehicleCard(props) {
           <div
             className="border-0 boder-black absolute -z-10 w-full h-16 opacity-0 duration-500 group-hover:opacity-100 group-hover:bg-black"
             style={{
-              backgroundColor: add === "Added" ? "rgb(253 164 175)" : "black",
+              backgroundColor: add === "Added" ? " rgb(101 163 13)" : "black",
             }}
           ></div>
           <p
             onClick={handleAddBtn}
             className={`w-full hover:scale-105 duration-300 ease-in-out text-white font-bold pt-2 ${loading ? "opacity-50" : ""}`}
-            disabled={loading} // Disable button while loading
+            disabled={loading} 
           >
             {loading ? "Adding..." : add}
           </p>

@@ -32,7 +32,7 @@ const Login = () => {
         
         localStorage.setItem("username",res.data.user[0].username);
         localStorage.setItem("usertype",res.data.user[0].type);
-      
+        localStorage.setItem("userid",res.data.user[0]._id);
         setStatus("Success");
         setTimeout(() => setStatus(null), 1000);
 

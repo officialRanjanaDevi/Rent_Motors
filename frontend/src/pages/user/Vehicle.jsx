@@ -15,7 +15,7 @@ const Vehicle = () => {
       
       let response = await res.json();
      
-      setVehicleData(response.data);
+       setVehicleData(response.data);
     } catch (error) {
       console.error("Error loading data:", error);
     }

@@ -41,7 +41,7 @@ function AppContent() {
 
   useEffect(() => {
     const fetchUserType = async () => {
-      if (!usertype) {
+      if (!accessToken) {
         try {
           const response = await fetch(
             "http://localhost:4000/api/auth/refreshToken",
