@@ -7,6 +7,7 @@ export default function LoadingCard() {
       sx={{
         minHeight:"400px",
         maxWidth: "550px",
+        height:"500px",
         width:"96%",
         margin: "1rem",
         borderRadius: "15px",
@@ -15,7 +16,7 @@ export default function LoadingCard() {
       className=" relative z-10 group "
     >
       <div className="h-full flex flex-col w-full border border-gray-500 rounded shadow animate-pulse  dark:border-gray-500">
-        <div className="h-3/4  flex items-center justify-center  mb-4 bg-gray-500 rounded dark:bg-gray-500 ">
+        <div className="h-[90%]  flex items-center justify-center  mb-4 bg-gray-500 rounded dark:bg-gray-500 ">
           <svg
             viewBox="0 0 16 20"
             fill="currentColor"
