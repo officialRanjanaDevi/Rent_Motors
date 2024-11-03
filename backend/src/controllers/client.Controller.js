@@ -343,7 +343,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   // check if cart exists or not
   // place order one by one
   // return res
-  console.log("hello00");
+ 
   const user = req.user;
   if (user.type !== "Client") {
     throw new ApiError(400, "You are not authorized to place order");
@@ -352,9 +352,9 @@ const placeOrder = asyncHandler(async (req, res) => {
 
   const orders = await Promise.all(
     cart.map(async (cartitem) => {
-      console.log("hello",cartitem);
+  
       const vehicle = await Vehicle.findById(cartitem.vehicle);
-      console.log("vehicle",vehicle);
+  
       if (!vehicle) {
         throw new ApiError(400, "No such vehicle exists");
       }
@@ -371,7 +371,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   if (!orders) {
     throw new ApiError(500, "Failed to place order");
   }
-  console.log("orders",orders);
+
   const deleteCart = await Promise.all(
     cart.map(async (cart) => {
       const cartItem = await Cart.findByIdAndDelete(cart._id);
@@ -381,7 +381,7 @@ const placeOrder = asyncHandler(async (req, res) => {
       return cartItem;
     })
   );
-  console.log("deletedcart",deleteCart)
+
   return res
     .status(201)
     .json(new ApiResponse(201,deleteCart, "Order placed successfully"));

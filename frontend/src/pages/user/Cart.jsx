@@ -81,12 +81,7 @@ const Cart = () => {
       });
       const json = await response.json();
       if (response.ok) {
-        // const res = await fetch("http://localhost:4000/api/client/cart", {
-        //   method: "DELETE",
-        //   credentials: "include",
-        //   headers: { "Content-Type": "application/json" },
-        // });
-        // const result = await res.json();
+        
       } else {
         console.error("Failed to place order:", json);
       }
