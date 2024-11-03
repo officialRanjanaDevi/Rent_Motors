@@ -12,6 +12,7 @@ import { ObjectId } from "mongodb";
 
 const viewListing = asyncHandler(async (req, res) => {
   const vehicles = await Vehicle.find({});
+  
   if (!vehicles) {
     throw new ApiError(500, "Failed to load Vehicles");
   }
@@ -342,7 +343,7 @@ const placeOrder = asyncHandler(async (req, res) => {
   // check if cart exists or not
   // place order one by one
   // return res
-
+  console.log("hello00");
   const user = req.user;
   if (user.type !== "Client") {
     throw new ApiError(400, "You are not authorized to place order");
@@ -350,28 +351,40 @@ const placeOrder = asyncHandler(async (req, res) => {
   const cart = await Cart.find({ client: user._id });
 
   const orders = await Promise.all(
-    cart.map(async (vehicle) => {
-      const renter = await Vehicle.findById(vehicle.vehicle).select("owner");
-      if (!renter) {
+    cart.map(async (cartitem) => {
+      console.log("hello",cartitem);
+      const vehicle = await Vehicle.findById(cartitem.vehicle);
+      console.log("vehicle",vehicle);
+      if (!vehicle) {
         throw new ApiError(400, "No such vehicle exists");
       }
       return Order.create({
         client: user._id,
-        vehicle: vehicle._id,
-        renter: renter.owner,
-        price: vehicle.price,
-        quantity: vehicle.quantity,
+        vehicle: cartitem.vehicle,
+        renter: vehicle.owner,
+        price: cartitem.price,
+        quantity: cartitem.quantity,
       });
     })
   );
-
+  
   if (!orders) {
     throw new ApiError(500, "Failed to place order");
   }
-
+  console.log("orders",orders);
+  const deleteCart = await Promise.all(
+    cart.map(async (cart) => {
+      const cartItem = await Cart.findByIdAndDelete(cart._id);
+      if (!cartItem) {
+        throw new ApiError(400, "No such cart exists");
+      }
+      return cartItem;
+    })
+  );
+  console.log("deletedcart",deleteCart)
   return res
     .status(201)
-    .json(new ApiResponse(201, orders, "Order placed successfully"));
+    .json(new ApiResponse(201,deleteCart, "Order placed successfully"));
 });
 
 const viewOrder = asyncHandler(async (req, res) => {

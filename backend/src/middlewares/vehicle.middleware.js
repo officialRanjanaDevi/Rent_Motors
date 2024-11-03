@@ -3,7 +3,6 @@ import { ApiError } from "../utils/ApiError.js";
 
 const validateVehicle = [
   body("title").notEmpty().withMessage("Title is required"),
-  body("owner").notEmpty().withMessage("Owner is required"),
   body("brand").notEmpty().withMessage("Brand is required"),
   body("type").notEmpty().withMessage("Please specify vehicle type"),
   body("price").notEmpty().withMessage("Price is required"),

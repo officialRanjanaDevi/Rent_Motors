@@ -17,6 +17,7 @@ const Cart = () => {
       if (res.ok) {
         const response = await res.json();
         setProductData(response.data || []);
+      
       } else {
         setTotalPrice(0);
         setProductData([]);

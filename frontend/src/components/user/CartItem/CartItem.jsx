@@ -18,7 +18,7 @@ const CartItem = ({ data ,updateBikesAndPrice}) => {
       });
       const response = await res.json();
       setVehicleData(response.data);
-    
+     console.log(response.data);
     } catch (error) {
       console.error("Error loading data:", error);
     }
