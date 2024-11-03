@@ -75,7 +75,7 @@ const Login = () => {
 
       {/* Success Alert */}
       <div
-        className="text-center alert bg-rose-300 w-1/2 mx-auto text-white rounded-md"
+        className="text-center alert bg-lime-600 w-1/2 mx-auto text-white rounded-md"
         role="alert"
         style={{ display: status === "Success" ? "" : "none" }}
       >

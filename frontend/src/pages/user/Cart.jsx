@@ -6,10 +6,27 @@ const Cart = () => {
   const [user, setUser] = useState({ address: "", contact: "" });
   const [bikes, setBikes] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [status,setStatus]=useState("");
 
+  const loadUserData = async () => {
+    try {
+      const user=await fetch ("http://localhost:4000/api/auth/getCurrentUser",{
+        method: "GET",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (user.ok) {
+        const response = await user.json();
+        const userData=response.data;
+        setUser({address:userData.address,contact:userData.contact});       
+      }
+       } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
   const loadData = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/client/cart`, {
+           const res = await fetch(`http://localhost:4000/api/client/cart`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -29,6 +46,7 @@ const Cart = () => {
 
  
   useEffect(() => {
+    loadUserData();
     loadData();
   }, []);
 
@@ -49,7 +67,7 @@ const Cart = () => {
     e.preventDefault();
     try {
       const response = await fetch("http://localhost:4000/api/auth/updateProfile", {
-        method: "PUT",
+        method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,6 +76,7 @@ const Cart = () => {
         }),
       });
       const json = await response.json();
+      
       if (response.ok) {
         console.log("User updated successfully:", json);
       } else {
@@ -81,17 +100,50 @@ const Cart = () => {
       });
       const json = await response.json();
       if (response.ok) {
-        
+         setStatus("success");
+         setTimeout(() => {
+          setStatus("");
+         }, 2000);
+
       } else {
         console.error("Failed to place order:", json);
+        setStatus("failure");
+        setTimeout(() => {
+          setStatus("");
+         }, 2000);
       }
     } catch (error) {
       console.error("Error placing order:", error);
+      setStatus("failure");
+      setTimeout(() => {
+        setStatus("");
+       }, 2000);
     }
   };
 
   return (
+    <>
+      {/* Success Alert */}
+      <div
+        className="text-center mt-16 alert bg-lime-600 w-1/2 mx-auto text-white rounded-md"
+        role="alert"
+        style={{ display: status=="success" ? "" : "none" }}
+      >
+        <h1 className="font-bold">Order placed suucessfully</h1>
+      </div>
+
+      {/* Failed Alert */}
+      <div
+        className="text-center mt-16 alert bg-neutral-200 w-1/2 mx-auto text-black rounded-md"
+        role="alert"
+        style={{ display: status=="failure"? "" : "none" }}
+      >
+        <h1 className="font-bold">Oops,failed to place order ,please try again</h1>
+      
+      </div>
+  
     <div className="mt-16 p-4 flex justify-between xl:justify-around flex-wrap">
+    
       <div className="w-full lg:w-[73%]">
         <div className="flex justify-between">
           <h1 className="font-bold text-2xl">My Cart</h1>
@@ -125,7 +177,7 @@ const Cart = () => {
                 required
                 onChange={onChange}
                 value={user.address}
-                placeholder="h-20 sector-10 delhi"
+                placeholder={user.address}
               />
               <label htmlFor="contact" className="text-black font-bold">
                 Enter contact
@@ -137,7 +189,7 @@ const Cart = () => {
                 required
                 onChange={onChange}
                 value={user.contact}
-                placeholder="9800000001"
+                placeholder={user.contact}
               />
               <button type="submit" className="w-full bg-black text-white px-3 py-1 rounded-md mt-2">
                 Update
@@ -175,6 +227,7 @@ const Cart = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

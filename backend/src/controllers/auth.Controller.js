@@ -219,7 +219,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log("success");
+ 
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
@@ -228,9 +228,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 const updateProfile = asyncHandler(async (req, res) => {
   const user = req.user;
   const data = req.body;
-  console.log(req.body);
-  console.log(req.files);
-  const imagePath = req.files;
+   const imagePath = req.files;
 
   if (imagePath) {
     const imageUrl = await uploadOnCloudinary(imagePath);
