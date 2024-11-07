@@ -1,0 +1,22 @@
+.card {
+    height: 60vh;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding: .4em;
+  }
+  
+  .card div {
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card div:hover {
+    flex: 5;
+  }

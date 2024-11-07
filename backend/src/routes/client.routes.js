@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   viewListing,
   viewVehicle,
+  viewReview,
   addReview,
   deleteReview,
   addToWishlist,
@@ -21,6 +22,7 @@ const router = Router();
 router.route("/viewListing").get(viewListing);
 router.route("/viewVehicle/:id").get(viewVehicle);
 
+router.route("/review").get(viewReview);
 router.route("/review").post(verifyJWT, addReview);
 router.route("/review").delete(verifyJWT, deleteReview);
 

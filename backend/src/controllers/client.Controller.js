@@ -62,6 +62,16 @@ const viewVehicle = asyncHandler(async (req, res) => {
 });
 
 // review controllers from client side
+const viewReview=asyncHandler(async(req,res)=>{
+    const reviews=await Review.find({});
+    if (!reviews) {
+      throw new ApiError(
+        500,
+        "Some error occurred while fetching review, please try again"
+      );
+    }
+    return res.status(201).json(new ApiResponse(201, reviews, "Reviews fetched"));
+});
 
 const addReview = asyncHandler(async (req, res) => {
   //check if user is client or not
@@ -447,6 +457,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
 export {
   viewListing,
   viewVehicle,
+  viewReview,
   addReview,
   deleteReview,
   addToWishlist,
