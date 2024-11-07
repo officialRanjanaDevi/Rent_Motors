@@ -24,6 +24,14 @@ const orderSchema= new mongoose.Schema({
         type:Number,
         required:true,
     },
+    startdate:{
+        type:Date,
+        required:true,
+    },
+    days:{
+        type:Number,
+        required:true,
+    },
     status:{
         type:String,
         enum: ['Delivered','Placed','Accepted','Cancelled','Rejected'],

@@ -152,7 +152,6 @@ const addToWishlist = asyncHandler(async (req, res) => {
 
   const user = req.user;
   const { id } = req.body;
-
   if (user.type !== "Client") {
     throw new ApiError(401, "You are unauthorized to add in wishlist.");
   }
@@ -281,7 +280,8 @@ const addToCart = asyncHandler(async (req, res) => {
   // return res
 
   const user = req.user;
-  const { id, quantity } = req.body;
+  const { id, quantity,startdate,days } = req.body;
+
   if (user.type !== "Client") {
     throw new ApiError(400, "You are not authorized to add vehicle in cart");
   }
@@ -303,7 +303,7 @@ const addToCart = asyncHandler(async (req, res) => {
   } else {
     cart = await Cart.findByIdAndUpdate(
       cart._id,
-      { quantity: quantity, price: price },
+      { quantity: quantity, price: price,startdate:startdate,days:days },
       { new: true }
     );
   }
@@ -374,6 +374,8 @@ const placeOrder = asyncHandler(async (req, res) => {
         renter: vehicle.owner,
         price: cartitem.price,
         quantity: cartitem.quantity,
+        startdate: cartitem.startdate,
+        days: cartitem.days,
       });
     })
   );
@@ -425,8 +427,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
   if (!order) {
     throw new ApiError(409, "No such order exists");
   }
-  console.log(order.client.toString());
-  console.log(user._id);
+
   if (order.client.toString() !== user._id.toString()) {
     throw new ApiError(409, "Unauthorized to cancel this order");
   }

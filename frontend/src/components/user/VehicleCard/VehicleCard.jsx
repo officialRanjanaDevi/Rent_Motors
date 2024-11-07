@@ -16,33 +16,21 @@ export default function VehicleCard(props) {
   const accessToken = Cookies.get("accessToken");
   const navigate = useNavigate();
 
-  const makePostRequest = async (url, body) => {
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      if (!response.ok) throw new Error('Network response was not ok');
-      return response.json();
-    } catch (error) {
-      console.error(`Error during ${url} request:`, error);
-      alert('An error occurred. Please try again.');
-    }
-  };
-
-  const handleLikeClick = async () => {
+   const handleLikeClick = async () => {
     setLiked((prevLiked) => !prevLiked);
-    const response = await makePostRequest("http://localhost:4000/api/client/wishlist", {
-      userId: accessToken,
-      productId: data._id,
+    const response = await fetch("http://localhost:4000/api/client/wishlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({productId: data._id}),
+     
     });
-    if (response?.message) {
+    const res=await response.json();
+    if (res.status) {
       console.log(response.message);
     } else {
-      setLiked((prevLiked) => !prevLiked); // Revert on error
+      setLiked((prevLiked) => !prevLiked);
     }
   };
 

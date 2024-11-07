@@ -8,9 +8,27 @@ const ViewCard = (props) => {
   const vehicleData = props.data;
   const [add, setAdd] = useState("Add to cart");
   const [liked, setLiked] = useState(false);
-  const handleLikeClick = () => {
-    setLiked((prevLiked) => !prevLiked);
-  };
+ 
+    const handleLikeClick = async () => {
+      setLiked((prevLiked) => !prevLiked);
+      const response = await fetch("http://localhost:4000/api/client/wishlist", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id: vehicleData._id}),
+       
+      });
+      const res=await response.json();
+      if (res.success) {
+        console.log(response.message);
+      } else {
+        setLiked((prevLiked) => !prevLiked);
+      }
+    };
+  
+  
 
   const handleAddBtn = async () => {
     try {

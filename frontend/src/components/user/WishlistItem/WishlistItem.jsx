@@ -82,8 +82,8 @@ export default function Wishlist(props) {
     <Card
       sx={{
         display: liked ? "" : "none",
-        maxWidth: "400px",
-        minHeight: "400px",
+        maxWidth: "550px",
+        minHeight: "450px",
         margin: ".5rem",
         borderRadius: "15px",
         boxShadow: "inset 0px 1px 6px 1px rgb(220 220 220)",

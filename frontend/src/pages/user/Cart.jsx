@@ -34,7 +34,6 @@ const Cart = () => {
       if (res.ok) {
         const response = await res.json();
         setProductData(response.data || []);
-      
       } else {
         setTotalPrice(0);
         setProductData([]);
@@ -164,7 +163,7 @@ const Cart = () => {
 
       <div className="w-full lg:w-1/4">
         <h1 className="font-bold text-center text-xl mb-2">Delivery Details</h1>
-        <div className="w-full bg-neutral-200 px-2 py-2 rounded-md mb-3">
+        <div className="w-full bg-neutral-200 shadow-md shadow-neutral-400 px-2 py-2 rounded-md mb-3">
           <div className="bg-neutral-100 p-4 rounded-md">
             <form onSubmit={handleSubmit} className="flex flex-col">
               <label htmlFor="address" className="text-black font-bold">
@@ -191,14 +190,14 @@ const Cart = () => {
                 value={user.contact}
                 placeholder={user.contact}
               />
-              <button type="submit" className="w-full bg-black text-white px-3 py-1 rounded-md mt-2">
+              <button type="submit" className="w-full bg-lime-600 shadow-md shadow-black font-bold text-white px-3 py-1 rounded-md mt-2">
                 Update
               </button>
             </form>
           </div>
         </div>
 
-        <div className="w-full bg-neutral-200 p-4 rounded-md">
+        <div className="w-full bg-neutral-200 shadow-md shadow-neutral-400 p-4 rounded-md">
           <h1 className="text-lg font-bold">Payment Summary</h1>
           <ul className="my-4">
             <li className="flex justify-between my-2">
@@ -221,7 +220,7 @@ const Cart = () => {
             </li>
           </ul>
 
-          <button onClick={placeOrder} className="w-full bg-black text-white py-2 rounded-md">
+          <button onClick={placeOrder} className="w-full shadow-md font-bold shadow-black bg-lime-600 text-white py-2 rounded-md">
             Proceed to Pay
           </button>
         </div>
