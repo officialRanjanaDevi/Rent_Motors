@@ -16,53 +16,63 @@ const UpdateForm = (props) => {
   const handleClick = (newState, msg) => {
     setState({ ...newState, open: true, message: msg });
     setTimeout(() => setState({ ...newState, open: false }), 1500);
-    setTimeout(navigate("/updateProduct"),1600);
+    setTimeout(navigate("/updateProduct"), 1600);
   };
 
   const form = useRef();
   const [credentials, setCredentials] = useState({
-    name: data.name,
+    title: data.title,
     price: data.price,
-    discount: data.discount,
+    mileage: data.mileage,
     description: data.description,
-    skintype: data.skintype,
-    category: data.category,
+    type: data.type,
+    seater: data.seater,
+    speed: data.speed,
+    fuel: data.fuel,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const response = await fetch("http://localhost:3000/product", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response =  await fetch(`http://localhost:4000/api/renter/vehicle`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          productId: data._id,
-          name: credentials.name,
-          skintype: credentials.skintype,
-          category: credentials.category,
-          description: credentials.description,
+          id: data._id,
+          title: credentials.title,
           price: credentials.price,
-          discount: credentials.discount,
+          mileage: credentials.mileage,
+          description: credentials.description,
+          type: credentials.type,
+          seater: credentials.seater,
+          speed: credentials.speed,
+          fuel: credentials.fuel,
         }),
       });
 
-      const json = await response.json();
+      const res = await response.json();
 
-      if (json.success) {
-        handleClick({ vertical: "top", horizontal: "center" }, "Product updated");
+      if (res.success) {
+       
+        handleClick(
+          { vertical: "top", horizontal: "center" },
+          "Product updated"
+        );
         setTimeout(() => {
           setCredentials({
-            name: "",
+            title: "",
             price: "",
-            discount: "",
+            mileage: "",
             description: "",
-            skintype: "",
-            category: "",
+            type: "",
+            seater: "",
+            speed: "",
+            fuel: "",
           });
-         
         }, 1500);
+     
       }
     } catch (error) {
       console.error("Error during product updation:", error);
@@ -73,11 +83,9 @@ const UpdateForm = (props) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  // This function will handle file input (currently just a placeholder)
   const handleFileChange = (e) => {
     const files = e.target.files;
     console.log(files);
-    // Handle the file upload here
   };
 
   return (
@@ -90,15 +98,18 @@ const UpdateForm = (props) => {
         <h1 className="text-center font-bold text-lg">Update Product</h1>
 
         <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
-            Name
+          <label
+            htmlFor="title"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Title
           </label>
           <input
             onChange={onChange}
             placeholder="Enter name of Product"
             type="text"
-            name="name"
-            value={credentials.name}
+            name="title"
+            value={credentials.title}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -106,7 +117,10 @@ const UpdateForm = (props) => {
 
         <div className="mb-4 grid grid-cols-2 gap-x-4">
           <div>
-            <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="price"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Price
             </label>
             <input
@@ -121,68 +135,119 @@ const UpdateForm = (props) => {
           </div>
 
           <div>
-            <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="type"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Choose a category:
             </label>
             <select
-              name="category"
+              name="type"
               onChange={onChange}
-              value={credentials.category}
+              value={credentials.type}
               required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select category</option>
-              <option value="Skincare">Skincare</option>
-              <option value="Haircare">Haircare</option>
-              <option value="Makeup">Makeup</option>
+              <option value="Scooter">Scooter</option>
+              <option value="Crusier">Crusier</option>
+              <option value="Off-Road">Off-Road</option>
+              <option value="Touring">Touring</option>
+              <option value="Sports Bike">Sports Bike</option>
+              <option value="Standard">Standard</option>
             </select>
           </div>
         </div>
 
         <div className="mb-4 grid grid-cols-2 gap-x-4">
           <div>
-            <label htmlFor="discount" className="block text-gray-700 text-sm font-bold mb-2">
-              Discount
+            <label
+              htmlFor="mileage"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Mileage
             </label>
             <input
               onChange={onChange}
-              placeholder="Enter discount in percentage"
+              placeholder="Enter mileage in Kmph"
               type="number"
-              name="discount"
-              value={credentials.discount}
+              name="mileage"
+              value={credentials.mileage}
               required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
 
           <div>
-            <label htmlFor="skintype" className="block text-gray-700 text-sm font-bold mb-2">
-              Best for skin type:
+            <label
+              htmlFor="seater"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Number of seats
             </label>
             <select
-              name="skintype"
+              name="seater"
               required
               onChange={onChange}
-              value={credentials.skintype}
+              value={credentials.seater}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Select a skin type</option>
-              <option value="Dry">Dry</option>
-              <option value="Normal">Normal</option>
-              <option value="Oily">Oily</option>
-              <option value="Sensitive">Sensitive</option>
-              <option value="Combination">Combination</option>
+              <option value="">Select a seater type</option>
+              <option value="One-seater">One Seater</option>
+              <option value="Two-seater">Two Seater</option>
             </select>
           </div>
         </div>
 
+        <div className="mb-4 grid grid-cols-2 gap-x-4">
+          <div>
+            <label
+              htmlFor="speed"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Speed
+            </label>
+            <input
+              onChange={onChange}
+              placeholder="Enter speed in Kmph"
+              type="number"
+              name="speed"
+              value={credentials.speed}
+              required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="fuel"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Fuel type:
+            </label>
+            <select
+              name="fuel"
+              required
+              onChange={onChange}
+              value={credentials.fuel}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Select a fuel type</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Electricity">Electricity</option>
+            </select>
+          </div>
+        </div>
         <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
+          <label
+            htmlFor="description"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
             Description
           </label>
           <textarea
             onChange={onChange}
-            placeholder="Enter description for Product"
+            placeholder="Enter description for Vehicle"
             name="description"
             rows={4}
             value={credentials.description}
@@ -190,7 +255,7 @@ const UpdateForm = (props) => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-
+        {/* 
         <div className="mb-4 grid-cols-3 grid gap-4">
           {["image1", "image2", "image3"].map((image, index) => (
             <div key={index}>
@@ -204,11 +269,11 @@ const UpdateForm = (props) => {
               />
             </div>
           ))}
-        </div>
+        </div> */}
 
         <button
           type="submit"
-          className="bg-black text-white text-sm hover:bg-neutral-700 font-bold py-2 px-12 rounded focus:outline-none focus:shadow-outline"
+          className="bg-black text-white text-sm hover:bg-lime-600 font-bold py-2 px-12 rounded focus:outline-none focus:shadow-outline"
         >
           Update
         </button>
@@ -216,7 +281,7 @@ const UpdateForm = (props) => {
         <Snackbar
           anchorOrigin={{ vertical, horizontal }}
           open={open}
-          sx={{ width: "10rem" }}
+          sx={{ width: "20rem" }}
           key={vertical + horizontal}
         >
           <Alert severity="success" variant="filled" sx={{ width: "100%" }}>

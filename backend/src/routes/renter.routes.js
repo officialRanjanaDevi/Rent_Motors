@@ -21,7 +21,7 @@ router.route("/vehicle")
   .get(verifyJWT, viewVehicleListing);
 
 router.route("/updateImages")
-  .patch(verifyJWT, upload.array("images", 3), updateImages);
+  .patch(verifyJWT,upload.array("images", 3), updateImages);
 
 router.route("/order")
   .get(verifyJWT,viewOrders)  

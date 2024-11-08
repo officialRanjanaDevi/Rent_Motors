@@ -144,7 +144,7 @@ const updateVehicle = asyncHandler(async (req, res) => {
   }
 
   const duplicateTitle = await Vehicle.findOne({ title: data.title });
-  if (duplicateTitle) {
+  if (duplicateTitle._id.toString()!==data.id) {
     throw new ApiError(400, "Title already exists");
   }
 
@@ -185,7 +185,7 @@ const updateImages = asyncHandler(async (req, res) => {
   if (existedVehicle.owner.toString() !== user._id.toString()) {
     throw new ApiError(409, "You are not authorized to update this vehicle");
   }
-
+  console.log(req.files);
   const imagePath = req.files.map((file) => file.path);
   if (imagePath.length <= 0) {
     throw new ApiError(400, "Images are missing,Please Upload images");
@@ -214,13 +214,11 @@ const viewVehicleListing = asyncHandler(async (req, res) => {
   // check if user is renter or not
   // select all those vehicles whose owner is user
   // return res
-
   const user = req.user;
   if (user.type !== "Renter") {
     throw new ApiError(400, "You are not a renter.");
   }
-  const vehicles = await Vehicle.find({ owner: user.id });
-
+  const vehicles = await Vehicle.find({ owner:user._id });
   return res
     .status(200)
     .json(new ApiResponse(200, vehicles, "vehicles are present"));
