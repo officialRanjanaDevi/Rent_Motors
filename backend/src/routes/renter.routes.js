@@ -15,7 +15,7 @@ import {
 const router = Router();
 
 router.route("/vehicle")
-  .post(validateVehicle, verifyJWT, upload.array("images", 3), createVehicle)
+  .post(verifyJWT,upload.array("images", 3),validateVehicle,  createVehicle)
   .patch(verifyJWT, updateVehicle)
   .delete(verifyJWT, deleteVehicle)
   .get(verifyJWT, viewVehicleListing);

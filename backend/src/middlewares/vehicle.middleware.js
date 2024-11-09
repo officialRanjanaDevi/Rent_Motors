@@ -22,7 +22,8 @@ const validateVehicle = [
         )
       );
     }
-    next();
+    
+     next();
   },
 ];
 

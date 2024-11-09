@@ -15,7 +15,7 @@ const createVehicle = asyncHandler(async (req, res) => {
   // access url of images uploaded on cloudinary
   // create new vehicle listing
   // return response if success
-
+ 
   const {
     title,
     brand,
@@ -27,7 +27,7 @@ const createVehicle = asyncHandler(async (req, res) => {
     mileage,
     speed,
   } = req.body;
-  const user = req.user;
+   const user = req.user;
   if (!user) {
     throw new ApiError(409, "Renter not found");
   }
@@ -81,7 +81,7 @@ const createVehicle = asyncHandler(async (req, res) => {
 
   return res
     .status(201)
-    .json(new ApiResponse(200, newVehcile, "Vehicle created successfully"));
+    .json(new ApiResponse(200,newVehcile, "Vehicle created successfully"));
 });
 
 const deleteVehicle = asyncHandler(async (req, res) => {

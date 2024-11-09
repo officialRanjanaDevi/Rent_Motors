@@ -1,8 +1,11 @@
 import React, { useRef, useState } from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
+
 const AddProduct = () => {
-  const [state, setState] = React.useState({
+  const navigate = useNavigate();
+  const [state, setState] = useState({
     open: false,
     vertical: "top",
     horizontal: "center",
@@ -10,88 +13,179 @@ const AddProduct = () => {
   });
   const { vertical, horizontal, open, message } = state;
 
-  const handleClick = (newState, msg) => () => {
+  const handleClick = (newState, msg) => {
     setState({ ...newState, open: true, message: msg });
-    setTimeout(() => setState({ ...state, open: false }), 1500);
+    setTimeout(() => setState({ ...newState, open: false }), 1500);
+    setTimeout(navigate("/updateProduct"), 1600);
   };
 
   const form = useRef();
   const [credentials, setCredentials] = useState({
-    name: "",
+    title: "",
     price: "",
-    discount: "",
+    mileage: "",
     description: "",
-    skintype: "",
-    category: ""
+    type: "",
+    seater: "",
+    speed: "",
+    fuel: "",
+    brand:""
   });
-
+ const [images,setImages]=useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("title" ,credentials.title);
+    formData.append("brand" ,credentials.brand);
+    formData.append("price" ,credentials.price);
+    formData.append("type" ,credentials.type);
+    formData.append("speed" ,credentials.speed);
+    formData.append("mileage" ,credentials.mileage);
+    formData.append("description" ,credentials.description);
+    formData.append("seater" ,credentials.seater);
+    formData.append("fuel" ,credentials.fuel);
 
+    images.forEach((image, index) => {
+      formData.append("images", image); 
+    });
     try {
-      const response = await fetch("http://localhost:3000/product", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: credentials.name,
-          skintype: credentials.skintype,
-          category: credentials.category,
-          description: credentials.description,
-          price: credentials.price,
-          discount: credentials.discount
-        })
+      console.log("hello");
+   
+      const response =  await fetch(`http://localhost:4000/api/renter/vehicle`, {
+        method: "POST",
+        credentials: "include",
+        body: formData
       });
 
-      const json = await response.json();
-
-      if (json.success) {
-
-        setCredentials({
-          name: "",
-          price: "",
-          discount: "",
-          description: "",
-          skintype: "",
-          category: ""
-        });
+      const res = await response.json();
+      console.log(res);
+      if (res.success) {
+       
+        handleClick(
+          { vertical: "top", horizontal: "center" },
+          "Product updated"
+        );
+        setTimeout(() => {
+          setCredentials({
+            title: "",
+            price: "",
+            mileage: "",
+            description: "",
+            type: "",
+            seater: "",
+            speed: "",
+            fuel: "",
+            brand:""
+          });
+        }, 1500);
+     
       }
     } catch (error) {
-      console.error("Error during adding new product:", error);
+      console.error("Error during product updation:", error);
     }
   };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+  };
 
   return (
-    <div className="w-full h-full rounded-md bg-neutral-100 shadow-md">
-      <form
+    <div className="w-full h-full rounded-md bg-neutral-100 shadow-md overflow-y-scroll">
+     <form
         ref={form}
         onSubmit={handleSubmit}
         className="bg-neutral-100 mx-auto w-[90vw] md:w-[70vw] p-6 rounded-lg"
       >
-        <h1 className="text-center font-bold text-lg">Add New Product</h1>
+        <h1 className="text-center font-bold text-lg">Update Product</h1>
+
         <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
-            Name
+          <label
+            htmlFor="title"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Title
           </label>
           <input
             onChange={onChange}
-            placeholder="Enter name of Product"
+            placeholder="Enter unique title for your vehicle"
             type="text"
-            name="name"
-            value={credentials.name}
+            name="title"
+            value={credentials.title}
+            required
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="description"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Description
+          </label>
+          <textarea
+            onChange={onChange}
+            placeholder="Enter description for Vehicle"
+            name="description"
+            rows={3}
+            value={credentials.description}
             required
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
 
-        <div className="mb-4 grid grid-cols-2 gap-x-4">
+
+        <div className="mb-4 grid md:grid-cols-2 gap-4">
+          
+        <div >
+          <label
+              htmlFor="images"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Upload images
+            </label>
+        <input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+            required
+            className="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+          />
+   <p className="text-xs text-red-600" >*Please upload exactly 3 files</p>
+
+        </div>
           <div>
-            <label htmlFor="price" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="seater"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Number of seats
+            </label>
+            <select
+              name="seater"
+              required
+              onChange={onChange}
+              value={credentials.seater}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Select a seater type</option>
+              <option value="One-seater">One Seater</option>
+              <option value="Two-seater">Two Seater</option>
+            </select>
+          </div>
+         
+        </div>
+
+
+        <div className="mb-4 grid md:grid-cols-3 gap-4">
+          <div>
+            <label
+              htmlFor="price"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Price
             </label>
             <input
@@ -105,105 +199,118 @@ const AddProduct = () => {
             />
           </div>
           <div>
-            <label htmlFor="category" className="block text-gray-700 text-sm font-bold mb-2">
+            <label
+              htmlFor="brand"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Brand
+            </label>
+            <input
+              onChange={onChange}
+              placeholder="Enter brand "
+              type="text"
+              name="brand"
+              value={credentials.brand}
+              required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="type"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
               Choose a category:
             </label>
             <select
-              name="category"
+              name="type"
               onChange={onChange}
-              value={credentials.category}
-
+              value={credentials.type}
+              required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option  >select category</option>
-              <option value="Skincare">Skincare</option>
-              <option value="Haircare">Haircare</option>
-              <option value="Makeup">Makeup</option>
+              <option value="">Select category</option>
+              <option value="Scooter">Scooter</option>
+              <option value="Crusier">Crusier</option>
+              <option value="Off-Road">Off-Road</option>
+              <option value="Touring">Touring</option>
+              <option value="Sports Bike">Sports Bike</option>
+              <option value="Standard">Standard</option>
             </select>
           </div>
         </div>
 
-        <div className="mb-4 grid grid-cols-2 gap-x-4">
+        <div className="mb-4 grid md:grid-cols-3 gap-4">
           <div>
-            <label htmlFor="discount" className="block text-gray-700 text-sm font-bold mb-2">
-              Discount
+            <label
+              htmlFor="speed"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Speed
             </label>
             <input
               onChange={onChange}
-              placeholder="Enter discount in percentage"
+              placeholder="Enter speed in Kmph"
               type="number"
-              name="discount"
-              value={credentials.discount}
+              name="speed"
+              value={credentials.speed}
               required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div>
-            <label htmlFor="skintype" className="block text-gray-700 text-sm font-bold mb-2">
-              Best for skin type:
+            <label
+              htmlFor="mileage"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Mileage
+            </label>
+            <input
+              onChange={onChange}
+              placeholder="Enter mileage in Kmph"
+              type="number"
+              name="mileage"
+              value={credentials.mileage}
+              required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="fuel"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Fuel type:
             </label>
             <select
-              name="skintype"
-              id="skintype"
-              onChange={onChange}  // Ensure onChange is correctly added
-              value={credentials.skintype}
+              name="fuel"
+              required
+              onChange={onChange}
+              value={credentials.fuel}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Select a skin type</option>  {/* Added default empty option */}
-              <option value="Dry">Dry</option>
-              <option value="Normal">Normal</option>
-              <option value="Oily">Oily</option>
-              <option value="Sensitive">Sensitive</option>
-              <option value="Combination">Combination</option>
+              <option value="">Select a fuel type</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Electricity">Electricity</option>
             </select>
           </div>
         </div>
-
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-2">
-            Description
-          </label>
-          <textarea
-            onChange={onChange}
-            placeholder="Enter description for Product"
-            type="text"
-            name="description"
-            rows={4}
-            value={credentials.description}
-            required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-        </div>
-
-        <div className="mb-4 grid-cols-3 grid gap-4">
-          {["image1", "image2", "image3"].map((image, index) => (
-            <div key={index}>
-              <label htmlFor={image} className="block text-gray-700 text-sm font-bold mb-2">
-                Upload image
-              </label>
-              <input
-                type="file"
-                className="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-          ))}
-        </div>
+      
+        
+       
 
         <button
-          onClick={handleClick(
-            { vertical: "top", horizontal: "center" },
-            "Product added"
-          )}
           type="submit"
-          className="bg-black text-white text-sm hover:bg-neutral-700 font-bold py-2 px-12 rounded focus:outline-none focus:shadow-outline"
+          className="bg-black text-white text-sm hover:bg-lime-600 font-bold py-2 px-12 rounded focus:outline-none focus:shadow-outline"
         >
           Add
         </button>
+
         <Snackbar
           anchorOrigin={{ vertical, horizontal }}
           open={open}
-
-          sx={{ width: "10rem" }}
+          sx={{ width: "20rem" }}
           key={vertical + horizontal}
         >
           <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
