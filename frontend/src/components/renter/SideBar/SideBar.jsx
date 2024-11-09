@@ -11,11 +11,11 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 
 const SideBar = () => {
-  const [openProducts, setOpenProducts] = React.useState(true);
+  const [openVehicles, setOpenVehicles] = React.useState(true);
   const [openOrders, setOpenOrders] = React.useState(true);
   const [active,setActive]=React.useState("Dashboard");
   const handleProductsClick = () => {
-    setOpenProducts(!openProducts);
+    setOpenVehicles(!openVehicles);
   };
   const handleOrdersClick = () => {
     setOpenOrders(!openOrders);
@@ -41,25 +41,25 @@ const SideBar = () => {
           <ListItemIcon>
             <InboxIcon  sx={{color:"black"}}/>
           </ListItemIcon>
-          <ListItemText primary="Products" />
-          {openProducts ? <ExpandLess /> : <ExpandMore />}
+          <ListItemText primary="Vehicle" />
+          {openVehicles ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-        <Collapse in={openProducts} timeout="auto" unmountOnExit>
+        <Collapse in={openVehicles} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-          <Link to="/addProduct" className="hover:no-underline ">
+          <Link to="/addVehicle" className="hover:no-underline ">
             <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Add"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Add"?"black":"", color:active==="Add"?"white":"black",}}>
               <ListItemIcon>
                 <StarBorder sx={{color:active==="Add"?"white":"black",}}/>
               </ListItemIcon>
-              <ListItemText primary="Add New Product" />
+              <ListItemText primary="Add New Vehicle" />
             </ListItemButton>
           </Link>
-          <Link to="/updateProduct" className="hover:no-underline">
+          <Link to="/updateVehicle" className="hover:no-underline">
             <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Update"); }} sx={{ borderRadius:"5px",pl: 4,backgroundColor:active==="Update"?"black":"", color:active==="Update"?"white":"black",  }}>
               <ListItemIcon>
                 <StarBorder sx={{color:active==="Update"?"white":"black",}}/>
               </ListItemIcon>
-              <ListItemText primary="Update Product" />
+              <ListItemText primary="Update Vehcile" />
             </ListItemButton>
           </Link>
           </List>

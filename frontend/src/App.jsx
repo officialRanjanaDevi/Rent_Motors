@@ -87,9 +87,9 @@ function AppContent() {
 
   const renterPaths = [
     "/renter",
-    "/addProduct",
+    "/addVehicle",
     "/newOrder",
-    "/updateProduct",
+    "/updateVehicle",
     "/cancelReq",
     "/acceptedOrder",
   ];
@@ -134,8 +134,8 @@ function AppContent() {
               {/* Renter Routes */}
               <Route path="/renter" element={<Dashboard panel="analysis" />} />
               <Route
-                path="/addProduct"
-                element={<Dashboard panel="addProduct" />}
+                path="/addVehicle"
+                element={<Dashboard panel="addVehicle" />}
               />
               <Route
                 path="/newOrder"
@@ -146,8 +146,8 @@ function AppContent() {
                 element={<Dashboard panel="acceptedOrder" />}
               />
               <Route
-                path="/updateProduct"
-                element={<Dashboard panel="updateProduct" />}
+                path="/updateVehicle"
+                element={<Dashboard panel="updateVehicle" />}
               />
               <Route
                 path="/cancelReq"

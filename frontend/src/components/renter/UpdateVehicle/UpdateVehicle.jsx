@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ListingCard from './ListingCard';
 import LoadingCard from '../../user/LoadingCard/LoadingCard';
 
-const UpdateProduct = () => {
+const UpdateVehcile = () => {
   const [vehicles,setVehicles]=useState([]);
 
   const loadData = async () => {
@@ -49,4 +49,4 @@ const UpdateProduct = () => {
   );
 };
 
-export default UpdateProduct;
+export default UpdateVehcile;

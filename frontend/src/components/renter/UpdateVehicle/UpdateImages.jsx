@@ -16,7 +16,7 @@ const UpdateImages = ({ data }) => {
   const handleClick = (newState, msg,sev) => {
     setState({ ...newState, open: true, message: msg , severity:sev});
     setTimeout(() => setState({ ...newState, open: false }), 1500);
-    setTimeout(() => navigate("/updateProduct"), 1600);
+    setTimeout(() => navigate("/updateVehicle"), 1600);
   };
 
   const form = useRef();

@@ -3,7 +3,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 
-const AddProduct = () => {
+const AddVehicle = () => {
   const navigate = useNavigate();
   const [state, setState] = useState({
     open: false,
@@ -11,10 +11,10 @@ const AddProduct = () => {
     horizontal: "center",
     message: "",
   });
-  const { vertical, horizontal, open, message } = state;
+  const { vertical, horizontal, open, message ,severity} = state;
 
-  const handleClick = (newState, msg) => {
-    setState({ ...newState, open: true, message: msg });
+  const handleClick = (newState, msg,sev) => {
+    setState({ ...newState, open: true, message: msg ,severity:sev});
     setTimeout(() => setState({ ...newState, open: false }), 1500);
     setTimeout(navigate("/updateProduct"), 1600);
   };
@@ -63,7 +63,8 @@ const AddProduct = () => {
        
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Product updated"
+          "Vehicle added successfully",
+          "success"
         );
         setTimeout(() => {
           setCredentials({
@@ -82,6 +83,11 @@ const AddProduct = () => {
       }
     } catch (error) {
       console.error("Error during product updation:", error);
+      handleClick(
+        { vertical: "top", horizontal: "center" },
+        "Failed to add Vehicle !",
+        "error"
+      );
     }
   };
 
@@ -100,7 +106,7 @@ const AddProduct = () => {
         onSubmit={handleSubmit}
         className="bg-neutral-100 mx-auto w-[90vw] md:w-[70vw] p-6 rounded-lg"
       >
-        <h1 className="text-center font-bold text-lg">Update Product</h1>
+        <h1 className="text-center font-bold text-lg">Add new vehicle</h1>
 
         <div className="mb-4">
           <label
@@ -313,7 +319,7 @@ const AddProduct = () => {
           sx={{ width: "20rem" }}
           key={vertical + horizontal}
         >
-          <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
             {message}
           </Alert>
         </Snackbar>
@@ -322,4 +328,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddVehicle;
