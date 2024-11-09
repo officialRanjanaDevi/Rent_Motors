@@ -1,11 +1,11 @@
 import React,{useEffect, useState} from 'react'
-import OrderItem from './OrderItem'
+import RejectedItem from './RejectedItem'
 import { Order } from '../../../../../backend/src/models/Order.model';
-const AcceptedOrder = () => {
+const RejectedOrder = () => {
   const [orderData, setOrderData] = useState([]);
   const loadData = async () => {
     try {
-      const status="Accepted";
+      const status="Rejected";
       let res = await fetch(`http://localhost:4000/api/renter/order/${status}`, {
         method: "GET",
         credentials:"include",
@@ -24,16 +24,14 @@ const AcceptedOrder = () => {
   useEffect(() => {
     loadData();
   }, []);
-  const reload=async()=>{
-    loadData();
- }
+  
   
   return (
     <div className='h-full'>
-    <h2 className='text-xl font-bold text-center'>Accepted Orders</h2>
+    <h2 className='text-xl font-bold text-center'>Rejected Orders</h2>
     <div className='sm:overflow-auto sm:h-[95%] px-3'>
        {orderData.length > 0 ? (
-          orderData.map((data, index) => <OrderItem key={index} data={data} reload={reload}/>)
+          orderData.map((data, index) => <RejectedItem key={index} data={data} />)
         ) : (
           ""
         )}
@@ -44,4 +42,4 @@ const AcceptedOrder = () => {
   )
 }
 
-export default AcceptedOrder
+export default RejectedOrder

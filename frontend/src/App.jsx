@@ -92,6 +92,8 @@ function AppContent() {
     "/updateVehicle",
     "/cancelReq",
     "/acceptedOrder",
+    "/cancelledOrder",
+    "/rejectedOrder"
   ];
   const showNavbarFooter = !renterPaths.includes(location.pathname);
 
@@ -152,6 +154,14 @@ function AppContent() {
               <Route
                 path="/cancelReq"
                 element={<Dashboard panel="cancelReq" />}
+              />
+              <Route
+                path="/cancelledOrder"
+                element={<Dashboard panel="cancelledOrder" />}
+              />
+              <Route
+                path="/rejectedOrder"
+                element={<Dashboard panel="rejectedOrder" />}
               />
               <Route path="/*" element={<Navigate to="/renter" />} />
             </>

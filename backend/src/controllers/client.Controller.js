@@ -432,7 +432,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
     throw new ApiError(409, "Unauthorized to cancel this order");
   }
 
-  if (order.status === "Delivered" || order.status === "Rejected") {
+  if (order.status === "Delivered" || order.status === "Rejected"||order.status === "Cancelled") {
     throw new ApiError(409, "Order can't be cancelled now");
   }
 
@@ -442,7 +442,7 @@ const cancelOrder = asyncHandler(async (req, res) => {
 
   const cancelledOrder = await Order.findByIdAndUpdate(
     order._id,
-    { status: "Cancelled" },
+    { status: "CancelReq" },
     { new: true }
   );
 

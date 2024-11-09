@@ -23,9 +23,12 @@ router.route("/vehicle")
 router.route("/updateImages")
   .patch(verifyJWT,upload.array("images", 3), updateImages);
 
-router.route("/order")
-  .get(verifyJWT,viewOrders)  
-  .patch(verifyJWT,manageOrders)
 
+router.route("/order")  
+  .patch(verifyJWT,manageOrders);
+
+router.route("/order/:status")
+  .get(verifyJWT,viewOrders)  
+  
 
 export default router;

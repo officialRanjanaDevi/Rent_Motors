@@ -34,7 +34,7 @@ const orderSchema= new mongoose.Schema({
     },
     status:{
         type:String,
-        enum: ['Delivered','Placed','Accepted','Cancelled','Rejected'],
+        enum: ['Delivered','Placed','Accepted','Cancelled','Rejected',"CancelReq"],
         default:"Placed",
     }
 

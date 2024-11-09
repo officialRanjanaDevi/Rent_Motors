@@ -54,7 +54,7 @@ const OrderItem = ({ data }) => {
       <img
         src={vehicleData.images[0] || "https://via.placeholder.com/150"} 
         alt={vehicleData.title || "Product image"} 
-        className="rounded-md"
+        className="rounded-md h-60 "
       />
       <div className="grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 w-full md:basis-4/6 px-2">
         <div className="flex flex-col items-center">

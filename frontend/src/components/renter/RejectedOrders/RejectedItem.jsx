@@ -1,98 +1,8 @@
 import React from "react";
-import Snackbar from "@mui/material/Snackbar";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
-const OrderItem = ({props,reload}) => {
-  
-  const [state, setState] = React.useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-    message: "",
-  });
-  const { vertical, horizontal, open, message, severity } = state;
 
-  const handleClick = (newState, msg, sev) => {
-    setState({ ...newState, open: true, message: msg, severity: sev });
-    setTimeout(() => setState({ ...state, open: false }), 1500);
-    setTimeout(()=>reload(),1000)
-  };
+const RejectedItem = ({ data }) => {
+ 
 
-  const handleAccept = async() => { 
-    try {
-      const response = await fetch("http://localhost:4000/api/renter/order", {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: data._id,
-          status: "Accepted",
-        }),
-      });
-      const res = response.json();
-      if (res.success) {
-        handleClick(
-          { vertical: "top", horizontal: "center" },
-          "Order Accepted",
-          "success"
-        );
-        reload();
-      } else {
-        handleClick(
-          { vertical: "top", horizontal: "center" },
-          "Faild to accept Order ",
-          "error"
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      handleClick(
-        { vertical: "top", horizontal: "center" },
-        "Faild to accept Order ",
-        "error"
-      );
-    }
-  };
-
-  const handleCancel = async() => { 
-    try {
-      const response = await fetch("http://localhost:4000/api/renter/order", {
-        method: "PATCH",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: data._id,
-          status: "Rejected",
-        }),
-      });
-      const res = response.json();
-      if (res.success) {
-        handleClick(
-          { vertical: "top", horizontal: "center" },
-          "Order Canceled successfully",
-          "success"
-        );
-        reload();
-      } else {
-        handleClick(
-          { vertical: "top", horizontal: "center" },
-          "Faild to cancel Order ",
-          "error"
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      handleClick(
-        { vertical: "top", horizontal: "center" },
-        "Faild to cancel Order ",
-        "error"
-      );
-    }
-  };
   return (
     <>
       <div className="mb-4 bg-neutral-200 my-2 rounded-md p-2 flex justify-between items-center relative   mx-auto flex-col  shadow-md shadow-neutral-500 text-xs sm:text-sm md:text-md">
@@ -180,34 +90,10 @@ const OrderItem = ({props,reload}) => {
             </div>
           </div>
         </div>
-        <div>
-          <Box className="flex ">
-            <button
-              onClick={handleAccept}
-              className="bg-lime-600 text-white py-1 px-12 mt-2 mx-3 rounded-md hover:bg-lime-700"
-            >
-              Accept
-            </button>
-            <button
-              onClick={handleCancel}
-              className="bg-black text-white py-1 px-12 mt-2 mx-3 rounded-md hover:bg-neutral-700"
-            >
-              Cancel
-            </button>
-          </Box>
-          <Snackbar
-            anchorOrigin={{ vertical, horizontal }}
-            open={open}
-            key={vertical + horizontal}
-          >
-            <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
-              {message}
-            </Alert>
-          </Snackbar>
-        </div>
+        
       </div>
     </>
   );
 };
 
-export default OrderItem;
+export default RejectedItem;

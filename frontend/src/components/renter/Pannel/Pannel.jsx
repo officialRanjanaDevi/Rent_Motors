@@ -5,6 +5,8 @@ import Analysis from '../Analysis/Analysis'
 import AcceptedOrder from '../AcceptedOrders/AcceptedOrder'
 import AddVehicle from '../AddVehicle/AddVehicle'
 import UpdateVehcile from '../UpdateVehicle/UpdateVehicle'
+import CancelledOrder from '../CancelledOrders/CancelledOrder'
+import RejectedOrder from '../RejectedOrders/RejectedOrder'
 const Pannel = (props) => {
     const {panel}=props.panel;
   
@@ -16,6 +18,8 @@ const Pannel = (props) => {
         {panel==='acceptedOrder'&&<AcceptedOrder/>}
         {panel==='cancelReq'&&<CancelReq/>}
         {panel==='analysis'&&<Analysis/>}
+        {panel==='cancelledOrder'&&<CancelledOrder/>}
+        {panel==='rejectedOrder'&&<RejectedOrder/>}
       
     </div>
   )

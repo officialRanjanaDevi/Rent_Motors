@@ -1,6 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Vehicle } from "../models/Vehicle.model.js";
+import { Order } from "../models/Order.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
@@ -234,18 +235,69 @@ const viewOrders=asyncHandler(async(req,res)=>{
   // return res
 
   const user=req.user;
-  const {status}=req.body;
-  if(user.type==="Renter"){
+  const {status}=req.params;
+  if(user.type!=="Renter"){
     throw new ApiError(409,"Unauthorized to access new orders")
   }
   const authorizedStatus = ["Placed", "Delivered", "Accepted", "Cancelled", "Rejected"];
   if (!authorizedStatus.includes(status)) {
     throw new ApiError(409, "Status is not authorized");
   }
+  const orders = await Order.aggregate([
+    {
+      $match: { renter: user._id, status },
+    },
+    {
+      $lookup: {
+        from: "vehciles",
+        localField: "vehicle",
+        foreignField: "_id",
+        as: "vehicleData",
+        pipeline: [
+          {
+            $project: {
+              images: 1,
+              title: 1,
+              brand: 1,
+              price:1
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$vehicleData",
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "client",
+        foreignField: "_id",
+        as: "clientData",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+              email: 1,
+              address: 1,
+              contact: 1,
+              city: 1,
+              pincode: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $unwind: {
+        path: "$clientData",
+      },
+    },
+  ]);
   
-  const orders=await Orders.find({renter:user._id , status})
   return res.status(200).json(new ApiResponse(200,orders,"Orders are here"))
-
 })
 
 const manageOrders=asyncHandler(async(req,res)=>{
@@ -259,11 +311,11 @@ const manageOrders=asyncHandler(async(req,res)=>{
 
   const user=req.user;
   const {id,status}=req.body;
-  if(user.type==="Renter"){
+  if(user.type!=="Renter"){
     throw new ApiError(409,"Unauthorized to access orders")
   }
 
-  const order=await Orders.findById(id);
+  const order=await Order.findById(id);
   if(!order){
     throw new ApiError(400,"No such order exists")
   }
@@ -273,12 +325,12 @@ const manageOrders=asyncHandler(async(req,res)=>{
   if(order.status==="Rejected"){
     throw new ApiError(400,"Order is already rejected")
   }
-  const authorizedStatus = [ "Delivered", "Accepted", "Rejected"];
+  const authorizedStatus = [ "Delivered", "Accepted", "Rejected","Cancelled"];
   if (!authorizedStatus.includes(status)) {
     throw new ApiError(409, "Status is not authorized");
   }
   
-  const updatedorder=await Orders.findByIdAndUpdate(id,{status},{new:true})
+  const updatedorder=await Order.findByIdAndUpdate(id,{status},{new:true})
   return res.status(200).json(new ApiResponse(200,updatedorder,"Orders are updated"))
 
 })

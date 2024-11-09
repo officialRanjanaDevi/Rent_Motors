@@ -91,6 +91,22 @@ const SideBar = () => {
               <ListItemText primary="Accepted Orders" />
             </ListItemButton>
             </Link>
+            <Link to="/rejectedOrder" className="hover:no-underline">
+            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Rejected"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Rejected"?"black":"", color:active==="Rejected"?"white":"black",}}>
+              <ListItemIcon>
+                <StarBorder sx={{color:active==="Rejected"?"white":"black",}}/>
+              </ListItemIcon>
+              <ListItemText primary="Rejected Orders" />
+            </ListItemButton>
+            </Link>
+            <Link to="/cancelledOrder" className="hover:no-underline">
+            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Cancelled"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Cancelled"?"black":"", color:active==="Cancelled"?"white":"black",}}>
+              <ListItemIcon>
+                <StarBorder sx={{color:active==="Cancelled"?"white":"black",}}/>
+              </ListItemIcon>
+              <ListItemText primary="Cancelled Orders" />
+            </ListItemButton>
+            </Link>
           </List>
         </Collapse>
         <Link to="/cancelReq" className="hover:no-underline">
