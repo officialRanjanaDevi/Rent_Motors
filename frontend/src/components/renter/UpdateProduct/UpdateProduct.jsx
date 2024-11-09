@@ -29,8 +29,7 @@ const UpdateProduct = () => {
   }, []);
 
   const hello=async()=>{
-    console.log("hello");
-    loadData();
+     loadData();
   }
   return (
     <div className="h-full sm:overflow-auto ">

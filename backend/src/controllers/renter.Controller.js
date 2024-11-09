@@ -144,7 +144,7 @@ const updateVehicle = asyncHandler(async (req, res) => {
   }
 
   const duplicateTitle = await Vehicle.findOne({ title: data.title });
-  if (duplicateTitle._id.toString()!==data.id) {
+  if (duplicateTitle&&duplicateTitle._id.toString()!==data.id) {
     throw new ApiError(400, "Title already exists");
   }
 

@@ -1,12 +1,14 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
 import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import CardContent from "@mui/material/CardContent";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import UpdateForm from "./UpdateForm";
 import UpdateImages from "./UpdateImages";
+import { Snackbar, Alert } from "@mui/material";
 
 export default function ListingCard({ data, hello }) {
   const style = {
@@ -19,11 +21,25 @@ export default function ListingCard({ data, hello }) {
     boxShadow: 24,
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [state, setState] = React.useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    message: "",
+  });
+  const { vertical, horizontal, open, message ,severity} = state;
 
-  const handleOpen = () => setOpen(true);
+  const handleClick = (newState, msg,sev) => {
+    setState({ ...newState, open: true, message: msg ,severity:sev});
+    setTimeout(() => setState({ ...newState, open: false }), 1500);
+    setTimeout(() => navigate("/updateProduct"), 1600);
+  };
+
+
+  const [openForm, setOpenForm] = React.useState(false);
+  const handleOpen = () => setOpenForm(true);
   const handleClose = () => {
-    setOpen(false);
+    setOpenForm(false);
     hello(); 
   };
 
@@ -33,7 +49,50 @@ export default function ListingCard({ data, hello }) {
     setOpenImages(false);
     hello();
   }
+
+  const [openDeleteModal,setOpenDeleteModal]=React.useState(false);
+  const handleCloseDeleteModal=()=>{
+    setOpenDeleteModal(false);
+  }
+  const handleDelete=async()=>{
+    try{
+     const response=await fetch("ttp://localhost:4000/api/renter/vehicle",{
+      method: "DELETE",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: data._id,
+      })
+     })
+     const res=await response.json();
+     if(res.success){
+      handleClick(
+        { vertical: "top", horizontal: "center"},
+        "Vehicle deleted successfully!",
+        "success"
+        
+      );
+      setTimeout(() => {
+        setOpenDeleteModal(false);
+        hello();
+      }, 1500);
+    
+     }
+    }catch(error){
+    console.error(error);
+    handleClick(
+      { vertical: "top", horizontal: "center" },
+      "Failed to delete the vehicle!","error"
+      
+    );
+    setOpenDeleteModal(false);
+    }
+  
+    
+   
+  }
   return (
+    <>
     <Card
     sx={{
       maxWidth: "400px",
@@ -44,20 +103,54 @@ export default function ListingCard({ data, hello }) {
     }}
     className="relative z-10 group bg-neutral-50 border-2 border-neutral-200"
   >
-    <div className="overflow-hidden h-3/4 p-1 bg-neutral-50">
+    <div className="overflow-hidden  p-1 bg-neutral-50">
+  
+
       <div
-        id="carouselExampleIndicators"
-        className="carousel cursor-pointer slide rounded-lg mx-auto h-full group-hover:scale-95 transition-transform duration-1000 ease-in-out "
+        id={`carousel-${data.title}`}
+        className="relative carousel cursor-pointer slide rounded-lg mx-auto h-full group-hover:scale-95 transition-transform duration-1000 ease-in-out "
         data-ride="carousel"
-        
+        data-interval="false" 
       >
-       
-        
+      <div className="absolute top-0 right-0  z-10 " onClick={()=>{setOpenDeleteModal(true)}}>
+        <Tooltip title="Delete"  placement="top-start" sx={{color:"green"}}>
+      <IconButton>
+        <DeleteIcon />
+      </IconButton>
+    </Tooltip>
+        </div>
       
+        <Modal
+          keepMounted
+          open={openDeleteModal}
+          onClose={handleCloseDeleteModal}
+          aria-labelledby="keep-mounted-modal-title"
+          aria-describedby="keep-mounted-modal-description"
+        >
+          <Box sx={style}>
+           <div className="p-4">
+             <h3 className="font-semibold text-red-600">Are you sure you want to delete <span className="font-bold underline">{data.title}</span> vehicle ?</h3>
+             <div className="flex w-full justify-evenly mt-4">
+              
+              <button className="btn btn-danger w-20" onClick={handleDelete}>
+              YES
+             </button>
+             <button className="btn bg-lime-600 text-white hover:bg-lime-700 w-20"  onClick={()=>{setOpenDeleteModal(false)}}>
+              NO
+             </button>
+           
+            
+             </div>
+            
+           </div>
+          </Box>
+        </Modal>
+        
         <div
-          className="carousel-inner rounded-lg h-full hover:opacity-85"
+          className=" carousel-inner rounded-lg h-full hover:opacity-85"
           onClick={handleImages}
         >
+           
           <div className="carousel-item rounded-lg">
             <img
               src={data.images[0]}
@@ -84,8 +177,7 @@ export default function ListingCard({ data, hello }) {
      
         <a
           className="carousel-control-prev"
-          href="#carouselExampleIndicators"
-          role="button"
+          href={`#carousel-${data.title}`}      role="button"
           data-slide="prev"
         >
           <span
@@ -96,7 +188,7 @@ export default function ListingCard({ data, hello }) {
         </a>
         <a
           className="carousel-control-next"
-          href="#carouselExampleIndicators"
+          href={`#carousel-${data.title}`}        
           role="button"
           data-slide="next"
         >
@@ -107,6 +199,7 @@ export default function ListingCard({ data, hello }) {
           <span className="sr-only">Next</span>
         </a>
       </div>
+      
       <Modal
           keepMounted
           open={openImages}
@@ -118,6 +211,7 @@ export default function ListingCard({ data, hello }) {
             <UpdateImages data={data} />
           </Box>
         </Modal>
+        
     </div>
 
     <CardContent sx={{ borderRadius: "15px" }} className="bg-neutral-50 ">
@@ -125,7 +219,7 @@ export default function ListingCard({ data, hello }) {
         <h1 className="font-bold text-md">{data.title}</h1>
         <h1 className="font-bold text-md">{data.brand}</h1>
       </div>
-
+     
       <p>{data.description}</p>
       <div className="flex justify-between">
         <p>
@@ -157,7 +251,7 @@ export default function ListingCard({ data, hello }) {
         </p>
         <Modal
           keepMounted
-          open={open}
+          open={openForm}
           onClose={handleClose}
           aria-labelledby="keep-mounted-modal-title"
           aria-describedby="keep-mounted-modal-description"
@@ -169,5 +263,16 @@ export default function ListingCard({ data, hello }) {
       </div>
     </CardContent>
   </Card>
+   <Snackbar
+   anchorOrigin={{ vertical, horizontal }}
+   open={open}
+   sx={{ width: "20rem" }}
+   key={vertical + horizontal}
+ >
+   <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
+     {message}
+   </Alert>
+ </Snackbar>
+ </>
   );
 }

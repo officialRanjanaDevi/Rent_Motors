@@ -11,10 +11,10 @@ const UpdateImages = ({ data }) => {
     horizontal: "center",
     message: "",
   });
-  const { vertical, horizontal, open, message } = state;
+  const { vertical, horizontal, open, message ,severity} = state;
 
-  const handleClick = (newState, msg) => {
-    setState({ ...newState, open: true, message: msg });
+  const handleClick = (newState, msg,sev) => {
+    setState({ ...newState, open: true, message: msg , severity:sev});
     setTimeout(() => setState({ ...newState, open: false }), 1500);
     setTimeout(() => navigate("/updateProduct"), 1600);
   };
@@ -25,7 +25,7 @@ const UpdateImages = ({ data }) => {
     if (images.length !== 3) {
       handleClick(
         { vertical: "top", horizontal: "center" },
-        "Please upload exactly 3 images",
+        "Please upload exactly 3 images","error"
         
       );
       return;
@@ -50,11 +50,15 @@ const UpdateImages = ({ data }) => {
       if (res.success) {
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Product updated"
+          "Images updated successfully","success"
         );
       }
     } catch (error) {
       console.error("Error during product update:", error);
+      handleClick(
+        { vertical: "top", horizontal: "center" },
+        "Failed to update Images","error"
+      );
     }
   };
 
@@ -94,7 +98,7 @@ const UpdateImages = ({ data }) => {
           sx={{ width: "20rem" }}
           key={vertical + horizontal}
         >
-          <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          <Alert  severity={severity}  variant="filled" sx={{ width: "100%" }}>
             {message}
           </Alert>
         </Snackbar>

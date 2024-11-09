@@ -11,10 +11,10 @@ const UpdateForm = (props) => {
     horizontal: "center",
     message: "",
   });
-  const { vertical, horizontal, open, message } = state;
+  const { vertical, horizontal, open, message,severity } = state;
 
-  const handleClick = (newState, msg) => {
-    setState({ ...newState, open: true, message: msg });
+  const handleClick = (newState, msg,sev) => {
+    setState({ ...newState, open: true, message: msg ,severity:sev});
     setTimeout(() => setState({ ...newState, open: false }), 1500);
     setTimeout(navigate("/updateProduct"), 1600);
   };
@@ -58,7 +58,7 @@ const UpdateForm = (props) => {
        
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Product updated"
+          "Vehicle updated successfully","success"
         );
         setTimeout(() => {
           setCredentials({
@@ -76,16 +76,15 @@ const UpdateForm = (props) => {
       }
     } catch (error) {
       console.error("Error during product updation:", error);
+      handleClick(
+        { vertical: "top", horizontal: "center" },
+        "Failed to update Vehicle","error"
+      );
     }
   };
 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    const files = e.target.files;
-    console.log(files);
   };
 
   return (
@@ -95,7 +94,7 @@ const UpdateForm = (props) => {
         onSubmit={handleSubmit}
         className="bg-neutral-100 mx-auto w-[90vw] md:w-[70vw] p-6 rounded-lg"
       >
-        <h1 className="text-center font-bold text-lg">Update Product</h1>
+        <h1 className="text-center font-bold text-lg">Update Vehicle</h1>
 
         <div className="mb-4">
           <label
@@ -255,22 +254,6 @@ const UpdateForm = (props) => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        {/* 
-        <div className="mb-4 grid-cols-3 grid gap-4">
-          {["image1", "image2", "image3"].map((image, index) => (
-            <div key={index}>
-              <label htmlFor={image} className="block text-gray-700 text-sm font-bold mb-2">
-                Upload image
-              </label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                className="bg-white shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-          ))}
-        </div> */}
-
         <button
           type="submit"
           className="bg-black text-white text-sm hover:bg-lime-600 font-bold py-2 px-12 rounded focus:outline-none focus:shadow-outline"
@@ -284,7 +267,7 @@ const UpdateForm = (props) => {
           sx={{ width: "20rem" }}
           key={vertical + horizontal}
         >
-          <Alert severity="success" variant="filled" sx={{ width: "100%" }}>
+          <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
             {message}
           </Alert>
         </Snackbar>
