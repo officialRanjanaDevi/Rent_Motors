@@ -9,7 +9,9 @@ import {
   updateImages,
   viewVehicleListing,
   viewOrders,
-  manageOrders
+  viewAllOrders,
+  manageOrders,
+  findOrder
 } from "../controllers/renter.Controller.js";
 
 const router = Router();
@@ -25,10 +27,12 @@ router.route("/updateImages")
 
 
 router.route("/order")  
-  .patch(verifyJWT,manageOrders);
+  .patch(verifyJWT,manageOrders)
+  .get(verifyJWT,viewAllOrders);
 
 router.route("/order/:status")
   .get(verifyJWT,viewOrders)  
-  
+router.route("/viewOrder/:id")
+  .get(verifyJWT,findOrder)    
 
 export default router;

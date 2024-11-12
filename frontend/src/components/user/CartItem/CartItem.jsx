@@ -180,7 +180,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
         </div>
         <div className="flex flex-col items-end me-2">
           <p className="text-md font-bold">
-            Total: {vehicleData.price * quantity}
+            Total: {vehicleData.price * quantity*days}
           </p>
           <p className="flex font-semibold">
             Price per day:&nbsp;

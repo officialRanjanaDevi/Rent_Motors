@@ -1,122 +1,129 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import StarBorder from "@mui/icons-material/StarBorder";
 
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
+import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
+import AddchartOutlinedIcon from '@mui/icons-material/AddchartOutlined';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import CancelScheduleSendOutlinedIcon from '@mui/icons-material/CancelScheduleSendOutlined';
+import Avatar from '@mui/material/Avatar';
 const SideBar = () => {
-  const [openVehicles, setOpenVehicles] = React.useState(true);
-  const [openOrders, setOpenOrders] = React.useState(true);
-  const [active,setActive]=React.useState("Dashboard");
-  const handleProductsClick = () => {
-    setOpenVehicles(!openVehicles);
-  };
-  const handleOrdersClick = () => {
-    setOpenOrders(!openOrders);
-  };
   
+  const location = useLocation().pathname;
+  const [newOrder, setNewOrder] = React.useState(0);
+  const [cancelreq, setCancelreq] = React.useState(0);
+  const loadData = async () => {
+    try {
+   
+      let res1 = await fetch(`http://localhost:4000/api/renter/order/Placed`, {
+        method: "GET",
+        credentials:"include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      
+      });
+      let response1 = await res1.json();
+      setNewOrder(response1.data.length);
 
-  
+      let res2 = await fetch(`http://localhost:4000/api/renter/order/CancelReq`, {
+        method: "GET",
+        credentials:"include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      
+      });
+      let response2 = await res2.json();
+      setCancelreq(response2.data.length);
+      } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+  React.useEffect(() => {
+    loadData();
+   
+  }, []);
+   
   return (
-    <div className="bg-lime-600 w-1/4 max-w-72 mx-2 mb-2 hidden md:flex rounded-md">
+    <div className="bg-lime-600 w-1/4 min-w-[250px] max-w-72 mx-2 mb-2 hidden lg:flex rounded-md">
       <List sx={{ width: "100%", maxWidth: 360 }} component="nav">
-        <Link to="/admin" className="hover:no-underline">
-    
-        <ListItemButton className="hover:text-black " onClick={()=>{setActive("Dashboard"); }} sx={{backgroundColor:active==="Dashboard"?"black":"", color:active==="Dashboard"?"white":"black",}}>
+
+        <Link to="/renter" className="hover:no-underline">
+        <ListItemButton className="hover:text-black m-1" sx={{borderRadius:"5px",backgroundColor:location==="/renter"?"black":"", color:location==="/renter"?"white":"black",}}>
           <ListItemIcon>
-            <InboxIcon sx={{color:active==="Dashboard"?"white":"black",}}/>
+            <DashboardOutlinedIcon sx={{color:location==="/renter"?"white":"black",}}/>
           </ListItemIcon>
           <ListItemText primary="Dashboard" />
         </ListItemButton>
         </Link>
-        {/* Products Section */}
       
-        <ListItemButton onClick={handleProductsClick}>
-          <ListItemIcon>
-            <InboxIcon  sx={{color:"black"}}/>
-          </ListItemIcon>
-          <ListItemText primary="Vehicle" />
-          {openVehicles ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openVehicles} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-          <Link to="/addVehicle" className="hover:no-underline ">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Add"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Add"?"black":"", color:active==="Add"?"white":"black",}}>
+        <Link to="/addVehicle" className="hover:no-underline ">
+            <ListItemButton className="text-sm hover:text-black m-1" sx={{borderRadius:"5px",backgroundColor:location==="/addVehicle"?"black":"", color:location==="/addVehicle"?"white":"black",}}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="Add"?"white":"black",}}/>
+                <LibraryAddOutlinedIcon sx={{color:location==="/addVehicle"?"white":"black",}}/>
               </ListItemIcon>
               <ListItemText primary="Add New Vehicle" />
             </ListItemButton>
           </Link>
           <Link to="/updateVehicle" className="hover:no-underline">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Update"); }} sx={{ borderRadius:"5px",pl: 4,backgroundColor:active==="Update"?"black":"", color:active==="Update"?"white":"black",  }}>
+            <ListItemButton className="text-sm hover:text-black m-1" sx={{ borderRadius:"5px",backgroundColor:location==="/updateVehicle"?"black":"", color:location==="/updateVehicle"?"white":"black",  }}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="Update"?"white":"black",}}/>
+                <PermMediaOutlinedIcon sx={{color:location==="/updateVehicle"?"white":"black",}}/>
               </ListItemIcon>
               <ListItemText primary="Update Vehcile" />
             </ListItemButton>
           </Link>
-          </List>
-        </Collapse>
-
-        {/* Orders Section */}
-        <ListItemButton onClick={handleOrdersClick}>
-          <ListItemIcon>
-            <InboxIcon sx={{color:"black"}}/>
-          </ListItemIcon>
-          <ListItemText primary="Orders" />
-          {openOrders ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <Collapse in={openOrders} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-          <Link to="/newOrder" className="hover:no-underline">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("NewOrder"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="NewOrder"?"black":"", color:active==="NewOrder"?"white":"black",}}>
+        <Link to="/newOrder" className="hover:no-underline">
+            <ListItemButton className="text-sm hover:text-black m-1"  sx={{borderRadius:"5px",backgroundColor:location==="/newOrder"?"black":"", color:location==="/newOrder"?"white":"black",}}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="NewOrder"?"white":"black",}}/>
+                <AddchartOutlinedIcon sx={{color:location==="/newOrder"?"white":"black",}}/>
               </ListItemIcon>
-              <ListItemText primary="New Orders"  />
+              <ListItemText primary="New Orders"  />{newOrder>0?<Avatar sx={{height:"1.5rem",width:"1.5rem",backgroundColor:"rgb(54 83 20)",fontSize:"1rem"}}>{newOrder}</Avatar>:""}
             </ListItemButton>
             </Link>
             <Link to="/acceptedOrder" className="hover:no-underline">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Accepted"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Accepted"?"black":"", color:active==="Accepted"?"white":"black",}}>
+            <ListItemButton className="text-sm hover:text-black m-1"  sx={{borderRadius:"5px",backgroundColor:location==="/acceptedOrder"?"black":"", color:location==="/acceptedOrder"?"white":"black",}}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="Accepted"?"white":"black",}}/>
+                <BeenhereOutlinedIcon sx={{color:location==="/acceptedOrder"?"white":"black",}}/>
               </ListItemIcon>
               <ListItemText primary="Accepted Orders" />
             </ListItemButton>
             </Link>
             <Link to="/rejectedOrder" className="hover:no-underline">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Rejected"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Rejected"?"black":"", color:active==="Rejected"?"white":"black",}}>
+            <ListItemButton className="text-sm hover:text-black m-1"  sx={{borderRadius:"5px",backgroundColor:location==="/rejectedOrder"?"black":"", color:location==="/rejectedOrder"?"white":"black",}}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="Rejected"?"white":"black",}}/>
+                < EventBusyOutlinedIcon  sx={{color:location==="/rejectedOrder"?"white":"black",}}/>
               </ListItemIcon>
               <ListItemText primary="Rejected Orders" />
             </ListItemButton>
             </Link>
             <Link to="/cancelledOrder" className="hover:no-underline">
-            <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Cancelled"); }} sx={{borderRadius:"5px",pl: 4,backgroundColor:active==="Cancelled"?"black":"", color:active==="Cancelled"?"white":"black",}}>
+            <ListItemButton className="text-sm hover:text-black m-1"  sx={{borderRadius:"5px",backgroundColor:location==="/cancelledOrder"?"black":"", color:location==="/cancelledOrder"?"white":"black",}}>
               <ListItemIcon>
-                <StarBorder sx={{color:active==="Cancelled"?"white":"black",}}/>
+                <DeleteForeverOutlinedIcon sx={{color:location==="/cancelledOrder"?"white":"black",}}/>
               </ListItemIcon>
               <ListItemText primary="Cancelled Orders" />
             </ListItemButton>
             </Link>
-          </List>
-        </Collapse>
-        <Link to="/cancelReq" className="hover:no-underline">
-        <ListItemButton className="hover:text-black m-1" onClick={()=>{setActive("Cancelreq"); }} sx={{borderRadius:"5px",backgroundColor:active==="Cancelreq"?"black":"", color:active==="Cancelreq"?"white":"black",}}>
+            <Link to="/cancelReq" className="hover:no-underline">
+        <ListItemButton className="text-sm hover:text-black  m-1"  sx={{borderRadius:"5px",backgroundColor:location==="/cancelReq"?"black":"", color:location==="/cancelReq"?"white":"black",}}>
           <ListItemIcon>
-            <InboxIcon sx={{color:active==="Cancelreq"?"white":"black",}}/>
+            <CancelScheduleSendOutlinedIcon  sx={{color:location==="/cancelReq"?"white":"black"}}/>
           </ListItemIcon>
-          <ListItemText primary="Cancel Requests" />
+          <ListItemText primary="Cancel Requests" />{cancelreq>0?<Avatar sx={{height:"1.5rem",width:"1.5rem",backgroundColor:"rgb(54 83 20)",fontSize:"1rem"}}>{cancelreq}</Avatar>:""}
         </ListItemButton>
         </Link>
+
+     
+        
       </List>
     </div>
   );

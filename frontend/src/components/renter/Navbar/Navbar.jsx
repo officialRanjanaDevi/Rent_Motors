@@ -1,172 +1,389 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Link,useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import LogoutIcon from "@mui/icons-material/Logout";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Navbar.css";
+import Order from "./Order";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
+import PermMediaOutlinedIcon from '@mui/icons-material/PermMediaOutlined';
+import AddchartOutlinedIcon from '@mui/icons-material/AddchartOutlined';
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import EventBusyOutlinedIcon from '@mui/icons-material/EventBusyOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import CancelScheduleSendOutlinedIcon from '@mui/icons-material/CancelScheduleSendOutlined';
+
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: { xs: "90%", sm: "75%", md: "50%" },
-  height: "auto",
+  width: "70vw",
+  height: "90vh",
   bgcolor: "background.paper",
-  border: "4px solid #000",
-  borderRadius: "8px",
   boxShadow: 24,
-  p: 4,
+  padding: 2,
 };
 
 function Navbar() {
-  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
+  const [orderid, setOrderid] = useState("");
+  const [orderData, setOrderData] = useState({});
+  const location = useLocation().pathname;
+  const [newOrder, setNewOrder] = useState(0);
+  const [cancelreq, setCancelreq] = useState(0);
+  const findOrder = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/renter/viewOrder/${orderid}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+      const response = await res.json();
+      console.log(response);
+      if (response.success) {
+        setOrderData(response.data);
+        if (response.data) {
+          setOpen(true);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      findOrder();
+    }
   };
+
+ 
+  const loadData = async () => {
+    try {
+      let res1 = await fetch(`http://localhost:4000/api/renter/order/Placed`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let response1 = await res1.json();
+      setNewOrder(response1.data.length);
+
+      let res2 = await fetch(
+        `http://localhost:4000/api/renter/order/CancelReq`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      let response2 = await res2.json();
+      setCancelreq(response2.data.length);
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+  const [state, setState] = useState({ left: false });
+  const [screenSize, setScreenSize] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setScreenSize(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if(screenSize<1025){
+      console.log(screenSize)
+      if (
+        event.type === "keydown" &&
+        (event.key === "Tab" || event.key === "Shift") 
+      ) {
+        return;
+      }
+  
+      setState({ ...state, [anchor]: open });
+    }
+   
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+      className="bg-lime-600 h-full"
+    >
+      <List sx={{ width: "100%", maxWidth: 360 }} component="nav">
+       
+        <Link to="/renter" className="hover:no-underline">
+          <ListItemButton
+            className="hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/renter" ? "black" : "",
+              color: location === "/renter" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <DashboardOutlinedIcon
+                sx={{ color: location === "/renter" ? "white" : "black" }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+          </ListItemButton>
+        </Link>
+
+        <Link to="/addVehicle" className="hover:no-underline ">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/addVehicle" ? "black" : "",
+              color: location === "/addVehicle" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <LibraryAddOutlinedIcon
+                sx={{ color: location === "/addVehicle" ? "white" : "black" }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Add New Vehicle" />
+          </ListItemButton>
+        </Link>
+        <Link to="/updateVehicle" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/updateVehicle" ? "black" : "",
+              color: location === "/updateVehicle" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <PermMediaOutlinedIcon
+                sx={{
+                  color: location === "/updateVehicle" ? "white" : "black",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Update Vehcile" />
+          </ListItemButton>
+        </Link>
+        <Link to="/newOrder" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/newOrder" ? "black" : "",
+              color: location === "/newOrder" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <AddchartOutlinedIcon
+                sx={{ color: location === "/newOrder" ? "white" : "black" }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="New Orders" />
+            {newOrder > 0 ? (
+              <Avatar
+                sx={{
+                  height: "1.5rem",
+                  width: "1.5rem",
+                  backgroundColor: "rgb(54 83 20)",
+                  fontSize: "1rem",
+                }}
+              >
+                {newOrder}
+              </Avatar>
+            ) : (
+              ""
+            )}
+          </ListItemButton>
+        </Link>
+        <Link to="/acceptedOrder" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/acceptedOrder" ? "black" : "",
+              color: location === "/acceptedOrder" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <BeenhereOutlinedIcon
+                sx={{
+                  color: location === "/acceptedOrder" ? "white" : "black",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Accepted Orders" />
+          </ListItemButton>
+        </Link>
+        <Link to="/rejectedOrder" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/rejectedOrder" ? "black" : "",
+              color: location === "/rejectedOrder" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <EventBusyOutlinedIcon
+                sx={{
+                  color: location === "/rejectedOrder" ? "white" : "black",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Rejected Orders" />
+          </ListItemButton>
+        </Link>
+        <Link to="/cancelledOrder" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/cancelledOrder" ? "black" : "",
+              color: location === "/cancelledOrder" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <DeleteForeverOutlinedIcon
+                sx={{
+                  color: location === "/cancelledOrder" ? "white" : "black",
+                }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Cancelled Orders" />
+          </ListItemButton>
+        </Link>
+        <Link to="/cancelReq" className="hover:no-underline">
+          <ListItemButton
+            className="text-sm hover:text-black  m-1"
+            sx={{
+              borderRadius: "5px",
+              backgroundColor: location === "/cancelReq" ? "black" : "",
+              color: location === "/cancelReq" ? "white" : "black",
+            }}
+          >
+            <ListItemIcon>
+              <CancelScheduleSendOutlinedIcon
+                sx={{ color: location === "/cancelReq" ? "white" : "black" }}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Cancel Requests" />
+            {cancelreq > 0 ? (
+              <Avatar
+                sx={{
+                  height: "1.5rem",
+                  width: "1.5rem",
+                  backgroundColor: "rgb(54 83 20)",
+                  fontSize: "1rem",
+                }}
+              >
+                {cancelreq}
+              </Avatar>
+            ) : (
+              ""
+            )}
+          </ListItemButton>
+        </Link>
+      </List>
+    </Box>
+  );
 
   return (
-    <AppBar sx={{ backgroundColor: "black", padding: "0rem 1rem" }}>
-      <Toolbar disableGutters sx={{display:"flex",justifyContent:"space-between"}}>
+    <AppBar
+      sx={{ backgroundColor: "black", padding: "0rem 1rem" }}
+      className="relative -z-50"
+    >
+      <Toolbar
+        disableGutters
+        sx={{ display: "flex", justifyContent: "space-between" }}
+      >
         <Typography
           variant="h6"
           noWrap
           component="a"
           sx={{
             mr: 2,
-            display: { xs: "none", md: "flex" },
             fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
+            fontWeight: 900,
             color: "inherit",
             textDecoration: "none",
           }}
+          onClick={toggleDrawer("left", true)}
         >
           Rent Motors
         </Typography>
-
-        {/* For mobile menu */}
-        <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleOpenNavMenu}
-            color="inherit"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id="menu-appbar"
-            anchorEl={anchorElNav}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-            open={Boolean(anchorElNav)}
-            onClose={handleCloseNavMenu}
-            sx={{ display: { xs: "block", md: "none" } }}
-          >
-            <MenuItem
-              className="flex flex-col  w-40 "
-              sx={{
-                justifyContent: "start",
-                alignItems: "start",
-                padding: "0px 0px",
-              }}
-              onClick={handleCloseNavMenu}
-            >
-              <Link to="/newOrder" className="mobile-app-bar-transition">
-                <div>
-                  <ArrowForwardIcon
-                    sx={{ fontSize: "1.2rem", color: "#555" }}
-                  ></ArrowForwardIcon>
-                  New Orders
-                </div>
-              </Link>
-              <Link to="/addProduct" className="mobile-app-bar-transition">
-                <div>
-                  <ArrowForwardIcon
-                    sx={{ fontSize: "1.2rem", color: "#555" }}
-                  ></ArrowForwardIcon>
-                  Add Product
-                </div>
-              </Link>
-              <Link to="/cancelReq" className="mobile-app-bar-transition">
-                <div>
-                  <ArrowForwardIcon
-                    sx={{ fontSize: "1.2rem", color: "#555" }}
-                  ></ArrowForwardIcon>
-                  Cancel Requests
-                </div>
-              </Link>
-
-              <Link to="/updateProduct" className="mobile-app-bar-transition">
-                <div>
-                  <ArrowForwardIcon
-                    sx={{ fontSize: "1.2rem", color: "#555" }}
-                  ></ArrowForwardIcon>
-                  UpdateProduct
-                </div>
-              </Link>
-            </MenuItem>
-          </Menu>
-        </Box>
-
-        {/* Logo for mobile view */}
-        <Typography
-          variant="h5"
-          noWrap
-          component="a"
-          href="/"
-          sx={{
-            mr: 2,
-            display: { xs: "flex", md: "none" },
-            flexGrow: 1,
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-            hover: { color: "black" },
-          }}
+        <Drawer
+          anchor="left"
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
         >
-          BeBold
-        </Typography>
+          {list("left")}
+        </Drawer>
+        <div className="relative">
+          <input
+            className="w-[30vw] rounded-md py-0.5 px-8 shadow-md shadow-neutral-500 text-black"
+            placeholder="Enter order ID"
+            value={orderid}
+            onChange={(e) => setOrderid(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <SearchRoundedIcon
+            sx={{ color: "rgb(150 150 150)" }}
+            className="absolute left-1 mt-1 cursor-pointer"
+            onClick={findOrder}
+          />
+
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style} className="rounded-md ">
+              <Order data={orderData} />
+            </Box>
+          </Modal>
+        </div>
 
         {/* User avatar menu */}
         <Box className="flex items-center">
-          <Link
-            to="/logout"
-            className="hover:text-white text-neutral-500 mr-2"
-          >
+          <Link to="/logout" className="hover:text-white text-neutral-500 mr-2">
             <LogoutIcon />
-           
           </Link>
 
           <Avatar
             alt="User Avatar"
             src="/static/images/avatar/2.jpg"
-            sx={{ backgroundColor: " rgb(245 158 11)" }}
+            sx={{ backgroundColor: "rgb(103 163 13)" }}
           />
         </Box>
       </Toolbar>

@@ -63,6 +63,7 @@ export default function VehicleCard(props) {
       sx={{
         maxWidth: "400px",
         minHeight: "400px",
+        maxHeight: "500px",
         margin: ".5rem",
         borderRadius: "15px",
         boxShadow: "inset 0px 1px 6px 1px rgb(220 220 220)",
@@ -84,8 +85,8 @@ export default function VehicleCard(props) {
             component="img"
             image={data.images[0]}
           
-            sx={{ maxHeight: "600px", borderRadius: "15px" }}
-            className="h-full group-hover:scale-95 transition-transform duration-1000 ease-in-out "
+            sx={{width:"350px", borderRadius: "15px" }}
+            className="h-full  group-hover:scale-95 transition-transform duration-1000 ease-in-out "
           />
         </div>
       </Link>

@@ -32,7 +32,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // if user created then return success
 
   const { username, email, password, type } = req.body;
-
+  console.log(req.body)
   const existedUser = await User.findOne({ email });
   if (existedUser) {
     throw new ApiError(409, "User already exists with same email");
@@ -150,6 +150,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   // if matched then regenerate access token and refersh token and send it in cookies
 
   const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+  
   if (!incomingRefreshToken) {
     throw new ApiError(401, "unauthorized request");
   }

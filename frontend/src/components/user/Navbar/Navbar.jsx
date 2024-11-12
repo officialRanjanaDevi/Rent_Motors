@@ -29,9 +29,9 @@ const style = {
 
 function Navbar() {
   const [menu, setMenu] = useState("");
-  const [accessToken,setAccessToken]=useState(Cookies.get('accessToken'));
+  const [userType,setUserType]=useState(localStorage.getItem("usertype"));
   useEffect(() => {
-    setAccessToken(Cookies.get('accessToken'));
+    setUserType(localStorage.getItem("usertype"));
   })
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -125,7 +125,7 @@ function Navbar() {
                 to="/wishlist"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: accessToken ? "block" : "none",
+                  display: userType==="Client" ? "block" : "none",
                 }}
               >
                 <div>
@@ -139,7 +139,7 @@ function Navbar() {
                 to="/cart"
                 className="mobile-app-bar-transition"
                 style={{
-                  display: accessToken ? "block" : "none",
+                  display: userType==="Client" ? "block" : "none",
                 }}
               >
                 <div>
@@ -247,7 +247,7 @@ function Navbar() {
             style={{
                 opacity: menu === "wishlist" ? 1 : 0.7,
                 fontWeight: menu === "wishlist" ? "bold" : "normal",
-              display: accessToken ? "block" : "none",
+              display: userType==="Client" ? "block" : "none",
             }}
           >
             Wishlist
@@ -261,7 +261,7 @@ function Navbar() {
             style={{
                 opacity: menu === "cart" ? 1 : 0.7,
                 fontWeight: menu === "cart" ? "bold" : "normal",
-              display: accessToken ? "block" : "none",
+              display: userType==="Client" ? "block" : "none",
             }}
           >
             cart
@@ -298,7 +298,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: accessToken ? "none" : "block",
+                display: userType ? "none" : "block",
               }}
             >
               <Link to="/login" className="hover:text-black">
@@ -308,7 +308,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: accessToken ? "none" : "block",
+                display: userType ? "none" : "block",
               }}
             >
               <Link to="/signup" className="hover:text-black">
@@ -318,7 +318,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: accessToken ? "block" : "none",
+                display: userType==="Client" ? "block" : "none",
               }}
             >
               <Link to="/order" className="hover:text-black">
@@ -328,7 +328,7 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: accessToken ? "block" : "none",
+                display: userType==="Client" ? "block" : "none",
               }}
             >
               <Link to="/logout" className="hover:text-black">

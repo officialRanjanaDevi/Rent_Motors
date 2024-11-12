@@ -57,7 +57,11 @@ const Cart = () => {
   const updateBikesAndPrice = () => {
     loadData();
     const totalBikes = productData.reduce((acc, item) => acc + (item.quantity || 1), 0);
-    const totalAmount = productData.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+   
+    const totalAmount = productData.reduce((acc, item) => {
+      return acc + (item.price);
+    }, 0);
+    
     setBikes(totalBikes);
     setTotalPrice(totalAmount);
   };
@@ -216,7 +220,7 @@ const Cart = () => {
             <hr />
             <li className="flex justify-between my-2">
               <p className="font-bold">Total</p>
-              <p>{totalPrice}</p>
+              <p>{totalPrice}*{}</p>
             </li>
           </ul>
 

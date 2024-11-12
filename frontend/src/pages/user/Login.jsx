@@ -12,6 +12,7 @@ const Login = () => {
     try {
       const response = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -24,10 +25,10 @@ const Login = () => {
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
         if (accessToken) {
-          Cookies.set("accessToken", accessToken, { expires: 1, secure: true });
+          Cookies.set("accessToken", accessToken, { expires: 1, secure: false });
         }
         if (refreshToken) {
-          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: true });
+          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: false });
         }
         
         localStorage.setItem("username",res.data.user[0].username);

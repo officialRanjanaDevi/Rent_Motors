@@ -11,7 +11,7 @@ const Pannel = (props) => {
     const {panel}=props.panel;
   
     return (
-    <div className=' w-full h-full rounded-md px-2 pb-2'>
+    <div className=' w-full h-full rounded-md px-2 pb-2 z-50'>
         {panel==='addVehicle'&&<AddVehicle/>}
         {panel==='updateVehicle'&&<UpdateVehcile/>}
         {panel==='newOrder'&&<NewOrder/>}

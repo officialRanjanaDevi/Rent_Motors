@@ -56,17 +56,17 @@ const OrderItem = ({ data, reload }) => {
 
   return (
     <>
-      <div className="mb-4 bg-neutral-200 my-2 rounded-md p-2 flex justify-between items-center relative   mx-auto flex-col  shadow-md shadow-neutral-500 text-xs sm:text-sm md:text-md">
-        <div className="flex justify-between lg:flex-row flex-col items-center w-full">
+     <div className="mb-4 bg-neutral-200 my-2 rounded-md p-2 flex justify-between items-center relative   mx-auto flex-col  shadow-md shadow-neutral-500 text-xs sm:text-sm xl:text-md">
+        <div className="flex justify-between md:flex-row flex-col items-center w-full">
           <img
             src={data.vehicleData.images[0]}
-            className="rounded-md h-48 shadow-md shadow-black w-[25%]"
+            className="rounded-md h-48 shadow-md shadow-black w-full sm:w-[25%]"
             alt="Product"
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <div className="ml-2 flex flex-col items-center sm:items-start h-fit sm:h-48 rounded-md px-4 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold ">
-              <h1 className="font-bold text-center w-full my-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+            <div className="mx-2 flex flex-col items-center sm:items-start h-fit sm:h-48 w-full rounded-md px-2 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold ">
+                <h1 className="font-bold text-center w-full my-2">
                 Vehicle Details
               </h1>
               <p>

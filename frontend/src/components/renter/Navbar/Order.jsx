@@ -1,20 +1,14 @@
-import React from "react";
+import React from 'react'
 
-const OrderItem = ({ data, reload }) => {
-
+const Order = ({data}) => {
+  console.log(data);
   return (
-    <>
-      <div className="mb-4 bg-neutral-200 my-2 rounded-md p-2 flex justify-between items-center relative   mx-auto flex-col  shadow-md shadow-neutral-500 text-xs sm:text-sm xl:text-md">
-        <div className="flex justify-between md:flex-row flex-col items-center w-full">
-          <img
-            src={data.vehicleData.images[0]}
-            className="rounded-md h-48 shadow-md shadow-black w-full sm:w-[25%]"
-            alt="Product"
-          />
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
-            <div className="mx-2 flex flex-col items-center sm:items-start h-fit sm:h-48 w-full rounded-md px-2 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold ">
-               <h1 className="font-bold text-center w-full my-2">
+    <div className='h-full flex flex-col justify-center items-center'>
+      <h1 className='font-bold '>Your order : {data._id}</h1>
+      <div className='h-full w-full flex flex-col md:flex-row  my-3 justify-evenly overflow-y-scroll'>
+      <img src={data.vehicleData.images[0]} className='h-1/2 md:h-full w-full rounded-md md:mr-2 md:w-1/2'></img>
+      <div className="w-full md:w-1/2   h-full  rounded-md px-4 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold">
+             <h1 className="font-bold text-center w-full my-2">
                 Vehicle Details
               </h1>
               <p>
@@ -31,9 +25,18 @@ const OrderItem = ({ data, reload }) => {
                   {data.vehicleData.price} Rs
                 </span>
               </p>
-            </div>
-
-            <div className="ml-2 flex flex-col items-center sm:items-start h-fit sm:h-48 rounded-md px-4 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold">
+              <p>
+                Mileage:{" "}
+                <span className="text-gray-600">
+                  {data.vehicleData.mileage} Kmph
+                </span>
+              </p>
+              <p>
+                Description:{" "}
+                <span className="text-gray-600">
+                  {data.vehicleData.description} 
+                </span>
+              </p>
               <h1 className="font-bold text-center w-full my-2">
                 Client Details
               </h1>
@@ -58,9 +61,7 @@ const OrderItem = ({ data, reload }) => {
                   {data.clientData.pincode}
                 </span>
               </p>
-            </div>
-
-            <div className="ml-2 flex flex-col items-center sm:items-start h-fit sm:h-48 rounded-md px-4 border-2 border-neutral-300 shadow-md shadow-neutral-400 font-semibold ">
+             
               <h1 className="font-bold text-center w-full my-2">
                 Order Details
               </h1>
@@ -87,12 +88,16 @@ const OrderItem = ({ data, reload }) => {
                 <span className="text-gray-600">{data.status}</span>
               </p>
             </div>
-          </div>
-        </div>
-      
-      </div>
-    </>
-  );
-};
 
-export default OrderItem;
+      </div>
+     
+  
+
+           
+           
+        
+    </div>
+  )
+}
+
+export default Order

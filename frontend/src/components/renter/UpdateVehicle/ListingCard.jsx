@@ -9,8 +9,10 @@ import Modal from "@mui/material/Modal";
 import UpdateForm from "./UpdateForm";
 import UpdateImages from "./UpdateImages";
 import { Snackbar, Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function ListingCard({ data, hello }) {
+  const navigate=useNavigate();
   const style = {
     position: "absolute",
     top: "50%",
@@ -31,8 +33,8 @@ export default function ListingCard({ data, hello }) {
 
   const handleClick = (newState, msg,sev) => {
     setState({ ...newState, open: true, message: msg ,severity:sev});
-    setTimeout(() => setState({ ...newState, open: false }), 1500);
-    setTimeout(() => navigate("/updateProduct"), 1600);
+    setTimeout(() => setState({ ...newState, open: false }), 2000);
+    setTimeout(() => navigate("/updateVehicle"), 1600);
   };
 
 
@@ -56,7 +58,7 @@ export default function ListingCard({ data, hello }) {
   }
   const handleDelete=async()=>{
     try{
-     const response=await fetch("ttp://localhost:4000/api/renter/vehicle",{
+     const response=await fetch("http://localhost:4000/api/renter/vehicle",{
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -75,7 +77,7 @@ export default function ListingCard({ data, hello }) {
       setTimeout(() => {
         setOpenDeleteModal(false);
         hello();
-      }, 1500);
+      }, 1000);
     
      }
     }catch(error){
@@ -95,7 +97,7 @@ export default function ListingCard({ data, hello }) {
     <>
     <Card
     sx={{
-      maxWidth: "400px",
+      maxWidth: "370px",
       minHeight: "400px",
       margin: ".5rem",
       borderRadius: "15px",
@@ -147,28 +149,28 @@ export default function ListingCard({ data, hello }) {
         </Modal>
         
         <div
-          className=" carousel-inner rounded-lg h-full hover:opacity-85"
+          className=" carousel-inner rounded-lg h-[50vh] hover:opacity-85"
           onClick={handleImages}
         >
            
-          <div className="carousel-item rounded-lg">
+          <div className="carousel-item rounded-lg w-full h-full">
             <img
               src={data.images[0]}
-              className="d-block w-100 rounded-lg"
+              className="d-block w-full h-full rounded-lg"
               alt="images1"
             />
           </div>
-          <div className="carousel-item rounded-lg active">
+          <div className="carousel-item rounded-lg active w-full h-full">
             <img
               src={data.images[1]}
-              className="d-block w-100 rounded-lg"
+              className="d-block w-full h-full rounded-lg"
               alt="image2"
             />
           </div>
-          <div className="carousel-item rounded-lg">
+          <div className="carousel-item rounded-lg w-full h-full">
             <img
               src={data.images[2]}
-              className="d-block w-100 rounded-lg"
+              className="d-block w-full h-full rounded-lg"
               alt="image3"
             />
           </div>
@@ -268,6 +270,7 @@ export default function ListingCard({ data, hello }) {
    open={open}
    sx={{ width: "20rem" }}
    key={vertical + horizontal}
+   className="mt-12"
  >
    <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
      {message}

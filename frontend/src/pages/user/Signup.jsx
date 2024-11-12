@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const form = useRef();
-  const [credentials, setCredentials] = useState({ name: "", email: "", password: "", confirmPassword: "" });
+  const [mess,setMess]=useState("");
+  const [credentials, setCredentials] = useState({ name: "", email: "", password: "", confirmPassword: "",type:"" });
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
 
@@ -11,7 +12,7 @@ const Signup = () => {
     e.preventDefault();
     setStatus("Pending");
 
-    //  if passwords match
+    
     if (credentials.password !== credentials.confirmPassword) {
       setStatus("Passwords do not match");
       setTimeout(() => setStatus(null), 3000);
@@ -19,26 +20,28 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/signup", {
+      const response = await fetch("http://localhost:4000/api/auth/register", {
         method: 'POST',
+        credentials:"include",
         headers: { 
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: credentials.name,
+          username: credentials.name,
           email: credentials.email,
           password: credentials.password,
-        
+          type:credentials.type
         })
       });
 
       const json = await response.json();
-
+      setMess(json.message)
+     
       if (json.success) {
         setStatus("Success");
         setTimeout(() => setStatus(null), 1000);
         setTimeout(() => navigate('/'), 1100);
-        setCredentials({ name: "", email: "", password: "", confirmPassword: "" });
+        setCredentials({ name: "", email: "", password: "", confirmPassword: "",type:"" });
       } else {
         setStatus("Failed");
         setTimeout(() => setStatus(null), 3000);
@@ -49,7 +52,7 @@ const Signup = () => {
       setTimeout(() => setStatus(null), 3000);
     }
   };
-
+ 
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -81,7 +84,7 @@ const Signup = () => {
         style={{display:status==="Failed"?"":"none"}}
       >
         <h1 className="font-bold">Oops, signup failed</h1>
-        Please try again.
+        {mess}
       </div>
 
       <form
@@ -118,7 +121,25 @@ const Signup = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-
+        <div className="mb-4">
+            <label
+              htmlFor="type"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Register as:
+            </label>
+            <select
+              name="type"
+              required
+              onChange={onChange}
+              value={credentials.type}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Select type </option>
+              <option value="Client">Client </option>
+              <option value="Renter">Renter </option>
+            </select>
+          </div>
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
             Password

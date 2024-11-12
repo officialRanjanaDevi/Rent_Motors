@@ -5,8 +5,10 @@ import Cookies from "js-cookie";
 import { Navigate, Outlet } from "react-router-dom";
 function ProtectedRoute() {
    const accessToken=Cookies.get("accessToken");
-  
-   return accessToken ? <Outlet/> : <Navigate to="/login" />;
+   console.log(Cookies.get("accessToken"))
+   console.log(Cookies.get("refreshToken"))
+   const isloggedin=localStorage.getItem("username");
+   return isloggedin ? <Outlet/> : <Navigate to="/login" />;
  
 }
 

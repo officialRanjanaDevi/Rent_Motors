@@ -290,7 +290,7 @@ const addToCart = asyncHandler(async (req, res) => {
     throw new ApiError(400, "No such vehicle exists");
   }
 
-  const price = quantity * vehicle.price;
+  const price = quantity * vehicle.price*(days|1);
   let cart = await Cart.findOne({ client: user._id, vehicle: id });
 
   if (!cart) {
@@ -299,6 +299,7 @@ const addToCart = asyncHandler(async (req, res) => {
       vehicle: id,
       quantity,
       price,
+   
     });
   } else {
     cart = await Cart.findByIdAndUpdate(

@@ -16,6 +16,7 @@ import customerservice from './customerservice.png'
 import fleet from './fleet.png'
 import instantrefund from './instantrefund.png'
 import trust from './trust.png'
+import renterlogo from'./renterlogo.png'
 import widerange from './widerange.png'
 export const images={
  home1,
@@ -37,5 +38,6 @@ export const images={
   fleet,
   instantrefund,
   trust,
-  widerange
+  widerange,
+  renterlogo
 }
