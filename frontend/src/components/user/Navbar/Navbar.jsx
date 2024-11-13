@@ -10,7 +10,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Cookies from "js-cookie";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "./Navbar.css";
 const style = {
@@ -49,10 +48,6 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <AppBar  sx={{ backgroundColor: "black", padding: "0rem 1rem" }}>
@@ -328,7 +323,17 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: userType==="Client" ? "block" : "none",
+                display: userType==="Renter" ? "block" : "none",
+              }}
+            >
+              <Link to="/renter" className="hover:text-black">
+                Dashboard
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType? "block" : "none",
               }}
             >
               <Link to="/logout" className="hover:text-black">

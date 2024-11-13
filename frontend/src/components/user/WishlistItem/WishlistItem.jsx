@@ -25,6 +25,7 @@ export default function Wishlist(props) {
       });
       const response = await res.json();
       setProductData(response.data);
+      
     } catch (error) {
       console.error("Error loading data:", error);
     }
@@ -40,7 +41,7 @@ export default function Wishlist(props) {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: data._id }),
+        body: JSON.stringify({ id: data.vehicle }),
       });
       await res.json();
     } catch (error) {
@@ -84,6 +85,7 @@ export default function Wishlist(props) {
         display: liked ? "" : "none",
         maxWidth: "550px",
         minHeight: "450px",
+        maxHeight:"600px",
         margin: ".5rem",
         borderRadius: "15px",
         boxShadow: "inset 0px 1px 6px 1px rgb(220 220 220)",
@@ -105,7 +107,7 @@ export default function Wishlist(props) {
             component="img"
             image={productData.images?.[0]}
             alt="Bike"
-            sx={{ maxHeight: "600px", borderRadius: "15px" }}
+            sx={{ maxHeight: "600px",width:"450px", borderRadius: "15px" }}
             className="h-full group-hover:scale-95 transition-transform duration-1000 ease-in-out"
           />
         </div>

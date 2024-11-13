@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "../../components/user/CartItem/CartItem";
-
+import { images } from "../../assets/images";
 const Cart = () => {
   const [productData, setProductData] = useState([]);
   const [user, setUser] = useState({ address: "", contact: "" });
@@ -153,15 +153,20 @@ const Cart = () => {
           <b>Total Amount: {totalPrice} rs</b>
         </div>
         <div>
+        
           {productData.length > 0 ? (
             productData.map((data, index) => (
               <CartItem key={index} data={data} updateBikesAndPrice={updateBikesAndPrice} />
             ))
           ) : (
-            <h1 className="font-bold text-xl text-center">
-              Your cart is Empty
-            </h1>
-          )}
+            <div className='font-semibold text-sm text-neutral-400 mt-4 flex flex-col items-center w-full'>
+              
+            <img src={images.emptycart} className='h-[20vh]'></img>
+            <p>
+            Your cart is empty
+            </p>
+          
+            </div>)}
         </div>
       </div>
 

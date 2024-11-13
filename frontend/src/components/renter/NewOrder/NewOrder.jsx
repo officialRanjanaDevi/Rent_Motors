@@ -35,7 +35,7 @@ const NewOrder = () => {
        {orderData.length > 0 ? (
           orderData.map((data, index) => <OrderItem key={index} data={data} reload={reload}/>)
         ) : (
-          ""
+          <p className='text-center font-bold mt-4'>No orders available</p>
         )}
     
     </div>

@@ -25,11 +25,13 @@ const Login = () => {
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
         if (accessToken) {
-          Cookies.set("accessToken", accessToken, { expires: 1, secure: false });
+           Cookies.set('accessToken', accessToken, { expires: 1,path:"/",secure:true });
+          
         }
         if (refreshToken) {
-          Cookies.set("refreshToken", refreshToken, { expires: 7, secure: false });
+          Cookies.set('refreshToken', refreshToken, { expires: 7,path:"/",secure:true });
         }
+       
         
         localStorage.setItem("username",res.data.user[0].username);
         localStorage.setItem("usertype",res.data.user[0].type);
@@ -50,7 +52,7 @@ const Login = () => {
         setTimeout(() => setStatus(null), 3000);
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.log("Error during login:", error);
       setStatus("Failed");
       setTimeout(() => setStatus(null), 3000);
       setCredentials({ email: "", password: "" });

@@ -18,6 +18,9 @@ import instantrefund from './instantrefund.png'
 import trust from './trust.png'
 import renterlogo from'./renterlogo.png'
 import widerange from './widerange.png'
+import emptywish from './emptywish.png'
+import emptycart from './emptycart.png'
+import ordernow from './ordernow.png'
 export const images={
  home1,
  home2,
@@ -39,5 +42,8 @@ export const images={
   instantrefund,
   trust,
   widerange,
-  renterlogo
+  renterlogo,
+  emptywish,
+  emptycart,
+  ordernow
 }

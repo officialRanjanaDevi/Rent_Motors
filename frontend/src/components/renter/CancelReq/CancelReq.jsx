@@ -35,7 +35,7 @@ const CancelReq = () => {
        {orderData.length > 0 ? (
           orderData.map((data, index) => <CancelItem key={index} data={data} reload={reload}/>)
         ) : (
-          ""
+          <p className='text-center font-bold mt-4'>No new cancel request</p>
         )}
     
     </div>

@@ -18,10 +18,8 @@ const Logout = () => {
     const res=await response.json();
     if(res.success){
       localStorage.clear();
-      console.log(Cookies.get("accessToken"));
-      console.log(localStorage);
-      Cookies.remove("accessToken");
-      Cookies.remove("refreshToken");
+      Cookies.remove('accessToken');
+      Cookies.remove('refreshToken');
       navigate("/");
     }
    

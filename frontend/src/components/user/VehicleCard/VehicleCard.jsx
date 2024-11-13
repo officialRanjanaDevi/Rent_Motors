@@ -20,14 +20,15 @@ export default function VehicleCard(props) {
     setLiked((prevLiked) => !prevLiked);
     const response = await fetch("http://localhost:4000/api/client/wishlist", {
       method: "POST",
+      credentials:"include",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({productId: data._id}),
+      body: JSON.stringify({id: data._id}),
      
     });
     const res=await response.json();
-    if (res.status) {
+    if (res.success) {
       console.log(response.message);
     } else {
       setLiked((prevLiked) => !prevLiked);

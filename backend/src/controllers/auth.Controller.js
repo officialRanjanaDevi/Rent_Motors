@@ -98,15 +98,12 @@ const loginUser = asyncHandler(async (req, res) => {
     },
   ]);
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+ 
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken)
+    .cookie("refreshToken", refreshToken)
     .json(
       new ApiResponse(
         200,
@@ -128,14 +125,11 @@ const logoutUser = asyncHandler(async (req, res) => {
     { new: true }
   );
 
-  const options = {
-    httpOnly: true,
-    secure: true,
-  };
+ 
   return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("accessToken")
+    .clearCookie("refreshToken")
     .json(new ApiResponse(200, {}, "User logged out"));
 });
 
@@ -169,16 +163,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
     const usertype=user.type;
     const username=user.username;
-    const options = {
-      httpOnly: true,
-      secure: true,
-    };
+  
     const { accessToken, refreshToken } =await generateAccessAndRefreshTokens(user._id);
   
     return res
       .status(200)
-      .cookie("accessToken", accessToken, options)
-      .cookie("refreshToken", refreshToken, options)
+      .cookie("accessToken", accessToken)
+      .cookie("refreshToken", refreshToken)
       .json(
         new ApiResponse(
           200,

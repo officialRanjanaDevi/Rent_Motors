@@ -2,7 +2,7 @@ import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-const OrderItem = ({props,reload}) => {
+const OrderItem = ({data,reload}) => {
   
   const [state, setState] = React.useState({
     open: false,
@@ -31,7 +31,7 @@ const OrderItem = ({props,reload}) => {
           status: "Accepted",
         }),
       });
-      const res = response.json();
+      const res =await response.json();
       if (res.success) {
         handleClick(
           { vertical: "top", horizontal: "center" },
@@ -42,7 +42,7 @@ const OrderItem = ({props,reload}) => {
       } else {
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Faild to accept Order ",
+          "Failed to accept Order ",
           "error"
         );
       }
@@ -50,7 +50,7 @@ const OrderItem = ({props,reload}) => {
       console.error(error);
       handleClick(
         { vertical: "top", horizontal: "center" },
-        "Faild to accept Order ",
+        "Failed to accept Order ",
         "error"
       );
     }
@@ -69,18 +69,18 @@ const OrderItem = ({props,reload}) => {
           status: "Rejected",
         }),
       });
-      const res = response.json();
+      const res = await response.json();
       if (res.success) {
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Order Canceled successfully",
+          "Order Cancelled successfully",
           "success"
         );
         reload();
       } else {
         handleClick(
           { vertical: "top", horizontal: "center" },
-          "Faild to cancel Order ",
+          "Failed to cancel Order ",
           "error"
         );
       }
@@ -88,7 +88,7 @@ const OrderItem = ({props,reload}) => {
       console.error(error);
       handleClick(
         { vertical: "top", horizontal: "center" },
-        "Faild to cancel Order ",
+        "Failed to cancel Order ",
         "error"
       );
     }
@@ -199,6 +199,7 @@ const OrderItem = ({props,reload}) => {
             anchorOrigin={{ vertical, horizontal }}
             open={open}
             key={vertical + horizontal}
+            className="mt-12"
           >
             <Alert severity={severity} variant="filled" sx={{ width: "100%" }}>
               {message}

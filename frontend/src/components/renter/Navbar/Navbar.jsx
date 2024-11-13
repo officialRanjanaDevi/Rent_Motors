@@ -7,7 +7,10 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import Avatar from "@mui/material/Avatar";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import LogoutIcon from "@mui/icons-material/Logout";
+import Tooltip from "@mui/material/Tooltip";
+import Menu from "@mui/material/Menu";
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
 import "./Navbar.css";
 import Order from "./Order";
 import Drawer from "@mui/material/Drawer";
@@ -37,6 +40,15 @@ const style = {
 };
 
 function Navbar() {
+  const userType=localStorage.getItem("usertype")
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [menu, setMenu] = useState("");
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const [orderid, setOrderid] = useState("");
@@ -56,7 +68,6 @@ function Navbar() {
       );
 
       const response = await res.json();
-      console.log(response);
       if (response.success) {
         setOrderData(response.data);
         if (response.data) {
@@ -64,7 +75,7 @@ function Navbar() {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -75,7 +86,7 @@ function Navbar() {
   };
 
  
-  const loadData = async () => {
+  const newCancelReq = async () => {
     try {
       let res1 = await fetch(`http://localhost:4000/api/renter/order/Placed`, {
         method: "GET",
@@ -105,8 +116,11 @@ function Navbar() {
   };
 
   useEffect(() => {
-    loadData();
+    findOrder();
+    newCancelReq();
   }, []);
+
+
   const [state, setState] = useState({ left: false });
   const [screenSize, setScreenSize] = useState(window.innerWidth);
   useEffect(() => {
@@ -117,7 +131,6 @@ function Navbar() {
 
   const toggleDrawer = (anchor, open) => (event) => {
     if(screenSize<1025){
-      console.log(screenSize)
       if (
         event.type === "keydown" &&
         (event.key === "Tab" || event.key === "Shift") 
@@ -375,16 +388,83 @@ function Navbar() {
         </div>
 
         {/* User avatar menu */}
-        <Box className="flex items-center">
-          <Link to="/logout" className="hover:text-white text-neutral-500 mr-2">
-            <LogoutIcon />
-          </Link>
-
-          <Avatar
-            alt="User Avatar"
-            src="/static/images/avatar/2.jpg"
-            sx={{ backgroundColor: "rgb(103 163 13)" }}
-          />
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip >
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar
+                alt="User Avatar"
+                src="/static/images/avatar/2.jpg"
+                sx={{ backgroundColor: " rgb(101 163 13)" }}
+              />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType ? "none" : "block",
+              }}
+            >
+              <Link to="/login" className="hover:text-black">
+                Login
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType ? "none" : "block",
+              }}
+            >
+              <Link to="/signup" className="hover:text-black">
+                SignUp
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType==="Client" ? "block" : "none",
+              }}
+            >
+              <Link to="/order" className="hover:text-black">
+                Orders
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType==="Renter" ? "block" : "none",
+              }}
+            >
+              <Link to="/renter" className="hover:text-black">
+                Dashboard
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType? "block" : "none",
+              }}
+            >
+              <Link to="/logout" className="hover:text-black">
+                Logout
+              </Link>
+            </MenuItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>

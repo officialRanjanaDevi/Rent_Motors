@@ -38,7 +38,6 @@ const View = () => {
         <>
     
          <ViewCard data={vehicleData}/>
-        
          <ReviewCard data={vehicleData}/>
         </>
       ):<LoadingCard/>}

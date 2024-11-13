@@ -38,10 +38,10 @@ function AppContent() {
   const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
   const location = useLocation();
-  // console.log(Cookies.get("accessToken"))
-  //  console.log(Cookies.get("refreshToken"))
   useEffect(() => {
+    setAccessToken(Cookies.get("accessToken"))
     const fetchUserType = async () => {
+
       if (!accessToken) {
         try {
           const response = await fetch(
@@ -62,16 +62,16 @@ function AppContent() {
         
           if (accessToken) {
            
-            Cookies.set("accessToken", accessToken, {
+            Cookies.set('accessToken', accessToken, {
               expires: 1,
               secure: true,
             });
           
-            console.log("hii",Cookies.get('accessToken'))
+           
             setAccessToken(accessToken);
           }
           if (refreshToken) {
-            Cookies.set("refreshToken", refreshToken, {
+            Cookies.set('refreshToken', refreshToken, {
               expires: 14,
               secure: true,
             });

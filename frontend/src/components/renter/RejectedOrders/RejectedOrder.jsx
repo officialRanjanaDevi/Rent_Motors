@@ -33,7 +33,7 @@ const RejectedOrder = () => {
        {orderData.length > 0 ? (
           orderData.map((data, index) => <RejectedItem key={index} data={data} />)
         ) : (
-          ""
+          <p className='text-center font-bold mt-4'>No orders available</p>
         )}
     
     </div>
