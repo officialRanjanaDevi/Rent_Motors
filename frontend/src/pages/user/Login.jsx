@@ -36,6 +36,7 @@ const Login = () => {
         localStorage.setItem("username",res.data.user[0].username);
         localStorage.setItem("usertype",res.data.user[0].type);
         localStorage.setItem("userid",res.data.user[0]._id);
+        localStorage.setItem("userimage",res.data.user[0].profile);
         setStatus("Success");
         setTimeout(() => setStatus(null), 1000);
 
@@ -98,7 +99,7 @@ const Login = () => {
       {/* Login Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-neutral-200 mx-auto w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-md"
+        className="bg-neutral-100 mx-auto w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-md"
       >
         <div className="mb-4">
           <label

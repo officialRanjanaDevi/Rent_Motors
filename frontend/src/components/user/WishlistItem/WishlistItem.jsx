@@ -90,7 +90,7 @@ export default function Wishlist(props) {
         borderRadius: "15px",
         boxShadow: "inset 0px 1px 6px 1px rgb(220 220 220)",
       }}
-      className="relative z-10 group bg-neutral-200 border-2 border-neutral-300"
+      className="relative z-10 group bg-neutral-200 border-2 border-neutral-300 cursor-pointer"
     >
       <div className="absolute flex justify-center z-30 top-2 right-0">
         <div
@@ -112,10 +112,10 @@ export default function Wishlist(props) {
           />
         </div>
       </Link>
-      <CardContent className="pt-1" sx={{ borderRadius: "15px" }}>
-        <h1 className="font-bold text-md">{productData.title}</h1>
+      <CardContent className="pt-1 text-sm" sx={{ borderRadius: "15px" }}>
+        <h1 className="font-bold capitalize">{productData.title}</h1>
         <p>{productData.brand}</p>
-        <p>{productData.description}</p>
+        <p className="text-xs text-neutral-600 my-2">{productData.description}</p>
         <div className="flex justify-between">
           <p><b>Price:</b> {productData.price} Rs</p>
           <p><b>Mileage:</b> {productData.mileage} Km/ltr</p>

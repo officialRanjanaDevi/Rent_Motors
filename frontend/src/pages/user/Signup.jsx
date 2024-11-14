@@ -90,7 +90,7 @@ const Signup = () => {
       <form
         ref={form}
         onSubmit={handleSubmit}
-        className="bg-neutral-200 mx-auto w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-md"
+        className="bg-neutral-100 mx-auto w-[90vw] md:w-[50vw] p-6 rounded-lg shadow-md"
       >
         <div className="mb-4">
           <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
@@ -133,11 +133,12 @@ const Signup = () => {
               required
               onChange={onChange}
               value={credentials.type}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+             
             >
               <option value="">Select type </option>
-              <option value="Client">Client </option>
-              <option value="Renter">Renter </option>
+              <option value="Client" >Client </option>
+              <option value="Renter" >Renter </option>
             </select>
           </div>
         <div className="mb-4">

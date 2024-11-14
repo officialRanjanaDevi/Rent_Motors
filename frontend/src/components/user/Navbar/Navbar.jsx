@@ -269,7 +269,7 @@ function Navbar() {
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 alt="User Avatar"
-                src="/static/images/avatar/2.jpg"
+                src={localStorage.getItem("userimage") || "/static/images/avatar/2.jpg"} 
                 sx={{ backgroundColor: " rgb(101 163 13)" }}
               />
             </IconButton>
@@ -308,6 +308,16 @@ function Navbar() {
             >
               <Link to="/signup" className="hover:text-black">
                 SignUp
+              </Link>
+            </MenuItem>
+            <MenuItem
+              onClick={handleCloseUserMenu}
+              sx={{
+                display: userType ? "block" : "none",
+              }}
+            >
+              <Link to="/profile" className="hover:text-black">
+                Profile
               </Link>
             </MenuItem>
             <MenuItem

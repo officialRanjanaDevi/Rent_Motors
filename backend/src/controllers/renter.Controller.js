@@ -186,7 +186,7 @@ const updateImages = asyncHandler(async (req, res) => {
   if (existedVehicle.owner.toString() !== user._id.toString()) {
     throw new ApiError(409, "You are not authorized to update this vehicle");
   }
-  console.log(req.files);
+ 
   const imagePath = req.files.map((file) => file.path);
   if (imagePath.length <= 0) {
     throw new ApiError(400, "Images are missing,Please Upload images");

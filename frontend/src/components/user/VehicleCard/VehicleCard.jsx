@@ -69,7 +69,7 @@ export default function VehicleCard(props) {
         borderRadius: "15px",
         boxShadow: "inset 0px 1px 6px 1px rgb(220 220 220)",
       }}
-      className="relative z-10 group bg-neutral-200 border-2 border-neutral-300"
+      className="relative z-10 group bg-neutral-200 border-2 border-neutral-300 cursor-pointer text-sm"
     >
       <div className="absolute flex justify-center z-30 top-2 right-0 ">
         <div
@@ -91,30 +91,39 @@ export default function VehicleCard(props) {
           />
         </div>
       </Link>
-      <CardContent className="pt-1" sx={{ borderRadius: "15px" }}>
+      <CardContent className="pt-1  cursor-pointer text-sm text-neutral-800" sx={{ borderRadius: "15px" }}>
+      <Link to="/view"  state={ data._id } className="hover:text-black hover:no-underline">
         <div className="">
           <h1 className="font-bold text-md">{data.title}</h1>
           <p>{data.brand}</p>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-2">
           <p>
-            <b>price:</b> {data.price} Rs
+            <b>Price:</b> {data.price} Rs
           </p>
           <p>
-            <b>Mileage:</b> {data.mileage} 
+            <b>Mileage:</b> {data.mileage} KMPL
           </p>
         </div>
-
-        <div className="border-0 absolute w-full left-0 -bottom-8 duration-500 group-hover:-translate-y-12 text-center">
+        <div className="flex justify-between">
+          <p>
+            <b>Speed:</b> {data.speed} KMPH
+          </p>
+          <p>
+            <b>Type:</b> {data.type} 
+          </p>
+        </div>
+        </Link>
+        <div className="border-0 absolute w-full left-0 -bottom-8 duration-500 group-hover:-translate-y-12 text-center  cursor-pointer text-sm">
           <div
-            className="border-0 boder-black absolute -z-10 w-full h-16 opacity-0 duration-500 group-hover:opacity-100 group-hover:bg-black"
+            className="border-0 boder-black absolute -z-10 w-full h-16 opacity-0 duration-500 group-hover:opacity-100  cursor-pointer text-sm group-hover:bg-black"
             style={{
               backgroundColor: add === "Added" ? " rgb(101 163 13)" : "black",
             }}
           ></div>
           <p
             onClick={handleAddBtn}
-            className={`w-full hover:scale-105 duration-300 ease-in-out text-white font-bold pt-2 ${loading ? "opacity-50" : ""}`}
+            className={`w-full hover:scale-105 duration-300 ease-in-out text-white font-bold pt-2  cursor-pointer ${loading ? "opacity-50" : ""}`}
             disabled={loading} 
           >
             {loading ? "Adding..." : add}

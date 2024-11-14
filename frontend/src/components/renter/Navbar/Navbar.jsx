@@ -393,7 +393,7 @@ function Navbar() {
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
                 alt="User Avatar"
-                src="/static/images/avatar/2.jpg"
+                src={localStorage.getItem("userimage") || "/static/images/avatar/2.jpg"} 
                 sx={{ backgroundColor: " rgb(101 163 13)" }}
               />
             </IconButton>
@@ -437,14 +437,14 @@ function Navbar() {
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
-                display: userType==="Client" ? "block" : "none",
+                display: userType? "block" : "none",
               }}
             >
-              <Link to="/order" className="hover:text-black">
-                Orders
+              <Link to="/profile" className="hover:text-black">
+                Profile
               </Link>
             </MenuItem>
-            <MenuItem
+             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{
                 display: userType==="Renter" ? "block" : "none",
@@ -454,6 +454,7 @@ function Navbar() {
                 Dashboard
               </Link>
             </MenuItem>
+          
             <MenuItem
               onClick={handleCloseUserMenu}
               sx={{

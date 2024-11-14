@@ -21,6 +21,7 @@ import Logout from "./pages/user/Logout";
 import About from "./pages/user/About";
 import Signup from "./pages/user/Signup";
 import Dashboard from "./pages/renter/Dashboard";
+import Profile from "./pages/user/Profile"
 import ProtectedRoute from "./components/Protected";
 import Cookies from "js-cookie";
 
@@ -125,6 +126,7 @@ function AppContent() {
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/logout" element={<Logout />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Navigate to="/" />} />
           <Route path="/signup" element={<Navigate to="/" />} />
          

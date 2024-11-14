@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { useLocation } from "react-router-dom";
 import ViewCard from "../../components/user/ViewCard/ViewCard";
 import ReviewCard from "../../components/user/ViewCard/ReviewCard";
@@ -8,7 +7,6 @@ import LoadingCard from "../../components/user/ViewCard/LoadingCard";
 const View = () => {
   const location = useLocation();
   const id = location.state;
-
   const [vehicleData, setVehicleData] = useState(null);
 
   const loadData = async () => {

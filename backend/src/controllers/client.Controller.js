@@ -31,27 +31,42 @@ const viewVehicle = asyncHandler(async (req, res) => {
     throw new ApiError(400, "please provide vehicle id");
   }
 
-  const vehicle = await Vehicle.aggregate([
-    {
-      $match: { _id: new ObjectId(id) },
-    },
-    {
-      $lookup: {
-        from: "reviews",
-        localField: "_id",
-        foreignField: "vehicle",
-        as: "review",
-        pipeline: [
-          {
-            $project: {
-              comment: 1,
-              rating: 1,
-            },
+  
+const vehicle = await Vehicle.aggregate([
+  {
+    $match: { _id: new ObjectId(id) },
+  },
+  {
+    $lookup: {
+      from: "reviews",
+      localField: "_id",
+      foreignField: "vehicle",
+      as: "review",
+      pipeline: [
+        {
+          $lookup: {
+            from: "users",
+            localField: "client",
+            foreignField: "_id",
+            as: "client",
+            pipeline: [
+              {
+                $project: {
+                  _id: 1,
+                  username: 1,
+                  profile: 1,
+                },
+              },
+           
+            ],
           },
-        ],
-      },
+        },
+         
+      ],
     },
-  ]);
+  },
+ 
+]);
 
   if (!vehicle) {
     throw new ApiError(400, "No such vehicle exists");

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { upload } from "../middlewares/multer.middleware.js";
 import {
   registerUser,
   loginUser,
@@ -7,6 +8,7 @@ import {
   changePassword,
   getCurrentUser,
   updateProfile,
+  updateImage
 } from "../controllers/auth.Controller.js";
 import {
   validateRegistration,
@@ -29,5 +31,7 @@ router.route("/changePassword").patch(verifyJWT, changePassword);
 router.route("/getCurrentUser").get(verifyJWT, getCurrentUser);
 
 router.route("/updateProfile").patch(verifyJWT, updateProfile);
+
+router.route("/updateImage").patch(verifyJWT,upload.single('image'), updateImage);
 
 export default router;

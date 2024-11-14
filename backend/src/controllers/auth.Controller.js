@@ -4,7 +4,7 @@ import { User } from "../models/User.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
-
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
     const user = await User.findById(userId);
@@ -220,19 +220,6 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 const updateProfile = asyncHandler(async (req, res) => {
   const user = req.user;
   const data = req.body;
-   const imagePath = req.files;
-
-  if (imagePath) {
-    const imageUrl = await uploadOnCloudinary(imagePath);
-    if (!imageUrl) {
-      throw new ApiError(
-        500,
-        "Something went wrong while uploading image on Cloudinary"
-      );
-    }
-    data.profile = imageUrl;
-  }
-
   const updatedUser = await User.findByIdAndUpdate(
     user._id,
     { ...data },
@@ -244,6 +231,30 @@ const updateProfile = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, updatedUser, "Profile updated successfully"));
 });
 
+const updateImage= asyncHandler(async(req,res)=>{
+  const user=req.user
+  const imagePath = req.file.path;
+ let profile;
+  if (imagePath) {
+    const imageUrl = await uploadOnCloudinary(imagePath);
+    if (!imageUrl) {
+      throw new ApiError(
+        500,
+        "Something went wrong while uploading image on Cloudinary"
+      );
+    }
+    profile = imageUrl.url;
+   
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,{profile},    
+    { new: true }
+  ).select("-password -refreshToken");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, updatedUser, "Profile image updated successfully"));
+})
 export {
   registerUser,
   loginUser,
@@ -252,4 +263,5 @@ export {
   changePassword,
   getCurrentUser,
   updateProfile,
+  updateImage
 };
