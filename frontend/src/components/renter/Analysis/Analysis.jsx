@@ -3,9 +3,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import NotificationsNoneRoundedIcon from "@mui/icons-material/NotificationsNoneRounded";
 import TrendingUpRoundedIcon from "@mui/icons-material/TrendingUpRounded";
 import Diversity1Icon from '@mui/icons-material/Diversity1';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import { useNavigate } from "react-router-dom";
-import {images} from "../../../assets/images"
-import Calendar from "react-calendar";
+import Calender from "./Calender.jsx";
 import "react-calendar/dist/Calendar.css";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import "./Analysis.css";
@@ -39,7 +39,7 @@ const Analysis = () => {
   const [vehicles, setVehicles] = useState([]);
   const [orders, setOrders] = useState([]);
   const [brandData, setBrandData] = useState([]);
-  const [date, setDate] = useState();
+  const [orderDate, setOrderDate] = useState();
   const [rating, setRating] = useState([]);
   const [neworder, setNeworder] = useState(0);
   const [newcancelreq, setNewcancelreq] = useState(0);
@@ -142,7 +142,7 @@ const Analysis = () => {
         });
 
         const orderDates = response.data.map((order) => order.createdAt);
-        setDate(orderDates);
+        setOrderDate(orderDates);
         //  code for pi chart
         let brandorders = response.data.reduce((acc, order) => {
           const found = acc.find(
@@ -243,40 +243,33 @@ const Analysis = () => {
        <button className="px-2 bg-black text-white rounded-md h-[80%] hover:scale-105 duration-300 shadow-md shadow-neutral-600" onClick={()=>navigate("/addVehicle")}>Add New Vehicle</button>
       </div>
 
-      <div className="flex justify-between md:flex-row flex-col h-fit  md:h-[41%] my-3">
-        <div className="w-full md:w-[70%] h-full shadow-md shadow-neutral-500 rounded-md mx-1 p-1 pb-3 bg-[#ebeaeab8]">
-          <h1 className="text-md font-bold mx-4">Vehicle chart</h1>
-        
+      <div className="flex justify-between md:flex-row flex-col h-fit  md:h-[54%] my-3">
+      <div className="flex flex-col w-full md:w-[70%] h-full">
+          <h1 className="text-md font-bold mx-4 mb-2"><BarChartIcon   sx={{ color: "rgb(103,163,13)", fontSize: "2 rem" }}/> Vehicle chart</h1>
+           <div className="h-[90%] shadow-md shadow-neutral-500 rounded-md mx-1 p-1 bg-[#ebeaeab8]">
+          
+
+         
           <Bar
             data={chartData}
             
             options={{
               responsive: true,
-              maintainAspectRatio: false, 
               plugins: {
                 legend: {
                   display: true,
                 },
               },
-              scales: {
-                x: {
-                  grid: {
-                    display: false,
-                  },
-                },
-                y: {
-                  beginAtZero: true,
-                },
-              },
+             
            
             }}
           />
-         
+          </div>
        
         </div>
 
-        <div className=" h-full shadow-md shadow-neutral-500 border-neutral-300 rounded-md flex items-center justify-center">
-          <Calendar value={date} />
+        <div className=" h-fit shadow-md shadow-neutral-500 border-neutral-300 rounded-md flex items-center justify-center">
+        <Calender orderDate={orderDate} />
         </div>
       </div>
 
@@ -304,12 +297,17 @@ const Analysis = () => {
           <div className=" border-2 border-neutral-200 bg-[#ebeaeab8] rounded-md shadow-md shadow-neutral-500 rounded-md p-1">
             <Line
               data={lineChart}
+              
               options={{
+                responsive: true,
+            
                 plugins: {
                   legend: {
-                    display: false,
+                    display: true,
                   },
                 },
+                
+             
               }}
             />
           </div>
