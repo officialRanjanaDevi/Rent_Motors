@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
     setStatus("Pending");
     try {
-      const response = await fetch("http://localhost:4000/api/auth/login", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/login`, {
         method: "POST",
         credentials:"include",
         headers: {

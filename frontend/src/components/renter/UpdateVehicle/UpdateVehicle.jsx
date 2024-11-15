@@ -7,7 +7,7 @@ const UpdateVehcile = () => {
 
   const loadData = async () => {
     try {
-           const res = await fetch(`http://localhost:4000/api/renter/vehicle`, {
+           const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

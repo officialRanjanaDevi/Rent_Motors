@@ -16,7 +16,7 @@ export default function Wishlist(props) {
 
   const loadData = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/client/viewVehicle/${data.vehicle}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -37,7 +37,7 @@ export default function Wishlist(props) {
 
   const removeFromWishlist = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/client/wishlist`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ export default function Wishlist(props) {
   const handleAddBtn = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:4000/api/client/cart`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

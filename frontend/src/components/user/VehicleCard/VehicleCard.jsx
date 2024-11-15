@@ -18,7 +18,7 @@ export default function VehicleCard(props) {
 
    const handleLikeClick = async () => {
     setLiked((prevLiked) => !prevLiked);
-    const response = await fetch("http://localhost:4000/api/client/wishlist", {
+    const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
       method: "POST",
       credentials:"include",
       headers: {
@@ -42,7 +42,7 @@ export default function VehicleCard(props) {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:4000/api/client/cart`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

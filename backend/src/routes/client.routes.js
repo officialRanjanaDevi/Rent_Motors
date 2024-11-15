@@ -14,6 +14,7 @@ import {
   placeOrder,
   viewOrder,
   cancelOrder,
+  makePayment
 } from "../controllers/client.Controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -38,4 +39,5 @@ router.route("/order").post(verifyJWT, placeOrder);
 router.route("/order").get(verifyJWT, viewOrder);
 router.route("/order").patch(verifyJWT, cancelOrder);
 
+router.route("/create-checkout-session").post(verifyJWT,makePayment)
 export default router;

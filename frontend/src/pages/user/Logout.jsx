@@ -6,7 +6,7 @@ const Logout = () => {
   const handleLogout = async () => {
     console.log("inside logout")
     const response = await fetch(
-      "http://localhost:4000/api/auth/logout",
+      `${import.meta.env.VITE_SERVER}/auth/logout`,
       {
         method: "POST",
         credentials: "include",

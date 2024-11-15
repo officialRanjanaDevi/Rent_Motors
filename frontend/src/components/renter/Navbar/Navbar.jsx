@@ -59,7 +59,7 @@ function Navbar() {
   const findOrder = async () => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/renter/viewOrder/${orderid}`,
+        `${import.meta.env.VITE_SERVER}/renter/viewOrder/${orderid}`,
         {
           method: "GET",
           credentials: "include",
@@ -88,7 +88,7 @@ function Navbar() {
  
   const newCancelReq = async () => {
     try {
-      let res1 = await fetch(`http://localhost:4000/api/renter/order/Placed`, {
+      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -99,7 +99,7 @@ function Navbar() {
       setNewOrder(response1.data.length);
 
       let res2 = await fetch(
-        `http://localhost:4000/api/renter/order/CancelReq`,
+        `${import.meta.env.VITE_SERVER}/renter/order/CancelReq`,
         {
           method: "GET",
           credentials: "include",

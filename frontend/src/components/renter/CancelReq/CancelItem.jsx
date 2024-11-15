@@ -2,8 +2,8 @@ import React from "react";
 import Snackbar from "@mui/material/Snackbar";
 import Box from "@mui/material/Box";
 import Alert from "@mui/material/Alert";
-const CancelItem = ({props,reload}) => {
-  
+const CancelItem = ({data,reload}) => {
+
   const [state, setState] = React.useState({
     open: false,
     vertical: "top",
@@ -58,7 +58,7 @@ const CancelItem = ({props,reload}) => {
 
   const handleCancel = async() => { 
     try {
-      const response = await fetch("http://localhost:4000/api/renter/order", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -88,7 +88,7 @@ const CancelItem = ({props,reload}) => {
       console.error(error);
       handleClick(
         { vertical: "top", horizontal: "center" },
-        "Faild to cancel Order ",
+        "Failed to cancel Order ",
         "error"
       );
     }

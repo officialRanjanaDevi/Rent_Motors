@@ -35,7 +35,7 @@ const UpdateForm = (props) => {
     e.preventDefault();
 
     try {
-      const response =  await fetch(`http://localhost:4000/api/renter/vehicle`, {
+      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

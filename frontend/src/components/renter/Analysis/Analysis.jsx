@@ -6,8 +6,8 @@ import Diversity1Icon from '@mui/icons-material/Diversity1';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { useNavigate } from "react-router-dom";
 import Calender from "./Calender.jsx";
-import "react-calendar/dist/Calendar.css";
 import { Bar, Pie, Line } from "react-chartjs-2";
+
 import "./Analysis.css";
 import {
   CategoryScale,
@@ -85,7 +85,7 @@ const Analysis = () => {
 
   const loadVehicleData = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/renter/vehicle`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -122,7 +122,7 @@ const Analysis = () => {
 
   const loadOrderData = async () => {
     try {
-      const res = await fetch(`http://localhost:4000/api/renter/order`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -6,7 +6,7 @@ const CancelReq = () => {
   const loadData = async () => {
     try {
       const status="CancelReq";
-      let res = await fetch(`http://localhost:4000/api/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
         method: "GET",
         credentials:"include",
         headers: {

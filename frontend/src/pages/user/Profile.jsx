@@ -40,7 +40,7 @@ const Profile = () => {
     const navigate=useNavigate();
     const loadData=async()=>{
         try{
-            const response=await fetch ("http://localhost:4000/api/auth/getCurrentUser",{
+            const response=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser`,{
                 method: "GET",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
@@ -65,7 +65,7 @@ const Profile = () => {
       const updatePassword = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch("http://localhost:4000/api/auth/changePassword", {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/changePassword`, {
             method: 'PATCH',
             credentials:"include",
             headers: { 
@@ -94,7 +94,7 @@ const Profile = () => {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch("http://localhost:4000/api/auth/updateProfile", {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile`, {
             method: 'PATCH',
             credentials:"include",
             headers: { 
@@ -135,7 +135,7 @@ const Profile = () => {
      
         formData.append("image", image); 
         try {
-          const response = await fetch("http://localhost:4000/api/auth/updateImage", {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateImage`, {
             method: 'PATCH',
             credentials:"include",
        

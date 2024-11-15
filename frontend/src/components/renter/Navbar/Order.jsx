@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Order = ({data}) => {
-  console.log(data);
+ 
   return (
     <div className='h-full flex flex-col justify-center items-center'>
       <h1 className='font-bold '>Your order : {data._id}</h1>

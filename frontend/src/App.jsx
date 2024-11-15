@@ -22,8 +22,10 @@ import About from "./pages/user/About";
 import Signup from "./pages/user/Signup";
 import Dashboard from "./pages/renter/Dashboard";
 import Profile from "./pages/user/Profile"
+import Success from "./pages/user/Success"
 import ProtectedRoute from "./components/Protected";
 import Cookies from "js-cookie";
+import Failure from "./pages/user/Failure";
 
 function App() {
   return (
@@ -46,7 +48,7 @@ function AppContent() {
       if (!accessToken) {
         try {
           const response = await fetch(
-            "http://localhost:4000/api/auth/refreshToken",
+            `${import.meta.env.VITE_SERVER}/auth/refreshToken`,
             {
               method: "POST",
               credentials: "include",
@@ -136,6 +138,8 @@ function AppContent() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/failure" element={<Failure />} />
               <Route path="/*" element={<Navigate to="/" />} />
             </>
           ) : (

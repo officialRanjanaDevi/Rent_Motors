@@ -20,7 +20,7 @@ const OrderItem = ({data,reload}) => {
 
   const handleAccept = async() => { 
     try {
-      const response = await fetch("http://localhost:4000/api/renter/order", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -58,7 +58,7 @@ const OrderItem = ({data,reload}) => {
 
   const handleCancel = async() => { 
     try {
-      const response = await fetch("http://localhost:4000/api/renter/order", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
         method: "PATCH",
         credentials: "include",
         headers: {

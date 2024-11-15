@@ -39,7 +39,7 @@ const UpdateImages = ({ data }) => {
         formData.append("images", image); 
       });
     
-      const response = await fetch(`http://localhost:4000/api/renter/updateImages`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/updateImages`, {
         method: "PATCH",
         credentials: "include",
         body: formData, 

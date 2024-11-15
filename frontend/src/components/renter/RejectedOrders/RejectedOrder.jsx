@@ -1,12 +1,12 @@
 import React,{useEffect, useState} from 'react'
 import RejectedItem from './RejectedItem'
-import { Order } from '../../../../../backend/src/models/Order.model';
+
 const RejectedOrder = () => {
   const [orderData, setOrderData] = useState([]);
   const loadData = async () => {
     try {
       const status="Rejected";
-      let res = await fetch(`http://localhost:4000/api/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
         method: "GET",
         credentials:"include",
         headers: {

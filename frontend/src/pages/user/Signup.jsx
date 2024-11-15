@@ -20,7 +20,7 @@ const Signup = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:4000/api/auth/register", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/register`, {
         method: 'POST',
         credentials:"include",
         headers: { 

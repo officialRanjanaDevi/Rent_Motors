@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "../../components/user/CartItem/CartItem";
 import { images } from "../../assets/images";
+import {loadStripe} from '@stripe/stripe-js';
+import StripeCheckout from 'react-stripe-checkout';
+
+
 const Cart = () => {
   const [productData, setProductData] = useState([]);
   const [user, setUser] = useState({ address: "", contact: "" });
@@ -10,7 +14,7 @@ const Cart = () => {
 
   const loadUserData = async () => {
     try {
-      const user=await fetch ("http://localhost:4000/api/auth/getCurrentUser",{
+      const user=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser`,{
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -26,7 +30,7 @@ const Cart = () => {
   };
   const loadData = async () => {
     try {
-           const res = await fetch(`http://localhost:4000/api/client/cart`, {
+           const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -66,10 +70,12 @@ const Cart = () => {
     setTotalPrice(totalAmount);
   };
 
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/api/auth/updateProfile", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -93,15 +99,47 @@ const Cart = () => {
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
+  
+  const makePayment=async()=>{
+    
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
-  const placeOrder = async () => {
     try {
-      const response = await fetch("http://localhost:4000/api/client/order", {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/create-checkout-session`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
       });
       const json = await response.json();
+      const session=json.data;
+     
+      const result=await stripe.redirectToCheckout({
+        sessionId:session.sessionId
+      })
+     
+      if(result.error){
+        console.log(result.error)
+      }else{
+        placeOrder()
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setStatus("failure");
+      setTimeout(() => {
+        setStatus("");
+       }, 2000);
+    }
+  }
+  const placeOrder = async () => {
+  
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+      
       if (response.ok) {
          setStatus("success");
          setTimeout(() => {
@@ -123,7 +161,7 @@ const Cart = () => {
        }, 2000);
     }
   };
-
+  
   return (
     <>
       {/* Success Alert */}
@@ -229,9 +267,10 @@ const Cart = () => {
             </li>
           </ul>
 
-          <button onClick={placeOrder} className="w-full shadow-md font-bold shadow-black bg-lime-600 text-white py-2 rounded-md">
+          <button onClick={makePayment} className="w-full shadow-md font-bold shadow-black bg-lime-600 text-white py-2 rounded-md">
             Proceed to Pay
           </button>
+        
         </div>
       </div>
     </div>
@@ -239,4 +278,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Cart

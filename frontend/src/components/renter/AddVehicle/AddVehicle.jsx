@@ -51,7 +51,7 @@ const AddVehicle = () => {
     try {
       console.log("hello");
    
-      const response =  await fetch(`http://localhost:4000/api/renter/vehicle`, {
+      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
         method: "POST",
         credentials: "include",
         body: formData

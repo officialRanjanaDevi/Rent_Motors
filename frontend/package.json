@@ -20,19 +20,17 @@
     "@mui/styled-engine-sc": "^6.1.2",
     "@mui/x-charts": "^7.22.2",
     "@mui/x-date-pickers": "^7.22.2",
+    "@stripe/stripe-js": "^4.10.0",
     "chart.js": "^4.4.6",
     "dayjs": "^1.11.13",
     "js-cookie": "^3.0.5",
-    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
-    "react-calendar": "^5.1.0",
     "react-chartjs-2": "^5.2.0",
-    "react-cookie": "^7.2.2",
     "react-dom": "^18.3.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.26.2",
-    "styled-components": "^6.1.13",
-    "universal-cookie": "^7.2.2"
+    "react-stripe-checkout": "^2.6.3",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

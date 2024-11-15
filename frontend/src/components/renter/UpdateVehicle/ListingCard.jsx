@@ -58,7 +58,7 @@ export default function ListingCard({ data, hello }) {
   }
   const handleDelete=async()=>{
     try{
-     const response=await fetch("http://localhost:4000/api/renter/vehicle",{
+     const response=await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`,{
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

@@ -7,7 +7,7 @@ const Order = () => {
   const [error, setError] = useState(null);
   const loadData = async () => {
     try {
-      const res = await fetch("http://localhost:4000/api/client/order", {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -12,7 +12,7 @@ const View = () => {
   const loadData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/client/viewVehicle/${id}`,
+        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${id}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },

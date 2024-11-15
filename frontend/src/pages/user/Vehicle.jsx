@@ -6,7 +6,7 @@ const Vehicle = () => {
   const loadData = async () => {
     try {
           
-      let res = await fetch(`http://localhost:4000/api/client/viewListing`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewListing`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

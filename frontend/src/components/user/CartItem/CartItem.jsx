@@ -12,7 +12,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const loadVehicleData = async () => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/client/viewVehicle/${data.vehicle}`,
+        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`,
         {
           method: "GET",
           credentials: "include",
@@ -34,7 +34,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
 
   const update = async () => {
     try {
-      await fetch("http://localhost:4000/api/client/cart", {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -73,7 +73,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
 
   const handleDelete = async () => {
     try {
-      await fetch("http://localhost:4000/api/client/cart", {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
         method: "DELETE",
         credentials: "include",
         headers: {

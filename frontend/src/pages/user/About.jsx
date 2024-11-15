@@ -7,7 +7,7 @@ import { images } from "../../assets/images";
 const About = () => {
   const [review, setReview] = useState([]);
   const loadReview = async () => {
-    const response = await fetch("http://localhost:4000/api/client/review", {
+    const response = await fetch(`${import.meta.env.VITE_SERVER}/client/review`, {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

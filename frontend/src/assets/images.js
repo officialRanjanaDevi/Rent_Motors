@@ -21,6 +21,8 @@ import widerange from './widerange.png'
 import emptywish from './emptywish.png'
 import emptycart from './emptycart.png'
 import ordernow from './ordernow.png'
+import success from './success.png'
+import failure from './failure.png'
 export const images={
  home1,
  home2,
@@ -45,5 +47,7 @@ export const images={
   renterlogo,
   emptywish,
   emptycart,
-  ordernow
+  ordernow,
+  success,
+  failure
 }

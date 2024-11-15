@@ -7,8 +7,7 @@ const AcceptedOrder = () => {
 
   const loadData = async () => {
     try {
-      console.log(status);
-      let res = await fetch(`http://localhost:4000/api/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
         method: "GET",
         credentials: "include",
         headers: {

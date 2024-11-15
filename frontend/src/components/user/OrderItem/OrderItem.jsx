@@ -39,7 +39,7 @@ const OrderItem = ({ data }) => {
   const loadData = async () => {
      try {
       const res = await fetch(
-        `http://localhost:4000/api/client/viewVehicle/${data.vehicle}`,
+        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`,
         {
           method: "GET",
           credentials: "include",
@@ -65,7 +65,7 @@ const OrderItem = ({ data }) => {
   const handlecancel=async()=>{
     
     try {
-      await fetch("http://localhost:4000/api/client/order", {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -82,7 +82,7 @@ const OrderItem = ({ data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res=await fetch("http://localhost:4000/api/client/review", {
+      const res=await fetch(`${import.meta.env.VITE_SERVER}/client/review`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -117,8 +117,8 @@ const OrderItem = ({ data }) => {
       <p className="text-center text-xs font-bold text-neutral-500">Order ID: {data._id}</p>
       <div className="flex justify-around items-center flex-col md:flex-row">
       <img
-        src={vehicleData.images[0] || "https://via.placeholder.com/150"} 
-        alt={vehicleData.title || "Product image"} 
+        src={vehicleData.images[0]} 
+        alt={vehicleData.title} 
         className="rounded-md h-52 w-40 shadow-md shadow-black"
       />
       <div className="grid lg:grid-cols-6 md:grid-cols-2 sm:grid-cols-1 w-full md:basis-5/6 px-2">

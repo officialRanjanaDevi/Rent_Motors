@@ -22,7 +22,7 @@ const SideBar = () => {
   const loadData = async () => {
     try {
    
-      let res1 = await fetch(`http://localhost:4000/api/renter/order/Placed`, {
+      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed`, {
         method: "GET",
         credentials:"include",
         headers: {
@@ -33,7 +33,7 @@ const SideBar = () => {
       let response1 = await res1.json();
       setNewOrder(response1.data.length);
 
-      let res2 = await fetch(`http://localhost:4000/api/renter/order/CancelReq`, {
+      let res2 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/CancelReq`, {
         method: "GET",
         credentials:"include",
         headers: {

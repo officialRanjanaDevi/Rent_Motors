@@ -7,6 +7,9 @@ import { Cart } from "../models/Cart.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Review } from "../models/Review.model.js";
 import { ObjectId } from "mongodb";
+import Stripe from "stripe";
+const stripe=Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 // Vehicle controllers from client side
 
@@ -361,59 +364,144 @@ const removeFromCart = asyncHandler(async (req, res) => {
 });
 
 // order controllers from client side
+const makePayment=asyncHandler(async(req,res)=>{
+  const user = req.user;
+
+  // Ensure the user is a client
+  if (user.type !== "Client") {
+    throw new ApiError(400, "You are not authorized to place orders");
+  }
+
+  // Retrieve cart details for the user
+  const cart = await Cart.aggregate([
+    {
+      $match: { client: user._id },
+    },
+    {
+      $lookup: {
+        from: "vehciles",
+        localField: "vehicle",
+        foreignField: "_id",
+        as: "vehicle",
+        pipeline: [
+          {
+            $project: {
+              title: 1,
+              images: 1,
+              _id: 1,
+            }
+          }]
+      },
+    },
+   
+    
+  ]);
+
+  if (!cart.length) {
+    throw new ApiError(400, "Cart is empty");
+  }
+
+  // Prepare line items for Stripe Checkout
+  const lineItems = cart.map((cartItem) => ({
+    price_data: {
+      currency: "usd",
+      product_data: {
+        name: cartItem.vehicle[0].title,
+        images: cartItem.vehicle[0].images, 
+      },
+      unit_amount: cartItem.price*100 ,
+    },
+    quantity: cartItem.quantity,
+  }));
+
+  // Create Stripe session
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    mode: "payment",
+    success_url: `http://localhost:5173/success`,
+    cancel_url: `http://localhost:5173/failure`,
+  });
+  return res.status(201).json(
+    new ApiResponse(201, { sessionId: session.id }, "Make payment")
+  );
+})
+
 
 const placeOrder = asyncHandler(async (req, res) => {
-  // get user details from req.user
-  // check if user is client or not
-  // get cart id from req.body
-  // check if cart exists or not
-  // place order one by one
-  // return res
- 
   const user = req.user;
-  if (user.type !== "Client") {
-    throw new ApiError(400, "You are not authorized to place order");
-  }
-  const cart = await Cart.find({ client: user._id });
 
-  const orders = await Promise.all(
-    cart.map(async (cartitem) => {
-  
-      const vehicle = await Vehicle.findById(cartitem.vehicle);
-  
+  // Ensure the user is a client
+  if (user.type !== "Client") {
+    throw new ApiError(400, "You are not authorized to place orders");
+  }
+
+  // Retrieve cart details for the user
+  const cart = await Cart.aggregate([
+    {
+      $match: { client: user._id },
+    },
+    {
+      $lookup: {
+        from: "vehciles",
+        localField: "vehicle",
+        foreignField: "_id",
+        as: "vehicle",
+        pipeline: [
+          {
+            $project: {
+              title: 1,
+              images: 1,
+              _id: 1,
+            }
+          }]
+      },
+    },
+   
+    
+  ]);
+
+  if (!cart.length) {
+    throw new ApiError(400, "Cart is empty");
+  }
+
+   const orders = await Promise.all(
+    cart.map(async (cartItem) => {
+      
+      const vehicle = await Vehicle.findById(cartItem.vehicle[0]._id);
+
       if (!vehicle) {
-        throw new ApiError(400, "No such vehicle exists");
+        throw new ApiError(400, `Vehicle with ID ${cartItem.vehicle[0]._id} does not exist`);
       }
+
       return Order.create({
         client: user._id,
-        vehicle: cartitem.vehicle,
+        vehicle: cartItem.vehicle[0]._id,
         renter: vehicle.owner,
-        price: cartitem.price,
-        quantity: cartitem.quantity,
-        startdate: cartitem.startdate,
-        days: cartitem.days,
+        price: cartItem.price,
+        quantity: cartItem.quantity,
+        startdate: cartItem.startdate,
+        days: cartItem.days,
       });
     })
   );
-  
-  if (!orders) {
-    throw new ApiError(500, "Failed to place order");
+
+  if (!orders.length) {
+    throw new ApiError(500, "Failed to create orders");
   }
 
-  const deleteCart = await Promise.all(
-    cart.map(async (cart) => {
-      const cartItem = await Cart.findByIdAndDelete(cart._id);
-      if (!cartItem) {
-        throw new ApiError(400, "No such cart exists");
-      }
-      return cartItem;
-    })
-  );
+  // Delete cart items after order placement
+  const deleteCart = await Cart.deleteMany({ client: user._id });
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201,deleteCart, "Order placed successfully"));
+  if (!deleteCart) {
+    throw new ApiError(500, "Failed to delete cart items");
+  }
+
+  return res.status(201).json(
+    new ApiResponse(201, "Order placed successfully")
+  );
 });
+
 
 const viewOrder = asyncHandler(async (req, res) => {
   const user = req.user;
@@ -486,4 +574,5 @@ export {
   placeOrder,
   viewOrder,
   cancelOrder,
+  makePayment
 };
