@@ -24,9 +24,6 @@ import clientRouter from "./routes/client.routes.js";
 app.get('/', (req, res) => {
   res.send('Hi, World! This is a simple route.');
 });
-app.get('/api/', (req, res) => {
-  res.send('Hello, World! This is a simple route.');
-});
 app.use("/api/auth", authRouter);
 app.use("/api/renter", renterRouter);
 app.use("/api/client", clientRouter);
