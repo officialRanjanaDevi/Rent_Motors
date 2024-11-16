@@ -49,7 +49,6 @@ const AddVehicle = () => {
       formData.append("images", image); 
     });
     try {
-      console.log("hello");
    
       const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
         method: "POST",
