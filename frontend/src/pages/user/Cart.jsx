@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import CartItem from "../../components/user/CartItem/CartItem";
 import { images } from "../../assets/images";
 import {loadStripe} from '@stripe/stripe-js';
-import StripeCheckout from 'react-stripe-checkout';
-
 
 const Cart = () => {
   const [productData, setProductData] = useState([]);
