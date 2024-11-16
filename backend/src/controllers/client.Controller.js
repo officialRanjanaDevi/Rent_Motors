@@ -419,8 +419,8 @@ const makePayment=asyncHandler(async(req,res)=>{
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: `http://localhost:5173/success`,
-    cancel_url: `http://localhost:5173/failure`,
+    success_url: `https://rent-motors.vercel.app/success`,
+    cancel_url: `https://rent-motors.vercel.app/failure`,
   });
   return res.status(201).json(
     new ApiResponse(201, { sessionId: session.id }, "Make payment")
