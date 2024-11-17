@@ -45,12 +45,14 @@ const Profile = () => {
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
             })
+            console.log("response",response)
             const res=await response.json();
+            
             if(res.success){
                 setUser(res.data);
             }
         }catch(error){
-             console.error("error while loading data",error);
+             console.error("error in get current user",error);
         }
     }
     useEffect(()=>{

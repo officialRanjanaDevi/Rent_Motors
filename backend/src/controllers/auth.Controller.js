@@ -9,18 +9,18 @@ const generateAccessAndRefreshTokens = async (userId) => {
   try {
 
     const user = await User.findById(userId);
-  
     const accessToken = user.generateAccessToken();
-  
-     const refreshToken = user.generateRefreshToken();
-    
- 
+    const refreshToken = user.generateRefreshToken();
+    console.log(userId);
+    console.log("Refresh Access Token",accessToken)
+    console.log("Refresh Token",refreshToken)
     user.refreshToken = refreshToken;
-    
+    console.log("User",user);
     await user.save({ validateBeforeSave: false });
    
     return { accessToken, refreshToken };
   } catch (error) {
+    console.log("Error while generating access token",error)
     throw new ApiError(
       500,
       "Something went wrong while generating access and refresh token"
@@ -216,7 +216,7 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log(req.user);
+  console.log("get current user",req);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
