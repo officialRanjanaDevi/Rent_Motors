@@ -5,8 +5,7 @@ const Vehicle = () => {
   const [vehicleData, setVehicleData] = useState([]);
   const loadData = async () => {
     try {
-
-      let res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewListing`, {
+        let res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewListing`, {
         method: "GET",
         credentials:"include",
         headers: {

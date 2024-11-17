@@ -7,7 +7,7 @@ import { images } from "../../assets/images";
 const About = () => {
   const [review, setReview] = useState([]);
   const loadReview = async () => {
-    const response = await fetch(`${import.meta.env.VITE_SERVER}/client/review`, {
+    const response = await fetch(`http://localhost:4000/api/client/review`, {
       method: "GET",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -17,6 +17,7 @@ const About = () => {
     const reviews = res.data;
     setReview(reviews);
   };
+ 
   useEffect(() => {
     loadReview();
   });
@@ -53,7 +54,7 @@ const About = () => {
 
       <div className="mt-12 p-4 ">
         <h1 className="font-bold text-3xl text-center">
-          What our renters say
+          What our customers say
         </h1>
         <div className="grid grid-cols-4 gap-4 ">
     
