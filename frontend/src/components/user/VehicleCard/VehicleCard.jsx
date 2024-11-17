@@ -62,7 +62,7 @@ export default function VehicleCard(props) {
 
     <Card
       sx={{
-        maxWidth: "400px",
+        width: "400px",
         minHeight: "400px",
         maxHeight: "500px",
         margin: ".5rem",
