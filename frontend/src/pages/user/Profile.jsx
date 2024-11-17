@@ -57,10 +57,9 @@ const Profile = () => {
     }
     useEffect(()=>{
         loadData();
-       
     },[])
    
-    const onChange = (e) => {
+      const onChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
         setPass({ ...pass, [e.target.name]: e.target.value });
       };
