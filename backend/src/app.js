@@ -23,6 +23,7 @@ import clientRouter from "./routes/client.routes.js";
 //routes declaration
 app.get('/', (req, res) => {
   res.send('Hi, World! This is a simple route.');
+  console.log('Cookies: ', req.cookies)
 });
 app.use("/api/auth", authRouter);
 app.use("/api/renter", renterRouter);
