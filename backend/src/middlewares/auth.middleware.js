@@ -49,8 +49,8 @@ const validateLogin = [
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
-    console.log("Token.................",req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", ""))
-    const token =req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", "");
+    console.log("Token.................",req.cookie?.accessToken ||req.header("Authorization")?.replace("Bearer ", ""))
+    const token =req.cookie?.accessToken ||req.header("Authorization")?.replace("Bearer ", "");
    
 
     if (!token) {

@@ -28,7 +28,7 @@ router.route("/refreshToken").post(refreshAccessToken);
 
 router.route("/changePassword").patch(verifyJWT, changePassword);
 
-router.route("/getCurrentUser").get( getCurrentUser);
+router.route("/getCurrentUser").get(verifyJWT, getCurrentUser);
 
 router.route("/updateProfile").patch(verifyJWT, updateProfile);
 
