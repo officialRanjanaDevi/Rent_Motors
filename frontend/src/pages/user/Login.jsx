@@ -25,11 +25,11 @@ const Login = () => {
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
         if (accessToken) {
-           Cookies.set('accessToken', accessToken, { expires: 1,path:"/",secure:true });
+           Cookies.set('accessToken', accessToken, { expires: 1,path:"/",secure:true, sameSite: 'None',  });
           
         }
         if (refreshToken) {
-          Cookies.set('refreshToken', refreshToken, { expires: 7,path:"/",secure:true });
+          Cookies.set('refreshToken', refreshToken, { expires: 7,path:"/",secure:true, sameSite: 'None',  });
         }
        
         

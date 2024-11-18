@@ -38,6 +38,7 @@ function App() {
 }
 
 function AppContent() {
+  console.log(Cookies.get("accessToken"))
   const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
   const location = useLocation();
@@ -68,6 +69,7 @@ function AppContent() {
             Cookies.set('accessToken', accessToken, {
               expires: 1,
               secure: true,
+              sameSite: 'None', 
             });
           
            
@@ -77,6 +79,7 @@ function AppContent() {
             Cookies.set('refreshToken', refreshToken, {
               expires: 14,
               secure: true,
+              sameSite: 'None', 
             });
           }
           if (res?.data?.usertype) {
