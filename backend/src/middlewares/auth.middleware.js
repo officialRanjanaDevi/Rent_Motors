@@ -47,12 +47,6 @@ const validateLogin = [
   },
 ];
 
-const sample=asyncHandler(async(req,res,next)=>{
-  console.log("sample middleware ");
-  console.log("Cookies",req.cookies);
-  console.log("Authorization",req.header);
-  next();
-})
 const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
     console.log("Token.................",req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", ""))
@@ -78,4 +72,4 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { validateRegistration, validateLogin, verifyJWT,sample };
+export { validateRegistration, validateLogin, verifyJWT};

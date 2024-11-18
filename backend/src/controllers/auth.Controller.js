@@ -213,7 +213,24 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log("get current user",req);
+  console.log(req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", ""))
+  const token =req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", "");
+
+
+    if (!token) {
+      throw new ApiError(401, "Unauthorized request");
+    }
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const user = await User.findById(decodedToken?._id).select(
+      "-password -refreshToken"
+    );
+
+    if (!user) {
+      throw new ApiError(401, "Invalid Access Token");
+    }
+
+    req.user = user;
+  console.log("get current user",req.user);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
