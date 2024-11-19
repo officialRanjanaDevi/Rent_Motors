@@ -3,9 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
 app.use(cookieParser());
-
 app.use(cors({
-  origin: ['https://rent-motors-frontend.vercel.app'], 
+  origin: 'https://rent-motors.onrender.com', // Frontend URL
   credentials: true, 
 }));
 

@@ -109,14 +109,14 @@ const loginUser = asyncHandler(async (req, res) => {
       httpOnly: true,
       secure: true, 
       sameSite: "None", 
-      domain: '.render.com',
+      domain: 'rent-motors.onrender.com',
       maxAge:  24 * 60 * 60 * 1000,
     })
     .cookie("refreshToken", refreshToken,{
       httpOnly: true,
       secure: true, 
       sameSite: "None", 
-      domain: '.render.com',
+      domain: 'rent-motors.onrender.com',
       maxAge:  7*24 * 60 * 60 * 1000,
     })
     .json(
@@ -187,14 +187,14 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true, 
         sameSite: "None", 
-        domain: '.render.com',
+        domain: 'rent-motors.onrender.com',
         maxAge:  24 * 60 * 60 * 1000,
       })
       .cookie("refreshToken", refreshToken,{
         httpOnly: true,
         secure: true, 
         sameSite: "None", 
-        domain: '.render.com',
+        domain: 'rent-motors.onrender.com',
         maxAge:  7*24 * 60 * 60 * 1000,
       })
       .json(
