@@ -3,10 +3,15 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
 app.use(cookieParser());
+const cors = require('cors');
+
 app.use(cors({
-  origin: ['https://rent-motors.onrender.com'], // Frontend URL
+  origin: ['https://rent-motors.onrender.com', 'http://localhost:5173'], 
   credentials: true, 
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
