@@ -2,20 +2,17 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
-app.use(cookieParser());
+
 app.use(cors({
-  origin: ['https://rent-motors.onrender.com', 'http://localhost:5173'], 
+  origin: 'https://rent-motors.onrender.com', 
   credentials: true, 
-  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], 
-  allowedHeaders: ['Content-Type', 'Authorization'], 
 }));
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static("public"));
-
+app.use(cookieParser());
 
 //routes
 import authRouter from "./routes/auth.routes.js";
