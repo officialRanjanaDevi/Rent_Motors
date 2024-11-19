@@ -5,7 +5,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['http://localhost:5173'], 
+  origin: [process.env.CORS_ORIGIN], 
   credentials: true, 
 }));
 
@@ -22,7 +22,7 @@ import clientRouter from "./routes/client.routes.js";
 
 //routes declaration
 app.get('/', (req, res) => {
-  res.send('Hi, World! This is a simple route.');
+  res.send('Hi, World! Welcome to Rent Motors');
  
 });
 app.use("/api/auth", authRouter);
