@@ -6,7 +6,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['https://rent-motors-frontend.vercel.app'], // Frontend URL
+  origin: ['https://rent-motors-frontend.vercel.app'], 
   credentials: true, 
 }));
 
