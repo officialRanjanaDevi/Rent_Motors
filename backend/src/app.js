@@ -5,7 +5,7 @@ const app = express();
 app.use(cookieParser());
 
 app.use(cors({
-  origin: ['https://rent-motors-frontend.vercel.app/'], 
+  origin: ['https://rent-motors-frontend.vercel.app'], 
   credentials: true, 
 }));
 
@@ -21,7 +21,7 @@ import renterRouter from "./routes/renter.routes.js";
 import clientRouter from "./routes/client.routes.js";
 
 //routes declaration
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.send('Hi, World! Welcome to Rent Motors');
  
 });
