@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 
 app.use(cors({
-  origin: 'https://rent-motors.onrender.com', 
+  origin: ['https://rent-motors.onrender.com'], 
   credentials: true, 
 }));
 
