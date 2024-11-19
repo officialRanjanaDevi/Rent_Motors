@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
 import OrderItem from './OrderItem'
-import { Order } from '../../../../../backend/src/models/Order.model';
 const CancelledOrder = () => {
   const [orderData, setOrderData] = useState([]);
   const loadData = async () => {
