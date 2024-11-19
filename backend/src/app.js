@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 const app = express();
 app.use(cookieParser());
 app.use(cors({
-  origin: 'https://rent-motors.onrender.com', // Frontend URL
+  origin: ['https://rent-motors.onrender.com'], // Frontend URL
   credentials: true, 
 }));
 
