@@ -68,18 +68,14 @@ function AppContent() {
            
             Cookies.set('accessToken', accessToken, {
               expires: 1,
-              secure: true,
-              sameSite: 'None', 
-            });
+           });
           
            
             setAccessToken(accessToken);
           }
           if (refreshToken) {
             Cookies.set('refreshToken', refreshToken, {
-              expires: 14,
-              secure: true,
-              sameSite: 'None', 
+              expires: 7,
             });
           }
           if (res?.data?.usertype) {
