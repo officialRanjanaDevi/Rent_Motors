@@ -106,16 +106,10 @@ const loginUser = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: true, 
-      sameSite: "None", 
-      maxAge:  24 * 60 * 60 * 1000,
+        maxAge:  24 * 60 * 60 * 1000,
     })
     .cookie("refreshToken", refreshToken,{
-      httpOnly: true,
-      secure: true, 
-      sameSite: "None", 
-      maxAge:  7*24 * 60 * 60 * 1000,
+       maxAge:  7*24 * 60 * 60 * 1000,
     })
     .json(
       new ApiResponse(
@@ -182,16 +176,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     return res
       .status(200)
       .cookie("accessToken", accessToken, {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "None", 
-        maxAge:  24 * 60 * 60 * 1000,
+         maxAge:  24 * 60 * 60 * 1000,
       })
       .cookie("refreshToken", refreshToken,{
-        httpOnly: true,
-        secure: true, 
-        sameSite: "None", 
-        maxAge:  7*24 * 60 * 60 * 1000,
+         maxAge:  7*24 * 60 * 60 * 1000,
       })
       .json(
         new ApiResponse(
@@ -234,7 +222,6 @@ const changePassword = asyncHandler(async (req, res) => {
 });
 
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log("get current user",req);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
