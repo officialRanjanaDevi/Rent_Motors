@@ -13,6 +13,7 @@ const Login = () => {
       const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/login`, {
         method: "POST",
         credentials:"include",
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
@@ -20,9 +21,8 @@ const Login = () => {
       });
 
       const res = await response.json();
-
+     console.log("login res",res)
       if (res.success) {
-        console.log(res);
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
         if (accessToken) {

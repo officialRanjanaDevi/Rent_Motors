@@ -69,6 +69,7 @@ const Profile = () => {
           const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/changePassword`, {
             method: 'PATCH',
             credentials:"include",
+            withCredentials: true,
             headers: { 
               'Content-Type': 'application/json'
             },
@@ -98,6 +99,7 @@ const Profile = () => {
           const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile`, {
             method: 'PATCH',
             credentials:"include",
+            withCredentials: true,
             headers: { 
               'Content-Type': 'application/json'
             },
@@ -139,7 +141,7 @@ const Profile = () => {
           const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateImage`, {
             method: 'PATCH',
             credentials:"include",
-       
+            withCredentials: true,
             body: formData
           });
     
