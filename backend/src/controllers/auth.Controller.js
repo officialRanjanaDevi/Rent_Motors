@@ -107,9 +107,13 @@ const loginUser = asyncHandler(async (req, res) => {
     .status(200)
     .cookie("accessToken", accessToken, {
         maxAge:  24 * 60 * 60 * 1000,
+        httpOnly: true,                
+        secure: true 
     })
     .cookie("refreshToken", refreshToken,{
        maxAge:  10*24 * 60 * 60 * 1000,
+       httpOnly: true,                
+       secure: true 
     })
     .json(
       new ApiResponse(
@@ -177,9 +181,13 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       .status(200)
       .cookie("accessToken", accessToken, {
          maxAge:  24 * 60 * 60 * 1000,
+         httpOnly: true,                
+         secure: true    
       })
       .cookie("refreshToken", refreshToken,{
          maxAge:  10*24 * 60 * 60 * 1000,
+         httpOnly: true,                
+         secure: true 
       })
       .json(
         new ApiResponse(

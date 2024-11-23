@@ -44,7 +44,7 @@ function AppContent() {
   const location = useLocation();
   useEffect(() => {
     setAccessToken(Cookies.get("accessToken"))
-    console.log("documnet cookies ",document.cookie)
+    console.log("document cookies ",document.cookie)
     const fetchUserType = async () => {
 
       if (!accessToken) {
