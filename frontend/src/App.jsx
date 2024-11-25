@@ -22,7 +22,9 @@ import Failure from "./pages/user/Failure";
 
 function App() {
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
+  console.log("usertype",usertype);
   useEffect(() => {
+    alert(usertype);
     setUsertype(localStorage.getItem("usertype"));
   });
   const renterPaths = [
