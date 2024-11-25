@@ -21,14 +21,14 @@ import ProtectedRoute from "./components/Protected";
 import Failure from "./pages/user/Failure";
 
 function App() {
-  const usertype=localStorage.getItem("usertype");
- // const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
+  
+  const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
   const location = useLocation();
 
-  // useEffect(() => {
-  //   console.log(usertype);
-  //   setUsertype(localStorage.getItem("usertype"));
-  // }, []);
+  useEffect(() => {
+    console.log(usertype);
+    setUsertype(localStorage.getItem("usertype"));
+  }, []);
 
   const renterPaths = [
     "/renter",
