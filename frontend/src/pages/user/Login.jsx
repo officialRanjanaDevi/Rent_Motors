@@ -23,15 +23,15 @@ const Login = () => {
       const res = await response.json();
  
       if (res.success) {
-        // const accessToken = res?.data?.accessToken;
-        // const refreshToken = res?.data?.refreshToken;
-        // if (accessToken) {
-        //    Cookies.set('accessToken', accessToken, { expires: 1});
+        const accessToken = res?.data?.accessToken;
+        const refreshToken = res?.data?.refreshToken;
+        if (accessToken) {
+           Cookies.set('accessToken', accessToken, { expires: 1});
           
-        // }
-        // if (refreshToken) {
-        //   Cookies.set('refreshToken', refreshToken, { expires: 7});
-        // }
+        }
+        if (refreshToken) {
+          Cookies.set('refreshToken', refreshToken, { expires: 10});
+        }
        
         
         localStorage.setItem("username",res.data.user[0].username);

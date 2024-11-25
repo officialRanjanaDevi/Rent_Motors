@@ -54,7 +54,6 @@ function AppContent() {
             {
               method: "POST",
               credentials: "include",
-              withCredentials: true,
               headers: {
                 "Content-Type": "application/json",
               },
@@ -62,22 +61,22 @@ function AppContent() {
           );
         
           const res = await response.json();
-          // const accessToken = res?.data?.accessToken;
-          // const refreshToken = res?.data?.refreshToken;
+          const accessToken = res?.data?.accessToken;
+          const refreshToken = res?.data?.refreshToken;
         
-          // if (accessToken) {
-          //     Cookies.set('accessToken', accessToken, {
-          //     expires: 1,
-          //  });
+          if (accessToken) {
+              Cookies.set('accessToken', accessToken, {
+              expires: 1,
+           });
           
            
-          //   setAccessToken(accessToken);
-          // }
-          // if (refreshToken) {
-          //     Cookies.set('refreshToken', refreshToken, {
-          //     expires: 7,
-          //   });
-          // }
+            setAccessToken(accessToken);
+          }
+          if (refreshToken) {
+              Cookies.set('refreshToken', refreshToken, {
+              expires: 10,
+            });
+          }
           if (res?.data?.usertype) {
             setUsertype(res.data.usertype);
             localStorage.setItem("usertype", res.data.usertype);
