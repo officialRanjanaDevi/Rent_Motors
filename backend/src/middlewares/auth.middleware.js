@@ -49,14 +49,15 @@ const validateLogin = [
 
 const verifyJWT = asyncHandler(async (req, res, next) => {
   try {
-    const token =req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", "");
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    let user = await User.findById(decodedToken?._id).select(
+    const {userid}=req.params;
+    let user=await User.findById(userid).select(
       "-password -refreshToken"
     );
+    
     if(!user){
-      const {userid}=req.params;
-      user=await User.findById(userid).select(
+      const token =req.cookies?.accessToken ||req.header("Authorization")?.replace("Bearer ", "");
+      const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+       user = await User.findById(decodedToken?._id).select(
         "-password -refreshToken"
       );
     }
