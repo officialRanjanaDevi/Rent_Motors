@@ -33,19 +33,19 @@ const Login = () => {
         
         const userType = res.data.user[0]?.type;
         if (userType === "Client") {
-          setTimeout(() => navigate("/"), 1200);
+          setTimeout(() => navigate("/"), 1000);
         } else {
-          setTimeout(() => navigate("/renter"), 1200);
+          setTimeout(() => navigate("/renter"), 1000);
         }
       } else {
         alert("Invalid credentials");
         setStatus("Failed");
-        setTimeout(() => setStatus(null), 3000);
+        setTimeout(() => setStatus(null), 1000);
       }
     } catch (error) {
       console.log("Error during login:", error);
       setStatus("Failed");
-      setTimeout(() => setStatus(null), 3000);
+      setTimeout(() => setStatus(null), 1000);
       setCredentials({ email: "", password: "" });
     }
   };
