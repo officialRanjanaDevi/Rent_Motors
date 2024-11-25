@@ -1,10 +1,14 @@
 // ProtectedRoute.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 import { Navigate, Outlet } from "react-router-dom";
 function ProtectedRoute() {
-   const isLoggedIn=localStorage.getItem("username");
+   const [isLoggedIn,setIsLoggedIn]=useState(localStorage.getItem("username"))
+   useEffect(() => {
+      setIsLoggedIn(localStorage.getItem("username"));
+    })
+   
    return isLoggedIn ? <Outlet/> : <Navigate to="/login" />;
  
 }

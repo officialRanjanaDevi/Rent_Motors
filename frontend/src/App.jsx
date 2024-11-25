@@ -4,7 +4,6 @@ import {
   BrowserRouter,
   Route,
   Routes,
-  useLocation,
   Navigate,
 } from "react-router-dom";
 import Navbar from "./components/user/Navbar/Navbar";
@@ -90,7 +89,7 @@ function AppContent() {
               <Route path="/failure" element={<Failure />} />
               <Route path="/*" element={<Navigate to="/" />} />
             </>
-          ) : (
+          ) : usertype === "Renter" ? (
             <>
               {/* Renter Routes */}
               <Route path="/renter" element={<Dashboard panel="analysis" />} />
@@ -124,7 +123,8 @@ function AppContent() {
               />
               <Route path="/*" element={<Navigate to="/renter" />} />
             </>
-          )}
+          ):
+          ( <Route path="/*" element={<Home />} />)}
 
           
         </Route>
