@@ -16,7 +16,7 @@ export default function Wishlist(props) {
   const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}/${userid}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`, {
         method: "GET",
         credentials: "include",
         headers: {
