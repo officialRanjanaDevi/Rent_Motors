@@ -22,6 +22,8 @@ import Failure from "./pages/user/Failure";
 
 function App() {
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
+  console.log(usertype);
+  console.log("hello")
   useEffect(() => {
     setUsertype(localStorage.getItem("usertype"));
   });
