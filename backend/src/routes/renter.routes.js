@@ -16,23 +16,23 @@ import {
 
 const router = Router();
 
-router.route("/vehicle")
+router.route("/vehicle/:userid")
   .post(verifyJWT,upload.array("images", 3),validateVehicle,  createVehicle)
   .patch(verifyJWT, updateVehicle)
   .delete(verifyJWT, deleteVehicle)
   .get(verifyJWT, viewVehicleListing);
 
-router.route("/updateImages")
+router.route("/updateImages/:userid")
   .patch(verifyJWT,upload.array("images", 3), updateImages);
 
 
-router.route("/order")  
+router.route("/order/:userid")  
   .patch(verifyJWT,manageOrders)
   .get(verifyJWT,viewAllOrders);
 
-router.route("/order/:status")
+router.route("/order/:status/:userid")
   .get(verifyJWT,viewOrders)  
-router.route("/viewOrder/:id")
+router.route("/viewOrder/:id/:userid")
   .get(verifyJWT,findOrder)    
 
 export default router;

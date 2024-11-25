@@ -13,10 +13,10 @@ export default function Wishlist(props) {
   const [productData, setProductData] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -37,7 +37,7 @@ export default function Wishlist(props) {
 
   const removeFromWishlist = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist/${userid}`, {
         method: "DELETE",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ export default function Wishlist(props) {
   const handleAddBtn = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

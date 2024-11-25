@@ -5,10 +5,11 @@ import { images } from '../../assets/images';
 const Wishlist = () => {
   const [productData, setProductData] = useState([]);
   const [loading,setLoading]=useState(true);
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
 
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: {

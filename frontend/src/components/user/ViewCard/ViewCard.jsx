@@ -8,10 +8,10 @@ const ViewCard = (props) => {
   const vehicleData = props.data;
   const [add, setAdd] = useState("Add to cart");
   const [liked, setLiked] = useState(false);
- 
+  const userid=localStorage.getItem("userid");
     const handleLikeClick = async () => {
       setLiked((prevLiked) => !prevLiked);
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -32,7 +32,7 @@ const ViewCard = (props) => {
 
   const handleAddBtn = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

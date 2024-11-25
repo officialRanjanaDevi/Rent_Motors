@@ -9,10 +9,10 @@ const Cart = () => {
   const [bikes, setBikes] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [status,setStatus]=useState("");
-
+  const userid=localStorage.getItem("userid");
   const loadUserData = async () => {
     try {
-      const user=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser`,{
+      const user=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser/${userid}`,{
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ const Cart = () => {
   };
   const loadData = async () => {
     try {
-           const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+           const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -73,7 +73,7 @@ const Cart = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile/${userid}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -103,7 +103,7 @@ const Cart = () => {
     const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/create-checkout-session`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/create-checkout-session/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -131,7 +131,7 @@ const Cart = () => {
   const placeOrder = async () => {
   
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/client/order/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

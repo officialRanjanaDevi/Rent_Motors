@@ -82,10 +82,10 @@ const Analysis = () => {
       },
     ],
   });
-
+  const userid=localStorage.getItem("userid");
   const loadVehicleData = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -122,7 +122,7 @@ const Analysis = () => {
 
   const loadOrderData = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

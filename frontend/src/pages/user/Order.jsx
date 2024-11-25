@@ -5,9 +5,10 @@ const Order = () => {
   const [orderData, setOrderData] = useState([]);
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null);
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/order/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

@@ -13,7 +13,6 @@ const Login = () => {
       const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/login`, {
         method: "POST",
         credentials:"include",
-        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
@@ -22,17 +21,7 @@ const Login = () => {
 
       const res = await response.json();
  
-      if (res.success) {
-        const accessToken = res?.data?.accessToken;
-        const refreshToken = res?.data?.refreshToken;
-        // if (accessToken) {
-        //    Cookies.set('accessToken', accessToken, { expires: 1});
-          
-        // }
-        // if (refreshToken) {
-        //   Cookies.set('refreshToken', refreshToken, { expires: 10});
-        // }
-       
+      if (res.success) {   
         
         localStorage.setItem("username",res.data.user[0].username);
         localStorage.setItem("usertype",res.data.user[0].type);

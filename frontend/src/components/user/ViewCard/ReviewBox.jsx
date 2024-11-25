@@ -20,7 +20,7 @@ const ReviewBox = ({ review }) => {
   const userid = localStorage.getItem("userid");
   const deleteReview=async()=>{
     try{
-     const res=await fetch(`${import.meta.env.VITE_SERVER}/client/review`,{
+     const res=await fetch(`${import.meta.env.VITE_SERVER}/client/review/${userid}`,{
         method:"DELETE",
         credentials:"include",
         headers: {

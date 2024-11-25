@@ -38,15 +38,15 @@ const Profile = () => {
     const [user,setUser]=useState({});
     const [credentials,setCredentials]=React.useState({user});
     const navigate=useNavigate();
+    const userid=localStorage.getItem("userid");
     const loadData=async()=>{
         try{
-            const response=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser`,{
+            const response=await fetch (`${import.meta.env.VITE_SERVER}/auth/getCurrentUser/${userid}`,{
                 method: "GET",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },
             })
-            console.log("response",response)
-            const res=await response.json();
+           const res=await response.json();
             
             if(res.success){
                 setUser(res.data);
@@ -66,7 +66,7 @@ const Profile = () => {
       const updatePassword = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/changePassword`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/changePassword/${userid}`, {
             method: 'PATCH',
             credentials:"include",
             withCredentials: true,
@@ -96,7 +96,7 @@ const Profile = () => {
       const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateProfile/${userid}`, {
             method: 'PATCH',
             credentials:"include",
             withCredentials: true,
@@ -138,7 +138,7 @@ const Profile = () => {
      
         formData.append("image", image); 
         try {
-          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateImage`, {
+          const response = await fetch(`${import.meta.env.VITE_SERVER}/auth/updateImage/${userid}`, {
             method: 'PATCH',
             credentials:"include",
             withCredentials: true,

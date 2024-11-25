@@ -10,7 +10,8 @@ const OrderItem = ({ data, reload }) => {
     message: "",
   });
   const { vertical, horizontal, open, message, severity } = state;
-
+  
+  const userid=localStorage.getItem("userid");
   const handleClick = (newState, msg, sev) => {
     setState({ ...newState, open: true, message: msg, severity: sev });
     setTimeout(() => setState({ ...state, open: false }), 1500);
@@ -19,7 +20,7 @@ const OrderItem = ({ data, reload }) => {
 
   const handleCancel = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/order`, {
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${userid}`, {
         method: "PATCH",
         credentials: "include",
         headers: {

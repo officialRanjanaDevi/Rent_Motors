@@ -4,10 +4,10 @@ import OrderItem from './OrderItem';
 const AcceptedOrder = () => {
   const [orderData, setOrderData] = useState([]);
   const [status, setStatus] = useState("Accepted");
-
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
-      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: {

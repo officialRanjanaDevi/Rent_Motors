@@ -22,7 +22,7 @@ export default function ListingCard({ data, hello }) {
     borderRadius: "10px",
     boxShadow: 24,
   };
-
+  const userid=localStorage.getItem("userid");
   const [state, setState] = React.useState({
     open: false,
     vertical: "top",
@@ -58,7 +58,7 @@ export default function ListingCard({ data, hello }) {
   }
   const handleDelete=async()=>{
     try{
-     const response=await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`,{
+     const response=await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle/${userid}`,{
       method: "DELETE",
       credentials: "include",
       headers: { "Content-Type": "application/json" },

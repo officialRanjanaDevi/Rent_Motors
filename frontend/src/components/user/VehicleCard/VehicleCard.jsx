@@ -15,10 +15,10 @@ export default function VehicleCard(props) {
   const [loading, setLoading] = useState(false);
   const accessToken = Cookies.get("accessToken");
   const navigate = useNavigate();
-
+  const userid=localStorage.getItem("userid");
    const handleLikeClick = async () => {
     setLiked((prevLiked) => !prevLiked);
-    const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist`, {
+    const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist/${userid}`, {
       method: "POST",
       credentials:"include",
       headers: {
@@ -42,7 +42,7 @@ export default function VehicleCard(props) {
       return;
     }
     try {
-      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+      const res = await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

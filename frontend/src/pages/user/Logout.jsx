@@ -4,9 +4,9 @@ import Cookies from "js-cookie"
 const Logout = () => {
   const navigate = useNavigate(); 
   const handleLogout = async () => {
-    console.log("inside logout")
+    const userid=localStorage.getItem("userid");
     const response = await fetch(
-      `${import.meta.env.VITE_SERVER}/auth/logout`,
+      `${import.meta.env.VITE_SERVER}/auth/logout/${userid}`,
       {
         method: "POST",
         credentials: "include",

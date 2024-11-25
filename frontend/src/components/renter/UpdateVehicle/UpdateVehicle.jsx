@@ -4,10 +4,10 @@ import LoadingCard from '../../user/LoadingCard/LoadingCard';
 
 const UpdateVehcile = () => {
   const [vehicles,setVehicles]=useState([]);
-
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
-           const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
+           const res = await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

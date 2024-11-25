@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const AddVehicle = () => {
   const navigate = useNavigate();
+  const userid=localStorage.getItem("userid");
   const [state, setState] = useState({
     open: false,
     vertical: "top",
@@ -50,7 +51,7 @@ const AddVehicle = () => {
     });
     try {
    
-      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
+      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle/${userid}`, {
         method: "POST",
         credentials: "include",
         body: formData

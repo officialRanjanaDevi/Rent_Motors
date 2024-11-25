@@ -24,7 +24,6 @@ import Dashboard from "./pages/renter/Dashboard";
 import Profile from "./pages/user/Profile"
 import Success from "./pages/user/Success"
 import ProtectedRoute from "./components/Protected";
-import Cookies from "js-cookie";
 import Failure from "./pages/user/Failure";
 
 function App() {
@@ -38,58 +37,7 @@ function App() {
 }
 
 function AppContent() {
-  console.log(Cookies.get("accessToken"))
-  const [accessToken, setAccessToken] = useState(Cookies.get("accessToken"));
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
-  const location = useLocation();
-  useEffect(() => {
-    setAccessToken(Cookies.get("accessToken"))
-    console.log("document cookies ",document.cookie)
-    const fetchUserType = async () => {
-
-      if (!accessToken) {
-        try {
-          const response = await fetch(
-            `${import.meta.env.VITE_SERVER}/auth/refreshToken`,
-            {
-              method: "POST",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-        
-          const res = await response.json();
-          const accessToken = res?.data?.accessToken;
-          const refreshToken = res?.data?.refreshToken;
-        
-          // if (accessToken) {
-          //     Cookies.set('accessToken', accessToken, {
-          //     expires: 1,
-          //  });
-          
-           
-          //   setAccessToken(accessToken);
-          // }
-          // if (refreshToken) {
-          //     Cookies.set('refreshToken', refreshToken, {
-          //     expires: 10,
-          //   });
-          // }
-          if (res?.data?.usertype) {
-            setUsertype(res.data.usertype);
-            localStorage.setItem("usertype", res.data.usertype);
-            localStorage.setItem("username", res.data.username);
-          }
-        } catch (error) {
-          console.error("Error fetching user type:", error);
-        }
-      }
-    };
-
-    fetchUserType();
-  }, [usertype]);
 
   const renterPaths = [
     "/renter",
@@ -115,7 +63,7 @@ function AppContent() {
         <Route path="/about" element={<About />} />
 
         {/* Unauthorized Routes */}
-        {!accessToken && (
+        {!usertype && (
           <>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />

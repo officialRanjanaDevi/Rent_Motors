@@ -8,11 +8,11 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const [stdate, setStdate] = useState(data.startdate.substring(0, 10));
   const [days, setDays] = useState(data.days);
   const [loading, setLoading] = useState(false);
-
+  const userid=localStorage.getItem("userid");
   const loadVehicleData = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`,
+        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}/${userid}`,
         {
           method: "GET",
           credentials: "include",
@@ -34,7 +34,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
 
   const update = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -73,7 +73,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_SERVER}/client/cart`, {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
         method: "DELETE",
         credentials: "include",
         headers: {

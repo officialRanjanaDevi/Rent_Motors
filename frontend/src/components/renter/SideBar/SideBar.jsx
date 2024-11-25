@@ -19,10 +19,11 @@ const SideBar = () => {
   const location = useLocation().pathname;
   const [newOrder, setNewOrder] = React.useState(0);
   const [cancelreq, setCancelreq] = React.useState(0);
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
    
-      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed`, {
+      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed/${userid}`, {
         method: "GET",
         credentials:"include",
         headers: {
@@ -33,7 +34,7 @@ const SideBar = () => {
       let response1 = await res1.json();
       setNewOrder(response1.data.length);
 
-      let res2 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/CancelReq`, {
+      let res2 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/CancelReq/${userid}`, {
         method: "GET",
         credentials:"include",
         headers: {

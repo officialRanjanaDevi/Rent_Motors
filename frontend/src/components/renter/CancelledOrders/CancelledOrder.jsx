@@ -2,10 +2,11 @@ import React,{useEffect, useState} from 'react'
 import OrderItem from './OrderItem'
 const CancelledOrder = () => {
   const [orderData, setOrderData] = useState([]);
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
       const status="Accepted";
-      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}/${userid}`, {
         method: "GET",
         credentials:"include",
         headers: {

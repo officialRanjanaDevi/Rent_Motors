@@ -38,8 +38,8 @@ const UpdateImages = ({ data }) => {
       images.forEach((image, index) => {
         formData.append("images", image); 
       });
-    
-      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/updateImages`, {
+      const userid=localStorage.getItem("userid");
+      const response = await fetch(`${import.meta.env.VITE_SERVER}/renter/updateImages/${userid}`, {
         method: "PATCH",
         credentials: "include",
         body: formData, 

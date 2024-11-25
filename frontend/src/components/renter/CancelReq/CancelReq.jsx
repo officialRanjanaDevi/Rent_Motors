@@ -3,10 +3,11 @@ import CancelItem from './CancelItem'
 
 const CancelReq = () => {
   const [orderData, setOrderData] = useState([]);
+  const userid=localStorage.getItem("userid");
   const loadData = async () => {
     try {
       const status="CancelReq";
-      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}`, {
+      let res = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/${status}/${userid}`, {
         method: "GET",
         credentials:"include",
         headers: {

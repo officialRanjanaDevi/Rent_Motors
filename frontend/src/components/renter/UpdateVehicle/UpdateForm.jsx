@@ -30,12 +30,12 @@ const UpdateForm = (props) => {
     speed: data.speed,
     fuel: data.fuel,
   });
-
+  const userid=localStorage.getItem("userid");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle`, {
+      const response =  await fetch(`${import.meta.env.VITE_SERVER}/renter/vehicle/${userid}`, {
         method: "PATCH",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

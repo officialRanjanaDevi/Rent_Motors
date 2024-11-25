@@ -61,11 +61,11 @@ const OrderItem = ({ data }) => {
   useEffect(() => {
     loadData();
   }, []);
- 
+  const userid=localStorage.getItem("userid");
   const handlecancel=async()=>{
     
     try {
-      await fetch(`${import.meta.env.VITE_SERVER}/client/order`, {
+      await fetch(`${import.meta.env.VITE_SERVER}/client/order/${userid}`, {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -82,7 +82,7 @@ const OrderItem = ({ data }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res=await fetch(`${import.meta.env.VITE_SERVER}/client/review`, {
+      const res=await fetch(`${import.meta.env.VITE_SERVER}/client/review/${userid}`, {
         method: "POST",
         credentials: "include",
         headers: {

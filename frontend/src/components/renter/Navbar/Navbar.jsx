@@ -56,10 +56,11 @@ function Navbar() {
   const location = useLocation().pathname;
   const [newOrder, setNewOrder] = useState(0);
   const [cancelreq, setCancelreq] = useState(0);
+  const userid=localStorage.getItem("userid");
   const findOrder = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER}/renter/viewOrder/${orderid}`,
+        `${import.meta.env.VITE_SERVER}/renter/viewOrder/${orderid}/${userid}`,
         {
           method: "GET",
           credentials: "include",
@@ -88,7 +89,7 @@ function Navbar() {
  
   const newCancelReq = async () => {
     try {
-      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed`, {
+      let res1 = await fetch(`${import.meta.env.VITE_SERVER}/renter/order/Placed/${userid}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -99,7 +100,7 @@ function Navbar() {
       setNewOrder(response1.data.length);
 
       let res2 = await fetch(
-        `${import.meta.env.VITE_SERVER}/renter/order/CancelReq`,
+        `${import.meta.env.VITE_SERVER}/renter/order/CancelReq/${userid}`,
         {
           method: "GET",
           credentials: "include",
