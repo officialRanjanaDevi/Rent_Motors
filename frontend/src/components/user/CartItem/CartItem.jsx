@@ -9,6 +9,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const [days, setDays] = useState(data.days);
   const [loading, setLoading] = useState(false);
   const userid=localStorage.getItem("userid");
+
   const loadVehicleData = async () => {
     try {
       const res = await fetch(
@@ -70,7 +71,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const decreaseDays = () => {
     if (days > 1) setDays(prevDays => prevDays - 1);
   };
-  console.log(vehicleData);
+ 
   const handleDelete = async () => {
     try {
       await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
@@ -86,6 +87,9 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
       console.error("Error deleting item:", error);
     }
   };
+  console.log("hi");
+  console.log(vehicleData);
+  console.log("hello");
 
   return !isDeleted && !loading ? (
     <div className="bg-neutral-200 shadow-md shadow-neutral-400 my-2 rounded-md p-2 flex justify-between items-center w-full flex-col md:flex-row">
