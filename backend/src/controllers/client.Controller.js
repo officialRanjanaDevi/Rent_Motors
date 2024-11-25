@@ -343,7 +343,6 @@ const removeFromCart = asyncHandler(async (req, res) => {
   // return res
 
   const user = req.user;
-  console.log(req.body);
   const { id } = req.body;
   if (user.type !== "Client") {
     throw new ApiError(401, "You are not authorized to add vehicle in cart");

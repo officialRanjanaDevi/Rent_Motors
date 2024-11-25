@@ -13,7 +13,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const loadVehicleData = async () => {
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}/${userid}`,
+        `${import.meta.env.VITE_SERVER}/client/viewVehicle/${data.vehicle}`,
         {
           method: "GET",
           credentials: "include",
@@ -87,10 +87,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
       console.error("Error deleting item:", error);
     }
   };
-  console.log("hi");
-  console.log(vehicleData);
-  console.log("hello");
-
+  
   return !isDeleted && !loading ? (
     <div className="bg-neutral-200 shadow-md shadow-neutral-400 my-2 rounded-md p-2 flex justify-between items-center w-full flex-col md:flex-row">
       <img
