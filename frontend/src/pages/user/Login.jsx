@@ -25,13 +25,13 @@ const Login = () => {
       if (res.success) {
         const accessToken = res?.data?.accessToken;
         const refreshToken = res?.data?.refreshToken;
-        if (accessToken) {
-           Cookies.set('accessToken', accessToken, { expires: 1});
+        // if (accessToken) {
+        //    Cookies.set('accessToken', accessToken, { expires: 1});
           
-        }
-        if (refreshToken) {
-          Cookies.set('refreshToken', refreshToken, { expires: 10});
-        }
+        // }
+        // if (refreshToken) {
+        //   Cookies.set('refreshToken', refreshToken, { expires: 10});
+        // }
        
         
         localStorage.setItem("username",res.data.user[0].username);
