@@ -37,6 +37,7 @@ function App() {
 
 function AppContent() {
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
+  console.log(usertype);
   useEffect(() => {
     setUsertype(localStorage.getItem("usertype"));
   })
