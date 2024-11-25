@@ -70,7 +70,7 @@ const CartItem = ({ data, updateBikesAndPrice }) => {
   const decreaseDays = () => {
     if (days > 1) setDays(prevDays => prevDays - 1);
   };
-
+  console.log(vehicleData);
   const handleDelete = async () => {
     try {
       await fetch(`${import.meta.env.VITE_SERVER}/client/cart/${userid}`, {
