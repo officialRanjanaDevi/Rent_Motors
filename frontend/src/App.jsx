@@ -21,12 +21,7 @@ import ProtectedRoute from "./components/Protected";
 import Failure from "./pages/user/Failure";
 
 function App() {
-  const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
-  console.log("usertype",usertype);
-  useEffect(() => {
-    alert(usertype);
-    setUsertype(localStorage.getItem("usertype"));
-  });
+ // const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
   const renterPaths = [
     "/renter",
     "/addVehicle",
@@ -52,7 +47,7 @@ function App() {
           <Route path="/about" element={<About />} />
 
           {/* Unauthorized Routes */}
-          {!usertype && (
+          {!localStorage.getItem("usertype") && (
             <>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
@@ -67,7 +62,7 @@ function App() {
             <Route path="/login" element={<Navigate to="/" />} />
             <Route path="/signup" element={<Navigate to="/" />} />
 
-            {usertype === "Client" ? (
+            {localStorage.getItem("usertype") === "Client" ? (
               <>
                 {/* Client Routes */}
                 <Route path="/cart" element={<Cart />} />
@@ -77,7 +72,7 @@ function App() {
                 <Route path="/failure" element={<Failure />} />
                 <Route path="/*" element={<Navigate to="/" />} />
               </>
-            ) : usertype === "Renter" ? (
+            ) : localStorage.getItem("usertype") === "Renter" ? (
               <>
                 {/* Renter Routes */}
                 <Route
