@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./components/user/Navbar/Navbar";
 import Footer from "./components/user/Footer/Footer";
 import Home from "./pages/user/Home";
@@ -20,27 +15,16 @@ import Logout from "./pages/user/Logout";
 import About from "./pages/user/About";
 import Signup from "./pages/user/Signup";
 import Dashboard from "./pages/renter/Dashboard";
-import Profile from "./pages/user/Profile"
-import Success from "./pages/user/Success"
+import Profile from "./pages/user/Profile";
+import Success from "./pages/user/Success";
 import ProtectedRoute from "./components/Protected";
 import Failure from "./pages/user/Failure";
 
 function App() {
-  return (
-    <div>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </div>
-  );
-}
-
-function AppContent() {
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
-  console.log(usertype);
   useEffect(() => {
     setUsertype(localStorage.getItem("usertype"));
-  })
+  });
   const renterPaths = [
     "/renter",
     "/addVehicle",
@@ -49,90 +33,94 @@ function AppContent() {
     "/cancelReq",
     "/acceptedOrder",
     "/cancelledOrder",
-    "/rejectedOrder"
+    "/rejectedOrder",
   ];
   const showNavbarFooter = !renterPaths.includes(location.pathname);
 
   return (
-    <>
-      {showNavbarFooter && <Navbar />}
+    <div>
+      <BrowserRouter>
+        {showNavbarFooter && <Navbar />}
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/vehicle" element={<Vehicle />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/view" element={<View />} />
-        <Route path="/about" element={<About />} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/vehicle" element={<Vehicle />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/view" element={<View />} />
+          <Route path="/about" element={<About />} />
 
-        {/* Unauthorized Routes */}
-        {!usertype && (
-          <>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/" element={<Login />} />
-          </>
-        )}
-
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Navigate to="/" />} />
-          <Route path="/signup" element={<Navigate to="/" />} />
-         
-          {usertype === "Client" ? (
+          {/* Unauthorized Routes */}
+          {!usertype && (
             <>
-              {/* Client Routes */}
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/wishlist" element={<Wishlist />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/success" element={<Success />} />
-              <Route path="/failure" element={<Failure />} />
-              <Route path="/*" element={<Navigate to="/" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/" element={<Login />} />
             </>
-          ) : usertype === "Renter" ? (
-            <>
-              {/* Renter Routes */}
-              <Route path="/renter" element={<Dashboard panel="analysis" />} />
-              <Route
-                path="/addVehicle"
-                element={<Dashboard panel="addVehicle" />}
-              />
-              <Route
-                path="/newOrder"
-                element={<Dashboard panel="newOrder" />}
-              />
-              <Route
-                path="/acceptedOrder"
-                element={<Dashboard panel="acceptedOrder" />}
-              />
-              <Route
-                path="/updateVehicle"
-                element={<Dashboard panel="updateVehicle" />}
-              />
-              <Route
-                path="/cancelReq"
-                element={<Dashboard panel="cancelReq" />}
-              />
-              <Route
-                path="/cancelledOrder"
-                element={<Dashboard panel="cancelledOrder" />}
-              />
-              <Route
-                path="/rejectedOrder"
-                element={<Dashboard panel="rejectedOrder" />}
-              />
-              <Route path="/*" element={<Navigate to="/renter" />} />
-            </>
-          ):
-          ( <Route path="/*" element={<Home />} />)}
+          )}
 
-          
-        </Route>
-      </Routes>
+          {/* Protected Routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Navigate to="/" />} />
+            <Route path="/signup" element={<Navigate to="/" />} />
 
-      {showNavbarFooter && <Footer />}
-    </>
+            {usertype === "Client" ? (
+              <>
+                {/* Client Routes */}
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/success" element={<Success />} />
+                <Route path="/failure" element={<Failure />} />
+                <Route path="/*" element={<Navigate to="/" />} />
+              </>
+            ) : usertype === "Renter" ? (
+              <>
+                {/* Renter Routes */}
+                <Route
+                  path="/renter"
+                  element={<Dashboard panel="analysis" />}
+                />
+                <Route
+                  path="/addVehicle"
+                  element={<Dashboard panel="addVehicle" />}
+                />
+                <Route
+                  path="/newOrder"
+                  element={<Dashboard panel="newOrder" />}
+                />
+                <Route
+                  path="/acceptedOrder"
+                  element={<Dashboard panel="acceptedOrder" />}
+                />
+                <Route
+                  path="/updateVehicle"
+                  element={<Dashboard panel="updateVehicle" />}
+                />
+                <Route
+                  path="/cancelReq"
+                  element={<Dashboard panel="cancelReq" />}
+                />
+                <Route
+                  path="/cancelledOrder"
+                  element={<Dashboard panel="cancelledOrder" />}
+                />
+                <Route
+                  path="/rejectedOrder"
+                  element={<Dashboard panel="rejectedOrder" />}
+                />
+                <Route path="/*" element={<Navigate to="/renter" />} />
+              </>
+            ) : (
+              <Route path="/*" element={<Home />} />
+            )}
+          </Route>
+        </Routes>
+
+        {showNavbarFooter && <Footer />}
+      </BrowserRouter>
+    </div>
   );
 }
 
