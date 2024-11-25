@@ -13,9 +13,12 @@ export default function VehicleCard(props) {
   const [liked, setLiked] = useState(false);
   const [add, setAdd] = useState("Add to cart");
   const [loading, setLoading] = useState(false);
-  const accessToken = Cookies.get("accessToken");
+  const [type,setType]=useState(localStorage.getItem("usertype"))
   const navigate = useNavigate();
   const userid=localStorage.getItem("userid");
+  useEffect(() => {
+    setType(localStorage.getItem("usertype"));
+  })
    const handleLikeClick = async () => {
     setLiked((prevLiked) => !prevLiked);
     const response = await fetch(`${import.meta.env.VITE_SERVER}/client/wishlist/${userid}`, {
@@ -37,7 +40,7 @@ export default function VehicleCard(props) {
 
   const handleAddBtn = async () => {
     setLoading(true);
-    if (!accessToken) {
+    if (type!=="Client") {
       navigate("/login");
       return;
     }

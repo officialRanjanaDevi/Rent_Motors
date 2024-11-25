@@ -38,7 +38,9 @@ function App() {
 
 function AppContent() {
   const [usertype, setUsertype] = useState(localStorage.getItem("usertype"));
-
+  useEffect(() => {
+    setUsertype(localStorage.getItem("usertype"));
+  })
   const renterPaths = [
     "/renter",
     "/addVehicle",
